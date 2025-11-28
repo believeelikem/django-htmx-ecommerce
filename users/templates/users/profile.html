@@ -1,0 +1,124 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+{% block extra_styles %} <link rel="stylesheet" href="{% static 'css/profile.css' %}"> {% endblock extra_styles %}
+{% block content %}
+    <main class="container section">
+      <div class="profile">
+        <div class="profile__header">
+          <img class="profile__avatar" src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=200&q=80" alt="Profile avatar">
+          <div>
+            <p class="badge">Member since 2022</p>
+            <h1 class="section__title" style="margin:4px 0;">Alex Taylor</h1>
+            <p class="section__subtitle">alex.taylor@northwind.com · Seattle, WA</p>
+          </div>
+        </div>
+
+        <div class="profile-grid">
+          <section class="profile-card">
+            <div class="section__header">
+              <h3 style="margin:0;">Profile details</h3>
+              <button class="btn btn--ghost" type="button">Edit</button>
+            </div>
+            <div class="form">
+              <div class="form__group">
+                <label class="form__label" for="full-name">Full name</label>
+                <input id="full-name" class="form__control" type="text" value="Alex Taylor">
+              </div>
+              <div class="form__group">
+                <label class="form__label" for="email">Email</label>
+                <input id="email" class="form__control" type="email" value="alex.taylor@northwind.com">
+              </div>
+              <div class="form__group">
+                <label class="form__label" for="phone">Phone</label>
+                <input id="phone" class="form__control" type="tel" value="+1 (555) 230-8890">
+              </div>
+            </div>
+            <div class="profile__actions">
+              <button class="btn btn--primary" type="button">Save changes</button>
+              <button class="btn btn--ghost" type="button">Cancel</button>
+            </div>
+          </section>
+
+          <section class="profile-card">
+            <div class="section__header">
+              <h3 style="margin:0;">Security</h3>
+              <a class="nav-link" href="password-update.html">Update password</a>
+            </div>
+            <div class="form">
+              <div class="form__group">
+                <label class="form__label">Two-factor authentication</label>
+                <p class="section__subtitle">Disabled</p>
+                <button class="btn btn--secondary" type="button">Enable 2FA</button>
+              </div>
+              <div class="form__group">
+                <label class="form__label">Devices</label>
+                <p class="section__subtitle">MacBook Pro · Chrome · Seattle, WA</p>
+                <button class="btn btn--ghost" type="button">View sessions</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="profile-card">
+            <div class="section__header">
+              <h3 style="margin:0;">Addresses</h3>
+              <a class="nav-link" href="dashboard.html">Manage</a>
+            </div>
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: var(--space-md);">
+              <div class="category-card">
+                <strong>Primary</strong>
+                <p class="section__subtitle">42 Market Street<br>Seattle, WA 98101</p>
+              </div>
+              <div class="category-card">
+                <strong>Office</strong>
+                <p class="section__subtitle">915 Pine St<br>Seattle, WA 98101</p>
+              </div>
+            </div>
+            <button class="btn btn--secondary" type="button">Add address</button>
+          </section>
+
+          <section class="profile-card">
+            <div class="section__header">
+              <h3 style="margin:0;">Order history</h3>
+              <a class="nav-link" href="dashboard.html">View all</a>
+            </div>
+            <div class="table-wrapper">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Order</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>#NW-4821</td>
+                    <td>Nov 15, 2025</td>
+                    <td><span class="badge">Shipped</span></td>
+                    <td>$355</td>
+                    <td><a class="nav-link" href="#">Invoice</a></td>
+                  </tr>
+                  <tr>
+                    <td>#NW-4759</td>
+                    <td>Oct 02, 2025</td>
+                    <td><span class="badge">Delivered</span></td>
+                    <td>$210</td>
+                    <td><a class="nav-link" href="#">Invoice</a></td>
+                  </tr>
+                  <tr>
+                    <td>#NW-4704</td>
+                    <td>Sep 10, 2025</td>
+                    <td><span class="badge">Delivered</span></td>
+                    <td>$620</td>
+                    <td><a class="nav-link" href="#">Invoice</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+{% endblock content %}

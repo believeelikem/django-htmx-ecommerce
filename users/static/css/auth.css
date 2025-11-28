@@ -1,0 +1,25 @@
+.auth {
+  display: grid;
+  gap: var(--space-lg);
+  max-width: 520px;
+  margin: var(--space-2xl) auto;
+}
+
+.auth-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  box-shadow: var(--shadow-soft);
+  display: grid;
+  gap: var(--space-md);
+}
+
+.auth__title {
+  margin: 0;
+}
+
+.auth__subtitle {
+  margin: 0;
+  color: var(--color-muted);
+}

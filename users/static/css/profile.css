@@ -1,0 +1,48 @@
+.profile {
+  display: grid;
+  gap: var(--space-xl);
+  max-width: 900px;
+  margin: var(--space-2xl) auto;
+}
+
+.profile__header {
+  display: flex;
+  gap: var(--space-md);
+  align-items: center;
+}
+
+.profile__avatar {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--color-border);
+  box-shadow: var(--shadow-soft);
+}
+
+.profile-grid {
+  display: grid;
+  gap: var(--space-lg);
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.profile-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-soft);
+  display: grid;
+  gap: var(--space-md);
+}
+
+.profile__actions {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+}
