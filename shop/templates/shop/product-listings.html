@@ -1,4 +1,6 @@
 {% extends 'shop/base.html' %}
+{% load static %}
+{% block extra_styles %} <link rel="stylesheet" href="{% static 'css/product-listings.css' %}"> {% endblock extra_styles %}
 {% block content %}
 
     <main class="container section">

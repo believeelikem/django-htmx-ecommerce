@@ -9,4 +9,4 @@ def cart(request):
     return render(request, "shop/cart.html")
 
 def products(request):
-    return render(request, "shop/product_listings.html")
+    return render(request, "shop/product-listings.html")
