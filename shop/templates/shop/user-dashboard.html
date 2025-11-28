@@ -1,0 +1,134 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+{% block extra_styles %} <link rel="stylesheet" href="{% static 'css/user-dashboard.css' %}"> {% endblock extra_styles %}
+{% block content %}
+    <main class="container section">
+      <div class="section__header">
+        <div>
+          <h1 class="section__title">Account dashboard</h1>
+          <p class="section__subtitle">Manage your orders, addresses, and profile preferences.</p>
+        </div>
+      </div>
+
+      <div class="dashboard">
+        <aside class="dashboard__sidebar">
+          <div class="nav-stack">
+            <a class="nav-stack a--active" href="#">Overview</a>
+            <a href="#">Orders</a>
+            <a href="#">Addresses</a>
+            <a href="#">Payment methods</a>
+            <a href="#">Preferences</a>
+          </div>
+          <div class="card" style="padding: var(--space-md);">
+            <strong>Support</strong>
+            <p class="section__subtitle">Need help? Contact concierge at help@northwind.com</p>
+          </div>
+        </aside>
+
+        <section class="dashboard__content">
+          <div class="stat-grid">
+            <article class="stat-card">
+              <span class="section__subtitle">Orders</span>
+              <strong style="font-size:1.4rem;">12</strong>
+              <span class="badge">In the last 12 months</span>
+            </article>
+            <article class="stat-card">
+              <span class="section__subtitle">Loyalty</span>
+              <strong style="font-size:1.4rem;">Gold</strong>
+              <span class="badge">4,200 points</span>
+            </article>
+            <article class="stat-card">
+              <span class="section__subtitle">Store credit</span>
+              <strong style="font-size:1.4rem;">$85</strong>
+              <span class="badge">Usable at checkout</span>
+            </article>
+          </div>
+
+          <div class="card" style="display: grid; gap: var(--space-md);">
+            <div class="section__header">
+              <h3 style="margin:0;">Recent orders</h3>
+              <a class="nav-link" href="#">View all</a>
+            </div>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Order</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>#NW-4821</td>
+                  <td>Nov 15, 2025</td>
+                  <td><span class="badge">Shipped</span></td>
+                  <td>$355</td>
+                </tr>
+                <tr>
+                  <td>#NW-4759</td>
+                  <td>Oct 02, 2025</td>
+                  <td><span class="badge">Delivered</span></td>
+                  <td>$210</td>
+                </tr>
+                <tr>
+                  <td>#NW-4704</td>
+                  <td>Sep 10, 2025</td>
+                  <td><span class="badge">Delivered</span></td>
+                  <td>$620</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card" style="display: grid; gap: var(--space-md);">
+            <div class="section__header">
+              <h3 style="margin:0;">Order detail</h3>
+              <a class="nav-link" href="#">Download invoice</a>
+            </div>
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: var(--space-md);">
+              <div class="product-card">
+                <div class="product-card__image">
+                  <img src="https://images.unsplash.com/photo-1475180098004-ca77a66827be?auto=format&fit=crop&w=600&q=80" alt="Duffel">
+                </div>
+                <h4 class="product-card__title">Weekender Duffel</h4>
+                <div class="product-card__meta">
+                  <span>Qty 1</span>
+                  <span>$210</span>
+                </div>
+              </div>
+              <div class="product-card">
+                <div class="product-card__image">
+                  <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=600&q=80" alt="Shirt">
+                </div>
+                <h4 class="product-card__title">Tailored Oxford Shirt</h4>
+                <div class="product-card__meta">
+                  <span>Qty 2</span>
+                  <span>$220</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="display:grid; gap: var(--space-md);">
+            <div class="section__header">
+              <h3 style="margin:0;">Address book</h3>
+              <a class="nav-link" href="#">Manage</a>
+            </div>
+            <div class="address-book">
+              <div class="category-card">
+                <strong>Primary</strong>
+                <p class="section__subtitle">Alex Taylor</p>
+                <p class="section__subtitle">42 Market Street<br>Seattle, WA 98101</p>
+              </div>
+              <div class="category-card">
+                <strong>Office</strong>
+                <p class="section__subtitle">River & Oak</p>
+                <p class="section__subtitle">915 Pine St<br>Seattle, WA 98101</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+{% endblock content %}
