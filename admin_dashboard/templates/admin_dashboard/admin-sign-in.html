@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Sign In - Northwind Commerce</title>
+  <link rel="stylesheet" href="{% static 'css/admin-base.css' %}">
+  <link rel="stylesheet" href="{% static 'css/admin-auth.css' %}">
+</head>
+<body>
+  <div class="auth-layout auth">
+    <div class="auth-card">
+      <p class="badge badge--neutral" style="width: fit-content;">Admin Panel</p>
+      <h1 class="auth__title">Sign in</h1>
+      <p class="auth__subtitle">Access operational controls and reporting.</p>
+      <div class="form">
+        <div class="form__group">
+          <label class="form__label" for="email">Email</label>
+          <input id="email" class="form__control" type="email" placeholder="admin@northwind.com">
+        </div>
+        <div class="form__group">
+          <label class="form__label" for="password">Password</label>
+          <input id="password" class="form__control" type="password" placeholder="********">
+        </div>
+        <div class="form__group" style="display:flex; align-items:center; gap: var(--space-sm);">
+          <input id="remember" type="checkbox">
+          <label for="remember">Remember me</label>
+        </div>
+        <button class="btn" type="button">Sign in</button>
+        <a class="nav-link" href="{% url 'admin-forgot-password' %}">Forgot password?</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

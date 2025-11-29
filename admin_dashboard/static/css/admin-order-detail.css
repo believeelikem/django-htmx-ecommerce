@@ -1,0 +1,31 @@
+.order-detail {
+  display: grid;
+  gap: var(--space-lg);
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  align-items: start;
+}
+
+.order-meta {
+  display: grid;
+  gap: var(--space-sm);
+}
+
+.timeline {
+  display: grid;
+  gap: var(--space-sm);
+}
+
+.timeline__item {
+  padding: var(--space-sm);
+  border: 1px solid var(--admin-border);
+  border-radius: var(--admin-radius-md);
+  background: #fff;
+}
+
+.items-table img {
+  width: 50px;
+  height: 50px;
+  border-radius: var(--admin-radius-sm);
+  object-fit: cover;
+  border: 1px solid var(--admin-border);
+}

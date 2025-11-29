@@ -1,0 +1,38 @@
+.form-grid {
+  display: grid;
+  gap: var(--space-lg);
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.form__group {
+  display: grid;
+  gap: var(--space-xs);
+}
+
+.form__label {
+  font-weight: 700;
+}
+
+.form__control {
+  border: 1px solid var(--admin-border);
+  border-radius: var(--admin-radius-md);
+  padding: 10px 12px;
+  background: #fff;
+}
+
+.textarea {
+  min-height: 120px;
+}
+
+.media-preview {
+  display: grid;
+  gap: var(--space-sm);
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+}
+
+.media-preview img {
+  width: 100%;
+  border-radius: var(--admin-radius-sm);
+  border: 1px solid var(--admin-border);
+  object-fit: cover;
+}

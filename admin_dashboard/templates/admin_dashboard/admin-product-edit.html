@@ -1,0 +1,81 @@
+{% extends 'admin_dashboard/admin-base.html' %}
+{% load static %}
+{% block extra_styles %}<link rel="stylesheet" href="{% static 'css/admin-product-edit.css' %}">{% endblock extra_styles %}
+
+{% block content %}
+  <header class="admin-topbar">
+    <div class="topbar__left">
+      <label for="sidebar-toggle" class="btn btn--ghost" aria-label="Toggle menu">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5h12M3 9h12M3 13h12"/></svg>
+      </label>
+      <strong>Edit Product</strong>
+      <span class="badge badge--neutral">Save changes</span>
+    </div>
+    <div class="topbar__right">
+      <a class="btn" href="{% url 'admin-products' %}">Back to Products</a>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="card">
+      <div class="form-grid">
+        <div class="form__group">
+          <label class="form__label" for="name">Product name</label>
+          <input id="name" class="form__control" type="text" value="Commuter Mac Coat">
+        </div>
+        <div class="form__group">
+          <label class="form__label" for="category">Category</label>
+          <select id="category" class="form__control">
+            <option>Outerwear</option>
+            <option>Bags</option>
+            <option>Footwear</option>
+          </select>
+        </div>
+        <div class="form__group">
+          <label class="form__label" for="tags">Tags</label>
+          <input id="tags" class="form__control" type="text" value="outerwear, travel, commuter">
+        </div>
+        <div class="form__group" style="display:flex; gap: var(--space-sm); align-items:center;">
+          <input id="is_digital" type="checkbox" checked>
+          <label for="is_digital">Is digital</label>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form__group">
+          <label class="form__label" for="quantity">Quantity</label>
+          <input id="quantity" class="form__control" type="number" value="12">
+        </div>
+        <div class="form__group">
+          <label class="form__label" for="size">Size</label>
+          <input id="size" class="form__control" type="text" value="S, M, L, XL">
+        </div>
+        <div class="form__group">
+          <label class="form__label" for="colors">Colors</label>
+          <input id="colors" class="form__control" type="text" value="Navy, Stone, Charcoal">
+        </div>
+        <div class="form__group">
+          <label class="form__label" for="price">Price</label>
+          <input id="price" class="form__control" type="text" value="$280">
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form__group" style="grid-column: 1 / -1;">
+          <label class="form__label" for="image-file">Upload image</label>
+          <input id="image-file" class="form__control" type="file">
+        </div>
+      </div>
+
+      <div class="form__group" style="grid-column: 1 / -1; margin-top: var(--space-lg);">
+        <label class="form__label" for="description">Description</label>
+        <textarea id="description" class="form__control textarea">Water-resistant mac coat with taped seams and removable liner.</textarea>
+      </div>
+
+      <div class="profile__actions" style="justify-content:flex-end;">
+        <button class="btn" type="button">Save Product</button>
+        <a class="btn btn--ghost" href="{% url 'admin-products' %}">Cancel</a>
+      </div>
+    </div>
+  </main>
+{% endblock content %}
