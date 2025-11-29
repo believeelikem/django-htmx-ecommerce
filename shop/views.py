@@ -2,8 +2,6 @@ import re
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from admin_dashboard.views import dashboard
-
 def shop(request):
     return render(request, "shop/index.html")
 

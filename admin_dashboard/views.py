@@ -1,5 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
-def dashboard(request):
-    return HttpResponse("Welcome to dashboard app")
+
+
+def admin_dashboard(request):
+    return render(request, "admin_dashboard/admin-dashboard.html")
+
+def admin_orders(request):
+    return render(request, "admin_dashboard/admin-orders.html")
+

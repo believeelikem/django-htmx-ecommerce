@@ -1,0 +1,33 @@
+.kpi-grid {
+  display: grid;
+  gap: var(--space-lg);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.kpi {
+  display: grid;
+  gap: var(--space-sm);
+}
+
+.kpi__value {
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.kpi__label {
+  color: var(--admin-muted);
+}
+
+.chart-placeholder {
+  height: 180px;
+  border: 1px dashed var(--admin-border);
+  border-radius: var(--admin-radius-md);
+  display: grid;
+  place-items: center;
+  color: var(--admin-muted);
+}
+
+.dashboard-stack {
+  display: grid;
+  gap: var(--space-xl);
+}
