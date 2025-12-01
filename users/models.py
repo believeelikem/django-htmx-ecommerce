@@ -9,7 +9,8 @@ def is_valid_phonenum(number):
         raise ValidationError("Invalid Number")
 
 class CustomUser(AbstractUser):
-    pass
+    def __str__(self):
+        return self.username
 
 class Profile(models.Model):
     user = models.OneToOneField(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

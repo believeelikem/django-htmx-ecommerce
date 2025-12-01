@@ -30,7 +30,7 @@
           <a class="nav-link" href="products.html">Browse all</a>
         </div>
         <div class="categories">
-          <a class="category-button" href="products.html">Work essentials</a>
+          <a class="category-button" href="{% url 'products' %}">Work essentials</a>
           <a class="category-button" href="products.html">Casual layers</a>
           <a class="category-button" href="products.html">Accessories</a>
           <a class="category-button" href="products.html">Home & lifestyle</a>
@@ -47,7 +47,7 @@
         </div>
         <div class="grid grid--four">
           <article class="card product-card">
-            <a class="product-card__link" href="product-detail.html">
+            <a class="product-card__link" href="{% url 'product-detail' %}">
               <div class="product-card__image">
                 <img src="https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?auto=format&fit=crop&w=800&q=80" alt="Structured blazer">
               </div>
