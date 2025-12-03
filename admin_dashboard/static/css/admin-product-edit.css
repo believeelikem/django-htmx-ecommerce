@@ -1,7 +1,7 @@
 .form-grid {
   display: grid;
   gap: var(--space-lg);
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
 }
 
 .form__group {
@@ -21,7 +21,8 @@
 }
 
 .textarea {
-  min-height: 120px;
+  min-height: 40px;
+  max-width: 440px;
 }
 
 .media-preview {

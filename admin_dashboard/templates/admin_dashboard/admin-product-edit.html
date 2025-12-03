@@ -61,21 +61,83 @@
       </div>
 
       <div class="form-grid">
-        <div class="form__group" style="grid-column: 1 / -1;">
+        <div class="form__group" >
           <label class="form__label" for="image-file">Upload image</label>
           <input id="image-file" class="form__control" type="file">
         </div>
+        <div class="form__group" margin-top: var(--space-lg);">
+          <label class="form__label" for="description">Description</label>
+          <textarea id="description" class="form__control textarea">Water-resistant mac coat with taped seams and removable liner.</textarea>
+        </div>
       </div>
 
-      <div class="form__group" style="grid-column: 1 / -1; margin-top: var(--space-lg);">
-        <label class="form__label" for="description">Description</label>
-        <textarea id="description" class="form__control textarea">Water-resistant mac coat with taped seams and removable liner.</textarea>
-      </div>
+
 
       <div class="profile__actions" style="justify-content:flex-end;">
-        <button class="btn" type="button">Save Product</button>
+        <button class="btn" type="button">Add to list</button>
         <a class="btn btn--ghost" href="{% url 'admin-products' %}">Cancel</a>
       </div>
+    </div>
+
+    <div style="margin-top: 20px;" class="card customers-table">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Size</th>
+            <th>color</th>
+            <th>quantity</th>
+            <th>unit price</th>
+            <th>total price</th>
+            <!-- <th>Actions</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="display:flex; gap: var(--space-sm); align-items:center;">
+              <img width="25px"  src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80" alt="Sofia">
+              Sofia Martens
+            </td>
+            <td>sofia.martens@northwind.com</td>
+            <td>Aug 09, 2024</td>
+            <td>$980</td>
+            <td>5</td>
+            <td>5</td>
+            <!-- <td class="table__actions">
+              <a class="nav-link" href="#">View</a>
+            </td> -->
+          </tr>
+          <tr>
+            <td style="display:flex; gap: var(--space-sm); align-items:center;">
+              <img width="25px"  src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80" alt="Sofia">
+              Sofia Martens
+            </td>
+            <td>sofia.martens@northwind.com</td>
+            <td>Aug 09, 2024</td>
+            <td>$980</td>
+            <td>5</td>
+            <td>5</td>
+            <!-- <td class="table__actions">
+              <a class="nav-link" href="#">View</a>
+            </td> -->
+          </tr>
+          <tr>
+            <td style="display:flex; gap: var(--space-sm); align-items:center;">
+              <button class="btn" type="button">Save all</button>
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+              
+
+            </td>
+            <!-- <td class="table__actions">
+            </td> -->
+          </tr>
+
+        </tbody>
+      </table>
     </div>
   </main>
 {% endblock content %}
