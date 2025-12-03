@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "shop",
     "users.apps.UsersConfig",
     "admin_dashboard",
+    "django_json_widget",
 ]
 
 MIDDLEWARE = [
