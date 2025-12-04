@@ -80,6 +80,12 @@ class Product(models.Model):
 class ProductImage(models.Model):
     photo = models.ImageField(null=True, blank=True, upload_to="products_images/")
     product = models.ForeignKey(to=Product, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return f"{self.get_photo_name()} belongs to {self.product}"
+    
+    def get_photo_name(self):
+        return self.photo.name.split("/")[1]
        
     
 class Order(models.Model):
