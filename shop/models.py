@@ -8,25 +8,29 @@ import re
 from users.models import is_valid_phonenum
 from django.utils.text import slugify
 
+
+def sluggy(model, obj, slug_field = "name"):
+    if not obj.slug:
+        field_value = getattr(obj, slug_field)
+        base_slug = slugify(field_value)
+        
+        current_slug = base_slug
+        current_suffix = 1
+        
+        while model.objects.filter(slug = current_slug).exists():
+            current_slug = f"{base_slug}-{current_suffix}"
+            current_suffix += 1
+        obj.slug = current_slug
+
 class Category(models.Model):
     slug = models.SlugField( null=True, blank=True, unique=True)
     name = models.CharField(max_length=150, null=True, blank=True)
     description = models.TextField(max_length=150, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
-    
-    
+      
     def save(self, *args, **kwargs):
-        if not self.slug:
-            
-            base_slug = slugify(self.name)
-            current_slug = base_slug
-            current_suffix = 1
-            
-            while Category.objects.filter(slug = current_slug).exists():
-                current_slug = f"{base_slug}-{current_suffix}"
-                current_suffix += 1
-            self.slug = current_slug    
+        sluggy(Category, self)
         return super().save(*args, **kwargs)
     
     def __str__(self):
@@ -35,8 +39,7 @@ class Category(models.Model):
     class Meta:
         verbose_name = "Category"
         verbose_name_plural = "Categories"
-        
-        
+             
     
 class Tag(models.Model):
     slug = models.SlugField(null=True, blank=True)
@@ -45,8 +48,15 @@ class Tag(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)    
     
+    def __str__(self):
+        return self.name
+    
+    def save(self, *args, **kwargs):
+        sluggy(Tag, self)
+        return super().save(*args, **kwargs)
+    
 class Product(models.Model):
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True, blank=True, null=True)
     name = models.CharField(blank=True, null=True)
     quantity = models.PositiveSmallIntegerField(blank=True, null=True)
     category = models.ManyToManyField(to=Category)
@@ -59,6 +69,18 @@ class Product(models.Model):
     )
     is_digital = models.BooleanField(default=False)
     details = models.JSONField(default=list)
+
+    def __str__(self):
+        return self.name
+    
+    def save(self, *args, **kwargs):
+        sluggy(Product, self)
+        return super().save(*args, **kwargs)
+   
+class ProductImage(models.Model):
+    photo = models.ImageField(null=True, blank=True, upload_to="products_images/")
+    product = models.ForeignKey(to=Product, on_delete=models.CASCADE)
+       
     
 class Order(models.Model):
     STATUS = {
@@ -74,6 +96,14 @@ class Order(models.Model):
     staus = models.CharField(choices=STATUS,blank=True, null=True)
     started_at = models.DateTimeField(auto_now_add=True)
     completed_at = models.DateTimeField(blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
+    
+    # def save(self, *args, **kwargs):
+    #     sluggy(Product, self, slug_field="name")
+    #     return super().save(*args, **kwargs)
     
 class OrderItem(models.Model):
     product = models.ForeignKey(to=Product,blank=True, null=True, on_delete=models.SET_NULL) 
@@ -97,6 +127,9 @@ class ShippingAddress(models.Model):
     owner = models.ForeignKey(to=settings.AUTH_USER_MODEL, blank=True, null=True, on_delete=models.SET_NULL)
     is_delivered = models.BooleanField(default=False)
     shipped_at = models.DateTimeField()
+    
+    class Meta:
+        verbose_name_plural = ("Shipping Adress")
     
 class Rating:
     pass

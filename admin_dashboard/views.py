@@ -10,6 +10,11 @@ def admin_dashboard(request):
 
 
 def admin_orders(request):
+    # if  request.htmx:
+    #     print("htmx request")
+    #     context = {"active_page": "orders"}
+    #     return render(request, "admin_dashboard/partials/admin-orders.html",context)
+    
     return render(
         request,
         "admin_dashboard/admin-orders.html",
