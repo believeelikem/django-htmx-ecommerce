@@ -1,3 +1,5 @@
+from multiprocessing import context
+from django.http import HttpResponse
 from django.shortcuts import render
 
 
@@ -32,6 +34,7 @@ def admin_order_detail(request):
     )
 
 
+# < -------   PRODUCTS    -------- >
 def admin_products(request):
     return render(
         request,
@@ -39,6 +42,16 @@ def admin_products(request):
         {"active_page": "products"},
     )
 
+from .utils import error_processor
+
+@error_processor
+def validate_product_error(request, error_message = ""):
+    context = {
+        "btn_is_valid":request.headers.get('HX-Request'),
+        "message":error_message
+    }
+    return render(request, "admin_dashboard/partials/product-add-errors.html", context)   
+    
 
 def admin_product_edit(request):
     return render(

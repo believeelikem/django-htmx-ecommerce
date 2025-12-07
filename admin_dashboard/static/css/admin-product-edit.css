@@ -6,7 +6,18 @@
 
 .form__group {
   display: grid;
-  gap: var(--space-xs);
+  /* gap: var(--space-xs); */
+  position: relative;
+  margin-bottom: .6rem;
+
+}
+
+small{
+  position: absolute;
+  top: 98%;
+  font-size: .6rem;
+  display: inline-block;
+  text-align: center;
 }
 
 .form__label {
