@@ -45,13 +45,15 @@ def admin_products(request):
 from .utils import error_processor
 
 @error_processor
-def validate_product_error(request, error_message = ""):
+def validate_product_error(request, error_message = "", css_class = ""):
+    
     context = {
         "btn_is_valid":request.headers.get('HX-Request'),
-        "message":error_message
+        "message":error_message,
+        "class":css_class
     }
     return render(request, "admin_dashboard/partials/product-add-errors.html", context)   
-    
+   
 
 def admin_product_edit(request):
     return render(

@@ -12,35 +12,43 @@ def error_processor(view_func):
     def inner(request):
         if "product_name" in request.GET:
             error_message = validate_product_name(request.GET["product_name"])
+            css_class = "name"
         
         elif "category_name" in request.GET:
             error_message = validate_category_name(request.GET["category_name"])
+            css_class = "category"
             
         elif "tag_name" in request.GET:
             error_message = validate_tag_name(request.GET["tag_name"])
+            css_class = "tag"
             
         elif "quantity" in request.GET:
             error_message = validate_quantity(request.GET["quanrtity"])
+            css_class = "quantity"
             
         elif "size" in request.GET:
             error_message = validate_size(request.GET["size"])
+            css_class = "size"
             
         elif "color" in request.GET:
             error_message = validate_tag_name(request.GET["color"])
             
         elif "price" in request.GET:
             error_message = validate_tag_name(request.GET["price"])
+            css_class = "price"
             
         elif "product_image" in request.GET:
             error_message = validate_tag_name(request.GET["product_image"])
+            css_class = "image"
             
         elif "description" in request.GET:
             error_message = validate_tag_name(request.GET["description"])
+            css_class = "description"
          
         else:
             error_message = "Unknown error"
             
-        return view_func(request, error_message = error_message)   
+        return view_func(request, error_message = error_message, css_class = css_class)   
             
     return inner
 
@@ -50,11 +58,12 @@ def validate_product_name(product_name):
     
     if not product_name:
         error = "name cannot be empty"
-        
-    if re.search(r"\W+", product_name):
+            
+    elif re.search(r"^\s+", product_name):
+        error = "name cannot contain spaces"           
+    elif re.search(r"\W+", product_name):
         error  = "name cannot contain non word char"
-        
-    if len(product_name) < 3:
+    elif len(product_name) < 3:
         error = "name cannot be less than 3 chars"
         
 
@@ -70,13 +79,12 @@ def validate_tag_name(tag_name):
     
     if not tag_name:
         error = "name cannot be empty"
-        
-    if re.search(r"\S+", tag_name):
-        error = "quantity cannot contain spaces"
        
     if re.search(r"\W+", tag_name):
         error = "name cannot contain non word char"
-        
+
+    if re.search(r"\S+", tag_name):
+        error = "tag cannot contain spaces"      
     return error
     
 def validate_quantity(quantity):

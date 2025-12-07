@@ -26,12 +26,15 @@
           <input 
           hx-get="{% url 'validate-product-error' %}"
           hx-trigger="keyup changed delay:300ms"
-          hx-target=".product-errors"
+          hx-target=".product-errors-name"
           hx-swap="outerHTML"
           id="product_name" placeholder="enter product name" name="product_name" class="form__control" type="text" value="">
-          {% include 'admin_dashboard/partials/product-add-errors.html' %}
+          <small style="color: red;" class="product-errors-name">
+          </small>        
         </div>
+        
 
+        <!-------   PRODUCT CATEGORY   ------->
         <div class="form__group">
           <label class="form__label" for="category">Category</label>
           <select 
@@ -44,93 +47,112 @@
             <option>Bags</option>
             <option>Footwear</option>
           </select>
-          {% include 'admin_dashboard/partials/product-add-errors.html' %}
+          <small style="color: red;" class="product-errors-category">
+          </small>
         </div>
 
+        <!-------   PRODUCT TAG   ------->
         <div class="form__group">
           <label class="form__label" for="tags">Tags</label>
           <input 
           hx-get="{% url 'validate-product-error' %}"
           hx-trigger="keyup changed delay:300ms"
-          hx-target=".product-errors"
+          hx-target=".product-errors-tag"
           hx-swap="outerHTML"
           name="tag_name" id="tags" class="form__control" type="text" value="">
-          {% include 'admin_dashboard/partials/product-add-errors.html' %}
+          <small style="color: red;" class="product-errors-tag">
+          </small>
         </div>
+
+        <!-------   PRODUCT IS-DIGITAL   ------->
         <div class="form__group" style="display:flex; gap: var(--space-sm); align-items:center;">
           <input name="is_digital" id="is_digital" type="checkbox" checked>
           <label for="is_digital">Is digital</label>
         </div>
         
       </div>
-
+      
+      <!-------   PRODUCT QUANTITY   ------->
       <div class="form-grid">
         <div class="form__group">
           <label class="form__label" for="quantity">Quantity</label>
           <input
           hx-get="{% url 'validate-product-error' %}"
           hx-trigger="keyup changed delay:300ms"
-          hx-target=".product-errors"
+          hx-target=".product-errors-quantity"
           hx-swap="outerHTML"          
           name="quantity" id="quantity" class="form__control" type="number" value="">
-          {% include 'admin_dashboard/partials/product-add-errors.html' %}
+          <small style="color: red;" class="product-errors-quantity">
+          </small>        
         </div>
+
+
+        <!-------   PRODUCT SIZE   ------->
         <div class="form__group">
           <label class="form__label" for="size">Size</label>
           <input 
           hx-get="{% url 'validate-product-error' %}"
           hx-trigger="keyup changed delay:300ms"
-          hx-target=".product-errors"
+          hx-target=".product-errors-size"
           hx-swap="outerHTML"         
           name="size" id="size" class="form__control" type="text" value="">
-          {% include 'admin_dashboard/partials/product-add-errors.html' %}
+          <small style="color: red;" class="product-errors-size">
+          </small>
         </div>
+
+        <!-------   PRODUCT COLOR   ------->
         <div class="form__group">
           <label class="form__label" for="colors">Colors</label>
           <input
           hx-get="{% url 'validate-product-error' %}"
           hx-trigger="keyup changed delay:300ms"
-          hx-target=".product-errors"
+          hx-target=".product-errors-color"
           hx-swap="outerHTML"
           name="color" id="colors" class="form__control" type="text" value="">
-          {% include 'admin_dashboard/partials/product-add-errors.html' %}
-
+          <small style="color: red;" class="product-errors-color">
+          </small>
         </div>
+
+        <!-------   PRODUCT PRICE  ------->
         <div class="form__group">
           <label class="form__label" for="price">Price</label>
           <input
           hx-get="{% url 'validate-product-error' %}"
           hx-trigger="keyup changed delay:300ms"
-          hx-target=".product-errors"
+          hx-target=".product-errors-price"
           hx-swap="outerHTML"
           name="price" id="price" class="form__control" type="text" value="$280">
-          {% include 'admin_dashboard/partials/product-add-errors.html' %}
-
+          <small style="color: red;" class="product-errors-price">
+          </small>
         </div>
       </div>
 
+      <!-------   PRODUCT IMAGE   ------->
       <div class="form-grid">
         <div class="form__group" >
           <label class="form__label" for="image-file">Upload image</label>
           <input 
           hx-get="{% url 'validate-product-error' %}"
           hx-trigger="keyup changed delay:300ms"
-          hx-target=".product-errors"
+          hx-target=".product-errors-image"
           hx-swap="outerHTML"
           name="product_image" id="image-file" class="form__control" type="file">
-          {% include 'admin_dashboard/partials/product-add-errors.html' %}
+          <small style="color: red;" class="product-errors-image">
+          </small>
 
         </div>
+
+        <!-------   PRODUCT DESCRIPTION    ------->
         <div class="form__group" margin-top: var(--space-lg);">
           <label class="form__label" for="description">Description</label>
           <textarea
           hx-get="{% url 'validate-product-error' %}"
           hx-trigger="keyup changed delay:300ms"
-          hx-target=".product-errors"
+          hx-target=".product-errors-description"
           hx-swap="outerHTML"
           name="description" id="description" class="form__control textarea">Water-resistant mac coat with taped seams and removable liner.</textarea>
-          {% include 'admin_dashboard/partials/product-add-errors.html' %}
-          </div>
+          <small style="color: red;" class="product-errors-description">
+          </small>          </div>
       </div>
 
       <div class="profile__actions" style="justify-content:flex-end;">
