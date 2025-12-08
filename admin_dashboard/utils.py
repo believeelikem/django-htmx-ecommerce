@@ -11,6 +11,8 @@ def validate():
 
 def error_processor(view_func):
     def inner(request):
+        error_message = ""
+        css_class = ""
         if request.method == "GET":
             if "product_name" in request.GET:
                 error_message = validate_product_name(request.GET["product_name"])
@@ -54,6 +56,7 @@ def error_processor(view_func):
                 error_message = validate_product_image(request.FILES["product_image"])
                 css_class = "image"
             
+                
         return view_func(request, error_message = error_message, css_class = css_class)   
             
     return inner
@@ -88,7 +91,7 @@ def validate_tag_name(tag_name):
     if re.search(r"\W+", tag_name):
         error = "name cannot contain non word char"
 
-    if re.search(r"\S+", tag_name):
+    if re.search(r"\s+", tag_name):
         error = "tag cannot contain spaces"      
     return error
     
@@ -181,10 +184,9 @@ def is_valid_image_extension(name):
 
 def validate_description(description):
     error = ""
-    if not description:
+    if not description or description.strip() == "":
         error =  "description cannot be empty"
 
-    
     return error
 
 

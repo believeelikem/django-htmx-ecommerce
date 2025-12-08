@@ -42,9 +42,8 @@ def admin_products(request):
     )
 
 
-
 @error_processor
-def validate_product_error(request, error_message = "", css_class = ""):
+def validate_product_add_error(request, error_message = "", css_class = ""):
     
     context = {
         "btn_is_valid":request.headers.get('HX-Request'),
