@@ -183,9 +183,7 @@ def validate_description(description):
     error = ""
     if not description:
         error =  "description cannot be empty"
-        
-    if re.search(r"\W+", description):
-        error = "description cannot contain non word char"
+
     
     return error
 

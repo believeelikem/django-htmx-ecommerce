@@ -18,7 +18,7 @@
   </header>
 
   <main class="section">
-    <form class="card" method="">
+    <form class="card" method="" >
       <div class="form-grid">
         <div class="form__group">
           <!-------   PRODUCT NAME    ------->
@@ -28,6 +28,7 @@
           hx-trigger="keyup changed delay:300ms"
           hx-target=".product-errors-name"
           hx-swap="outerHTML"
+          required
           id="product_name" placeholder="enter product name" name="product_name" class="form__control" type="text" value="">
           <small style="color: red;" class="product-errors-name">
           </small>        
@@ -42,7 +43,9 @@
           hx-trigger="keyup changed delay:300ms"
           hx-target=".product-errors"
           hx-swap="outerHTML"
+          required
           id="category" class="form__control" name="category_name">
+            <option value=""> Choose category</option>
             <option>Outerwear</option>
             <option>Bags</option>
             <option>Footwear</option>
@@ -59,7 +62,8 @@
           hx-trigger="keyup changed delay:300ms"
           hx-target=".product-errors-tag"
           hx-swap="outerHTML"
-          name="tag_name" id="tags" class="form__control" type="text" value="">
+          required
+          name="tag_name" placeholder="enter tags" id="tags" class="form__control" type="text" value="">
           <small style="color: red;" class="product-errors-tag">
           </small>
         </div>
@@ -67,7 +71,7 @@
         <!-------   PRODUCT IS-DIGITAL   ------->
         <div class="form__group" style="display:flex; gap: var(--space-sm); align-items:center;">
           <input name="is_digital" id="is_digital" type="checkbox" checked>
-          <label for="is_digital">Is digital</label>
+          <label for="is_digital">Is digital(wont' be shipped)</label>
         </div>
         
       </div>
@@ -80,8 +84,9 @@
           hx-get="{% url 'validate-product-error' %}"
           hx-trigger="keyup changed delay:300ms"
           hx-target=".product-errors-quantity"
-          hx-swap="outerHTML"          
-          name="quantity" id="quantity" class="form__control" type="text" pattern="[0-9]+" value="" >
+          hx-swap="outerHTML"   
+          required       
+          name="quantity" placeholder="enter product quantity" id="quantity" class="form__control" type="text" pattern="[0-9]+" value="" >
           <small style="color: red;" class="product-errors-quantity">
           </small>        
         </div>
@@ -94,8 +99,9 @@
           hx-get="{% url 'validate-product-error' %}"
           hx-trigger="keyup changed delay:300ms"
           hx-target=".product-errors-size"
-          hx-swap="outerHTML"         
-          name="size" id="size" class="form__control" type="text" value="">
+          hx-swap="outerHTML"  
+          required       
+          name="size" id="size" placeholder="enter product size" class="form__control" type="text" value="">
           <small style="color: red;" class="product-errors-size">
           </small>
         </div>
@@ -108,7 +114,8 @@
           hx-trigger="keyup changed delay:300ms"
           hx-target=".product-errors-color"
           hx-swap="outerHTML"
-          name="color" id="colors" class="form__control" type="text" value="">
+          required
+          name="color" placeholder="enter product color" id="colors" class="form__control" type="text" value="">
           <small style="color: red;" class="product-errors-color">
           </small>
         </div>
@@ -121,7 +128,8 @@
           hx-trigger="keyup changed delay:300ms"
           hx-target=".product-errors-price"
           hx-swap="outerHTML"
-          name="price" id="price" class="form__control" type="text" value="">
+          required
+          name="price" placeholder="enter product price" id="price" class="form__control" type="text" value="">
           <small style="color: red;" class="product-errors-price">
           </small>
         </div>
@@ -137,7 +145,8 @@
           hx-target=".product-errors-image"
           hx-encoding="multipart/form-data"
           hx-swap="outerHTML"
-          name="product_image" id="image-file" class="form__control" type="file">
+          required
+          name="product_image"  id="image-file" class="form__control" type="file">
           <small style="color: red;" class="product-errors-image">
           </small>
 
@@ -151,13 +160,14 @@
           hx-trigger="keyup changed delay:300ms"
           hx-target=".product-errors-description"
           hx-swap="outerHTML"
-          name="description" id="description" class="form__control textarea">Water-resistant mac coat with taped seams and removable liner.</textarea>
+          required
+          name="description" placeholder="enter product description" id="description" class="form__control textarea"></textarea>
           <small style="color: red;" class="product-errors-description">
           </small>          </div>
       </div>
 
       <div class="profile__actions" style="justify-content:flex-end;">
-        <button id="add-btn-1" style="opacity:0.5; transition: all 1s ease;" class="btn" type="button">Add to list</button>
+        <button id="add-btn-1" style="opacity:0.5; transition: all 1s ease;" class="btn" type="submit">Add to list</button>
         <!-- <a class="btn btn--ghost" href="{% url 'admin-products' %}">Cancel</a> -->
       </div>
     </form>
