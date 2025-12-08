@@ -1,7 +1,6 @@
-from multiprocessing import context
 from django.http import HttpResponse
 from django.shortcuts import render
-
+from .utils import error_processor
 
 
 
@@ -42,7 +41,7 @@ def admin_products(request):
         {"active_page": "products"},
     )
 
-from .utils import error_processor
+
 
 @error_processor
 def validate_product_error(request, error_message = "", css_class = ""):

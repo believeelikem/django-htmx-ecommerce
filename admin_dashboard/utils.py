@@ -11,44 +11,48 @@ def validate():
 
 def error_processor(view_func):
     def inner(request):
-        if "product_name" in request.GET:
-            error_message = validate_product_name(request.GET["product_name"])
-            css_class = "name"
-        
-        elif "category_name" in request.GET:
-            error_message = validate_category_name(request.GET["category_name"])
-            css_class = "category"
+        if request.method == "GET":
+            if "product_name" in request.GET:
+                error_message = validate_product_name(request.GET["product_name"])
+                css_class = "name"
             
-        elif "tag_name" in request.GET:
-            error_message = validate_tag_name(request.GET["tag_name"])
-            css_class = "tag"
+            elif "category_name" in request.GET:
+                error_message = validate_category_name(request.GET["category_name"])
+                css_class = "category"
+                
+            elif "tag_name" in request.GET:
+                error_message = validate_tag_name(request.GET["tag_name"])
+                css_class = "tag"
+                
+            elif "quantity" in request.GET:
+                error_message = validate_quantity(request.GET["quantity"])
+                css_class = "quantity"
+                
+            elif "size" in request.GET:
+                error_message = validate_size(request.GET["size"])
+                css_class = "size"
+                
+            elif "color" in request.GET:
+                error_message = validate_color(request.GET["color"])
+                css_class = "color"
+                
+            elif "price" in request.GET:
+                error_message = validate_price(request.GET["price"])
+                css_class = "price"
             
-        elif "quantity" in request.GET:
-            error_message = validate_quantity(request.GET["quantity"])
-            css_class = "quantity"
+                
+            elif "description" in request.GET:
+                error_message = validate_description(request.GET["description"])
+                css_class = "description"
             
-        elif "size" in request.GET:
-            error_message = validate_size(request.GET["size"])
-            css_class = "size"
-            
-        elif "color" in request.GET:
-            error_message = validate_color(request.GET["color"])
-            css_class = "color"
-            
-        elif "price" in request.GET:
-            error_message = validate_price(request.GET["price"])
-            css_class = "price"
-            
-        elif "product_image" in request.GET:
-            error_message = validate_product_image(request.GET["product_image"])
-            css_class = "image"
-            
-        elif "description" in request.GET:
-            error_message = validate_description(request.GET["description"])
-            css_class = "description"
-         
-        else:
-            error_message = "Unknown error"
+            else:
+                error_message = "Unknown error"
+        elif request.method == "POST":
+            print("product_image in request.FILES = ","product_image" in request.FILES)
+            if "product_image" in request.FILES:
+                print(f"File attr is {request.FILES}")
+                error_message = validate_product_image(request.FILES["product_image"])
+                css_class = "image"
             
         return view_func(request, error_message = error_message, css_class = css_class)   
             
@@ -155,14 +159,25 @@ def validate_price(price):
     
     elif not price.strip().isdigit():
         error = "price must be a postive number"
-        
+       
     # elif int(price) <= 0 :
     #     error = "size cannot be negative"
     
     return error
 
-def validate_product_image(request):
-    return "Invalid also"
+def validate_product_image(image_object):
+    error = ""
+    if len(image_object.name.split('.')[0]) > 25:
+        print(image_object.name.split('.')[0])
+        error = "image name too long"
+    elif not is_valid_image_extension(image_object.name):
+        error = f".{image_object.name.split('.')[1]} is invalid, choose .jpg,.jpeg,.png"
+    return error
+
+def is_valid_image_extension(name):
+    if name.endswith((".jpeg", ".png",".jpg")):
+        return True
+    return False
 
 def validate_description(description):
     error = ""
