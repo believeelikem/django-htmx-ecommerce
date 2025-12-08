@@ -121,7 +121,7 @@
           hx-trigger="keyup changed delay:300ms"
           hx-target=".product-errors-price"
           hx-swap="outerHTML"
-          name="price" id="price" class="form__control" type="text" value="$280">
+          name="price" id="price" class="form__control" type="text" value="">
           <small style="color: red;" class="product-errors-price">
           </small>
         </div>
@@ -132,7 +132,7 @@
         <div class="form__group" >
           <label class="form__label" for="image-file">Upload image</label>
           <input 
-          hx-get="{% url 'validate-product-error' %}"
+          hx-post="{% url 'validate-product-error' %}"
           hx-trigger="change"
           hx-target=".product-errors-image"
           hx-encoding="multipart/form-data"
