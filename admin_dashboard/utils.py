@@ -1,5 +1,6 @@
 from itertools import product
 import re
+from turtle import st
 
 from django.test import tag
 from .colors import colors
@@ -23,7 +24,7 @@ def error_processor(view_func):
             css_class = "tag"
             
         elif "quantity" in request.GET:
-            error_message = validate_quantity(request.GET["quanrtity"])
+            error_message = validate_quantity(request.GET["quantity"])
             css_class = "quantity"
             
         elif "size" in request.GET:
@@ -31,18 +32,19 @@ def error_processor(view_func):
             css_class = "size"
             
         elif "color" in request.GET:
-            error_message = validate_tag_name(request.GET["color"])
+            error_message = validate_color(request.GET["color"])
+            css_class = "color"
             
         elif "price" in request.GET:
-            error_message = validate_tag_name(request.GET["price"])
+            error_message = validate_price(request.GET["price"])
             css_class = "price"
             
         elif "product_image" in request.GET:
-            error_message = validate_tag_name(request.GET["product_image"])
+            error_message = validate_product_image(request.GET["product_image"])
             css_class = "image"
             
         elif "description" in request.GET:
-            error_message = validate_tag_name(request.GET["description"])
+            error_message = validate_description(request.GET["description"])
             css_class = "description"
          
         else:
@@ -67,7 +69,6 @@ def validate_product_name(product_name):
         error = "name cannot be less than 3 chars"
         
 
-    
     return error
 
 def validate_category_name(request):
@@ -88,47 +89,58 @@ def validate_tag_name(tag_name):
     return error
     
 def validate_quantity(quantity):
-    
+    print("From utils:", quantity)
     error = ""
-    if not quantity:
-        error =  "quantity cannot be empty"
-        
-    if re.search(r"\S+", quantity):
+    
+    print("quantity is None",quantity is None)
+    print('quantity.strip() == ""',quantity.strip() == "")
+    print('bool(re.search(r"\s+", quantity))',bool(re.search(r"\s+", quantity)))
+    print('quantity.isdigit()',not quantity.isdigit())
+    # print('int(quantity) <= 0',int(quantity) <= 0)
+
+    if quantity is None or quantity.strip() == "":
+        error = "quantity cannot be empty"
+    
+    elif re.search(r"^\s+", quantity):
         error = "quantity cannot contain spaces"
     
-    if not quantity.isdigit():
-        error = "quantity must be an integer"
-        
-    if int(quantity) <= 0 :
-        error = "size cannot be negative"
+    elif not quantity.strip().isdigit():
+        error = "quantity must be a positive integer"
     
+    elif int(quantity) <= 0:
+        error =  "quantity must be greater than zero"
+        
     return error
-
+    
+    
+import string
 def validate_size(size):
     error = ""
     if not size:
         error =  "size cannot be empty"
         
-    if re.search(r"\S+", size):
+    elif re.search(r"^\s+", size):
         error = "size cannot contain spaces"
         
-    if re.search(r"\W+", size):
+    elif re.search(f"[^\\w\\s]", size):
         error = "size cannot contain non word char"
     
     return error
 
+
 def validate_color(color):
     error = ""
+    
     if not color:
         error =  "color cannot be empty"
         
-    if re.search(r"\S+", color):
+    elif re.search(r"\s+", color):
         error = "color cannot contain spaces"
  
-    if re.search(r"\W+", color):
+    elif re.search(r"\W+", color):
         error = "color cannot contain non word char"       
     
-    if not (color.lower() in colors):
+    elif not (color.lower() in colors):
         error = "Invalid color"
     
     return error
@@ -138,14 +150,14 @@ def validate_price(price):
     if not price:
         error =  "price cannot be empty"
         
-    if re.search(r"\S+", price):
+    elif re.search(r"\s+", price):
         error = "price cannot contain spaces"
     
-    if not price.isdigit():
-        error = "price must be a number"
+    elif not price.strip().isdigit():
+        error = "price must be a postive number"
         
-    if int(price) <= 0 :
-        error = "size cannot be negative"
+    # elif int(price) <= 0 :
+    #     error = "size cannot be negative"
     
     return error
 
@@ -161,3 +173,11 @@ def validate_description(description):
         error = "description cannot contain non word char"
     
     return error
+
+
+def is_string_integer(s):
+    try:
+        int(s)
+        return True
+    except ValueError:
+        return False

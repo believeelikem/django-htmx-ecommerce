@@ -81,7 +81,7 @@
           hx-trigger="keyup changed delay:300ms"
           hx-target=".product-errors-quantity"
           hx-swap="outerHTML"          
-          name="quantity" id="quantity" class="form__control" type="number" value="">
+          name="quantity" id="quantity" class="form__control" type="text" pattern="[0-9]+" value="" >
           <small style="color: red;" class="product-errors-quantity">
           </small>        
         </div>
@@ -133,8 +133,9 @@
           <label class="form__label" for="image-file">Upload image</label>
           <input 
           hx-get="{% url 'validate-product-error' %}"
-          hx-trigger="keyup changed delay:300ms"
+          hx-trigger="change"
           hx-target=".product-errors-image"
+          hx-encoding="multipart/form-data"
           hx-swap="outerHTML"
           name="product_image" id="image-file" class="form__control" type="file">
           <small style="color: red;" class="product-errors-image">
