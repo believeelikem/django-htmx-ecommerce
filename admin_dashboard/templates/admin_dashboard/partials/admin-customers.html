@@ -186,4 +186,6 @@
       </table>
     </div>
   </main>
+{% if request.htmx %}
   {% include 'admin_dashboard/partials/nav.html' %}
+{% endif %}
