@@ -18,7 +18,12 @@
   </header>
 
   <main class="section">
-    <form class="card" method="" >
+    <form class="card" method=""
+      enctype="multipart/form-data"
+      hx-post="{% url 'create-product' %}"
+      hx-trigger="submit"
+      hx-target=".customers-table"
+      >
       <div class="form-grid">
         <div class="form__group">
           <!-------   PRODUCT NAME    ------->
@@ -34,7 +39,6 @@
           </small>        
         </div>
         
-
         <!-------   PRODUCT CATEGORY   ------->
         <div class="form__group">
           <label class="form__label" for="category">Category</label>
@@ -45,10 +49,10 @@
           hx-swap="outerHTML"
           required
           id="category" class="form__control" name="category_name">
-            <option value=""> Choose category</option>
-            <option>Outerwear</option>
-            <option>Bags</option>
-            <option>Footwear</option>
+            <option value="">Select Category </option>
+            {% for category in categories %}
+            <option value="{{category.slug}}"> {{category.name}}</option>
+            {% endfor %}
           </select>
           <small style="color: red;" class="product-errors-category">
           </small>
@@ -167,68 +171,13 @@
       </div>
 
       <div class="profile__actions" style="justify-content:flex-end;">
-        <button id="add-btn-1" style=" transition: all .5s ease;" class="btn" type="submit">Add to list</button>
+        <button id="add-btn-1" style=" transform:scale(1.1); transition: all .5s ease;" class="btn" type="submit">Add to list</button>
         <!-- <a class="btn btn--ghost" href="{% url 'admin-products' %}">Cancel</a> -->
       </div>
     </form>
 
     <div style="margin-top: 20px;" class="card customers-table">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Image</th>
-            <th>Size</th>
-            <th>color</th>
-            <th>quantity</th>
-            <th>unit price</th>
-            <th>total price</th>
-            <!-- <th>Actions</th> -->
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="display:flex; gap: var(--space-sm); align-items:center;">
-              <img width="25px"  src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80" alt="Sofia">
-              Sofia Martens
-            </td>
-            <td>sofia.martens@northwind.com</td>
-            <td>Aug 09, 2024</td>
-            <td>$980</td>
-            <td>5</td>
-            <td>5</td>
-            <!-- <td class="table__actions">
-              <a class="nav-link" href="#">View</a>
-            </td> -->
-          </tr>
-          <tr>
-            <td style="display:flex; gap: var(--space-sm); align-items:center;">
-              <img width="25px"  src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80" alt="Sofia">
-              Sofia Martens
-            </td>
-            <td>sofia.martens@northwind.com</td>
-            <td>Aug 09, 2024</td>
-            <td>$980</td>
-            <td>5</td>
-            <td>5</td>
-            <!-- <td class="table__actions">
-              <a class="nav-link" href="#">View</a>
-            </td> -->
-          </tr>
-          <tr>
-            <td style="display:flex; gap: var(--space-sm); align-items:center;">
-              <button class="btn" type="button">Save all</button>
-            </td>
-            <td><button style="background-color:brown;" class="btn" type="button">Clear All</button></td>
-            <td></td>
-            <td> </td>
-            <td> Total price:</td>
-            <td> $10,000.00</td>
-            <!-- <td class="table__actions">
-            </td> -->
-          </tr>
-
-        </tbody>
-      </table>
+      {% include "admin_dashboard/partials/product-lists.html" %}
     </div>
   </main>
 {% endblock content %}

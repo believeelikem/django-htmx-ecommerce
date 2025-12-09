@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from .utils import error_processor
+from shop.models import  Product, ProductImage, Category
 
 
 
@@ -13,6 +14,8 @@ def admin_dashboard(request):
 
 
 def admin_orders(request):
+    print(request.headers.get("HX-Target"))
+
     # if  request.htmx:
     #     print("htmx request")
     #     context = {"active_page": "orders"}
@@ -44,6 +47,7 @@ def admin_products(request):
 
 @error_processor
 def validate_product_add_error(request, error_message = "", css_class = ""):
+    print(request.headers.get("HX-Target"))
     
     context = {
         "btn_is_valid":request.headers.get('HX-Request'),
@@ -52,13 +56,20 @@ def validate_product_add_error(request, error_message = "", css_class = ""):
     }
     return render(request, "admin_dashboard/partials/product-add-errors.html", context)   
    
-
-def admin_product_edit(request):
-    return render(
-        request,
-        "admin_dashboard/admin-product-edit.html",
-        {"active_page": "product-edit"},
-    )
+def create_product(request):
+    if request.method == "POST":
+        print(request.POST)
+           
+def admin_product_add(request):
+    print(request.headers.get("HX-Target"))
+    
+    categories = Category.objects.all()
+    
+    context = {
+        "active_page": "product-edit",
+        "categories":categories,
+    }
+    return render(request,"admin_dashboard/admin-product-edit.html", context)
 
 
 def admin_customers(request):

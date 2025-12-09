@@ -6,7 +6,7 @@ urlpatterns = [
     path("orders/", views.admin_orders, name="admin-orders"),
     path("orders/detail/", views.admin_order_detail, name="admin-order-detail"),
     path("products/", views.admin_products, name="admin-products"),
-    path("products/add/", views.admin_product_edit, name="admin-product-edit"),
+    path("products/add/", views.admin_product_add, name="admin-product-add"),
     path("customers/", views.admin_customers, name="admin-customers"),
     path("settings/", views.admin_settings, name="admin-settings"),
     path("sign-in/", views.admin_sign_in, name="admin-sign-in"),
@@ -15,7 +15,8 @@ urlpatterns = [
 
 
 htmx_patterns = [
-    path("validate/", views.validate_product_add_error, name="validate-product-error")
+    path("validate/", views.validate_product_add_error, name="validate-product-error"),
+    path("create-product/", views.create_product, name = "create-product")
 ]
 
 urlpatterns += htmx_patterns
