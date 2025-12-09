@@ -163,4 +163,6 @@
   </div>
 </main>
 
-{% include 'admin_dashboard/partials/nav.html'%}
+{% if request.htmx %}
+  {% include 'admin_dashboard/partials/nav.html'%}
+{% endif %}

@@ -6,6 +6,10 @@ from shop.models import  Product, ProductImage, Category
 
 
 def admin_dashboard(request):
+    if  request.htmx:
+        context = {"active_page": "dashboard"}
+        return render(request, "admin_dashboard/partials/admin-dashboard.html",context)
+
     return render(
         request,
         "admin_dashboard/admin-dashboard.html",
