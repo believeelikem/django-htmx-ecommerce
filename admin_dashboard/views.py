@@ -71,7 +71,10 @@ def admin_product_add(request):
 
 
 def admin_customers(request):
-    
+    if  request.htmx:
+        context = {"active_page": "customers"}
+        return render(request, "admin_dashboard/partials/admin-customers.html",context)
+       
     return render(
         request,
         "admin_dashboard/admin-customers.html",
