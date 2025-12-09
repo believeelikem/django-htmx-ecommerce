@@ -1,4 +1,5 @@
-  <link rel="stylesheet" href="{% static 'css/admin-products.css' %}">
+ {% load static %}
+ <link rel="stylesheet" href="{% static 'css/admin-products.css' %}">
   <header class="admin-topbar">
     <div class="topbar__left">
       <label for="sidebar-toggle" class="btn btn--ghost" aria-label="Toggle menu">
@@ -137,3 +138,7 @@
       </table>
     </div>
   </main>
+
+{% if request.htmx %}
+  {% include 'admin_dashboard/partials/nav.html'%}
+{% endif %}

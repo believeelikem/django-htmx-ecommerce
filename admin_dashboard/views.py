@@ -40,6 +40,10 @@ def admin_order_detail(request):
 
 # < -------   PRODUCTS    -------- >
 def admin_products(request):
+    if  request.htmx:
+        context = {"active_page": "products"}
+        return render(request, "admin_dashboard/partials/admin-products.html",context)
+    
     return render(
         request,
         "admin_dashboard/admin-products.html",
