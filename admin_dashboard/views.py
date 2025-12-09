@@ -75,7 +75,7 @@ def admin_product_add(request):
         "active_page": "product-edit",
         "categories":categories,
     }
-    return render(request,"admin_dashboard/admin-product-edit.html", context)
+    return render(request,"admin_dashboard/admin-product-add.html", context)
 
 
 def admin_customers(request):
