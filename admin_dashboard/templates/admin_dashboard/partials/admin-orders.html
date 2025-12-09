@@ -1,163 +1,166 @@
-      <header  class="admin-topbar">
-        <div class="topbar__left">
-          <label for="sidebar-toggle" class="btn btn--ghost" aria-label="Toggle menu">
-            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5h12M3 9h12M3 13h12"/></svg>
-          </label>
-          <strong>Orders</strong>
-          <span class="badge badge--neutral">Live</span>
-        </div>
-        <div class="topbar__search">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7" cy="7" r="5"/><path d="M11 11l4 4"/></svg>
-          <input type="search" placeholder="Search orders or customers">
-        </div>
-        <div class="topbar__right">
-          <img class="avatar" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80" alt="Admin avatar">
-        </div>
-      </header>
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/admin-orders.css' %}">
+<header  class="admin-topbar">
+  <div class="topbar__left">
+    <label for="sidebar-toggle" class="btn btn--ghost" aria-label="Toggle menu">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5h12M3 9h12M3 13h12"/></svg>
+    </label>
+    <strong>Orders</strong>
+    <span class="badge badge--neutral">Live</span>
+  </div>
+  <div class="topbar__search">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7" cy="7" r="5"/><path d="M11 11l4 4"/></svg>
+    <input type="search" placeholder="Search orders or customers">
+  </div>
+  <div class="topbar__right">
+    <img class="avatar" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80" alt="Admin avatar">
+  </div>
+</header>
 
-      <main class="section orders-page">
-        <div class="card">
-          <div class="filters">
-            <div class="filters__row">
-              <label class="form__label" for="date">Date</label>
-              <input id="date" class="form__control" type="date" value="2025-11-22">
-            </div>
-            <div class="filters__row">
-              <label class="form__label" for="status">Status</label>
-              <select id="status" class="form__control">
-                <option>All</option>
-                <option>Pending</option>
-                <option>Paid</option>
-                <option>Shipped</option>
-                <option>Refunded</option>
-              </select>
-            </div>
-            <div class="filters__row">
-              <label class="form__label" for="sort">Sort</label>
-              <select id="sort" class="form__control">
-                <option>Date: Newest</option>
-                <option>Date: Oldest</option>
-                <option>Amount: High to Low</option>
-                <option>Amount: Low to High</option>
-              </select>
-            </div>
-          </div>
-        </div>
+<main class="section orders-page">
+  <div class="card">
+    <div class="filters">
+      <div class="filters__row">
+        <label class="form__label" for="date">Date</label>
+        <input id="date" class="form__control" type="date" value="2025-11-22">
+      </div>
+      <div class="filters__row">
+        <label class="form__label" for="status">Status</label>
+        <select id="status" class="form__control">
+          <option>All</option>
+          <option>Pending</option>
+          <option>Paid</option>
+          <option>Shipped</option>
+          <option>Refunded</option>
+        </select>
+      </div>
+      <div class="filters__row">
+        <label class="form__label" for="sort">Sort</label>
+        <select id="sort" class="form__control">
+          <option>Date: Newest</option>
+          <option>Date: Oldest</option>
+          <option>Amount: High to Low</option>
+          <option>Amount: Low to High</option>
+        </select>
+      </div>
+    </div>
+  </div>
 
-        <div class="card orders-table">
-          <table class="table">
-            <thead>
-              <tr>
-                <th><input type="checkbox"></th>
-                <th>Order</th>
-                <th>Customer</th>
-                <th>Date</th>
-                <th>Total</th>
-                <th>Payment</th>
-                <th>Fulfillment</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><input type="checkbox"></td>
-                <td><a class="nav-item" href="{% url 'admin-order-detail' %}">#NW-10342</a></td>
-                <td>Alex Chen</td>
-                <td>Nov 22</td>
-                <td>$320</td>
-                <td><span class="badge badge--success">Paid</span></td>
-                <td><span class="badge badge--success">Shipped</span></td>
-                <td class="table__actions">
-                  <a class="nav-link" href="{% url 'admin-order-detail' %}">View</a>
-                  <a class="nav-link" href="#">Refund</a>
-                </td>
-              </tr>
-              <tr>
-                <td><input type="checkbox"></td>
-                <td><a class="nav-item" href="{% url 'admin-order-detail' %}">#NW-10339</a></td>
-                <td>Priya Desai</td>
-                <td>Nov 22</td>
-                <td>$540</td>
-                <td><span class="badge badge--warning">Pending</span></td>
-                <td><span class="badge badge--neutral">Processing</span></td>
-                <td class="table__actions">
-                  <a class="nav-link" href="{% url 'admin-order-detail' %}">View</a>
-                  <a class="nav-link" href="#">Capture</a>
-                </td>
-              </tr>
-              <tr>
-                <td><input type="checkbox"></td>
-                <td><a class="nav-item" href="{% url 'admin-order-detail' %}">#NW-10335</a></td>
-                <td>Marcus Lee</td>
-                <td>Nov 21</td>
-                <td>$190</td>
-                <td><span class="badge badge--success">Paid</span></td>
-                <td><span class="badge badge--neutral">In transit</span></td>
-                <td class="table__actions">
-                  <a class="nav-link" href="{% url 'admin-order-detail' %}">View</a>
-                  <a class="nav-link" href="#">Hold</a>
-                </td>
-              </tr>
-              <tr>
-                <td><input type="checkbox"></td>
-                <td><a class="nav-item" href="{% url 'admin-order-detail' %}">#NW-10332</a></td>
-                <td>Sofia Martens</td>
-                <td>Nov 21</td>
-                <td>$420</td>
-                <td><span class="badge badge--success">Paid</span></td>
-                <td><span class="badge badge--success">Shipped</span></td>
-                <td class="table__actions">
-                  <a class="nav-link" href="{% url 'admin-order-detail' %}">View</a>
-                  <a class="nav-link" href="#">Refund</a>
-                </td>
-              </tr>
-              <tr>
-                <td><input type="checkbox"></td>
-                <td><a class="nav-item" href="{% url 'admin-order-detail' %}">#NW-10330</a></td>
-                <td>Daniel Ruiz</td>
-                <td>Nov 21</td>
-                <td>$155</td>
-                <td><span class="badge badge--warning">Pending</span></td>
-                <td><span class="badge badge--neutral">Processing</span></td>
-                <td class="table__actions">
-                  <a class="nav-link" href="{% url 'admin-order-detail' %}">View</a>
-                  <a class="nav-link" href="#">Capture</a>
-                </td>
-              </tr>
-              <tr>
-                <td><input type="checkbox"></td>
-                <td><a class="nav-item" href="{% url 'admin-order-detail' %}">#NW-10328</a></td>
-                <td>Emily Hart</td>
-                <td>Nov 20</td>
-                <td>$265</td>
-                <td><span class="badge badge--success">Paid</span></td>
-                <td><span class="badge badge--neutral">In transit</span></td>
-                <td class="table__actions">
-                  <a class="nav-link" href="{% url 'admin-order-detail' %}">View</a>
-                  <a class="nav-link" href="#">Hold</a>
-                </td>
-              </tr>
-              <tr>
-                <td><input type="checkbox"></td>
-                <td><a class="nav-item" href="{% url 'admin-order-detail' %}">#NW-10324</a></td>
-                <td>Jordan Miles</td>
-                <td>Nov 20</td>
-                <td>$610</td>
-                <td><span class="badge badge--success">Paid</span></td>
-                <td><span class="badge badge--success">Shipped</span></td>
-                <td class="table__actions">
-                  <a class="nav-link" href="{% url 'admin-order-detail' %}">View</a>
-                  <a class="nav-link" href="#">Refund</a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+  <div class="card orders-table">
+    <table class="table">
+      <thead>
+        <tr>
+          <th><input type="checkbox"></th>
+          <th>Order</th>
+          <th>Customer</th>
+          <th>Date</th>
+          <th>Total</th>
+          <th>Payment</th>
+          <th>Fulfillment</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td><a class="nav-item" href="{% url 'admin-order-detail' %}">#NW-10342</a></td>
+          <td>Alex Chen</td>
+          <td>Nov 22</td>
+          <td>$320</td>
+          <td><span class="badge badge--success">Paid</span></td>
+          <td><span class="badge badge--success">Shipped</span></td>
+          <td class="table__actions">
+            <a class="nav-link" href="{% url 'admin-order-detail' %}">View</a>
+            <a class="nav-link" href="#">Refund</a>
+          </td>
+        </tr>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td><a class="nav-item" href="{% url 'admin-order-detail' %}">#NW-10339</a></td>
+          <td>Priya Desai</td>
+          <td>Nov 22</td>
+          <td>$540</td>
+          <td><span class="badge badge--warning">Pending</span></td>
+          <td><span class="badge badge--neutral">Processing</span></td>
+          <td class="table__actions">
+            <a class="nav-link" href="{% url 'admin-order-detail' %}">View</a>
+            <a class="nav-link" href="#">Capture</a>
+          </td>
+        </tr>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td><a class="nav-item" href="{% url 'admin-order-detail' %}">#NW-10335</a></td>
+          <td>Marcus Lee</td>
+          <td>Nov 21</td>
+          <td>$190</td>
+          <td><span class="badge badge--success">Paid</span></td>
+          <td><span class="badge badge--neutral">In transit</span></td>
+          <td class="table__actions">
+            <a class="nav-link" href="{% url 'admin-order-detail' %}">View</a>
+            <a class="nav-link" href="#">Hold</a>
+          </td>
+        </tr>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td><a class="nav-item" href="{% url 'admin-order-detail' %}">#NW-10332</a></td>
+          <td>Sofia Martens</td>
+          <td>Nov 21</td>
+          <td>$420</td>
+          <td><span class="badge badge--success">Paid</span></td>
+          <td><span class="badge badge--success">Shipped</span></td>
+          <td class="table__actions">
+            <a class="nav-link" href="{% url 'admin-order-detail' %}">View</a>
+            <a class="nav-link" href="#">Refund</a>
+          </td>
+        </tr>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td><a class="nav-item" href="{% url 'admin-order-detail' %}">#NW-10330</a></td>
+          <td>Daniel Ruiz</td>
+          <td>Nov 21</td>
+          <td>$155</td>
+          <td><span class="badge badge--warning">Pending</span></td>
+          <td><span class="badge badge--neutral">Processing</span></td>
+          <td class="table__actions">
+            <a class="nav-link" href="{% url 'admin-order-detail' %}">View</a>
+            <a class="nav-link" href="#">Capture</a>
+          </td>
+        </tr>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td><a class="nav-item" href="{% url 'admin-order-detail' %}">#NW-10328</a></td>
+          <td>Emily Hart</td>
+          <td>Nov 20</td>
+          <td>$265</td>
+          <td><span class="badge badge--success">Paid</span></td>
+          <td><span class="badge badge--neutral">In transit</span></td>
+          <td class="table__actions">
+            <a class="nav-link" href="{% url 'admin-order-detail' %}">View</a>
+            <a class="nav-link" href="#">Hold</a>
+          </td>
+        </tr>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td><a class="nav-item" href="{% url 'admin-order-detail' %}">#NW-10324</a></td>
+          <td>Jordan Miles</td>
+          <td>Nov 20</td>
+          <td>$610</td>
+          <td><span class="badge badge--success">Paid</span></td>
+          <td><span class="badge badge--success">Shipped</span></td>
+          <td class="table__actions">
+            <a class="nav-link" href="{% url 'admin-order-detail' %}">View</a>
+            <a class="nav-link" href="#">Refund</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
-          <div class="pagination">
-            <span class="pagination__item pagination__item--active">1</span>
-            <span class="pagination__item">2</span>
-            <span class="pagination__item">›</span>
-          </div>
-        </div>
-      </main>
+    <div class="pagination">
+      <span class="pagination__item pagination__item--active">1</span>
+      <span class="pagination__item">2</span>
+      <span class="pagination__item">›</span>
+    </div>
+  </div>
+</main>
 
+{% include 'admin_dashboard/partials/nav.html'%}

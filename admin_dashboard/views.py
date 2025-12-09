@@ -16,17 +16,15 @@ def admin_dashboard(request):
 def admin_orders(request):
     print(request.headers.get("HX-Target"))
 
-    # if  request.htmx:
-    #     print("htmx request")
-    #     context = {"active_page": "orders"}
-    #     return render(request, "admin_dashboard/partials/admin-orders.html",context)
+    if  request.htmx:
+        context = {"active_page": "orders"}
+        return render(request, "admin_dashboard/partials/admin-orders.html",context)
     
     return render(
         request,
         "admin_dashboard/admin-orders.html",
         {"active_page": "orders"},
     )
-
 
 def admin_order_detail(request):
     return render(
@@ -73,6 +71,7 @@ def admin_product_add(request):
 
 
 def admin_customers(request):
+    
     return render(
         request,
         "admin_dashboard/admin-customers.html",

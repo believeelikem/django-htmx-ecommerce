@@ -20,7 +20,7 @@
           <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
           <span>Admin Panel</span>
         </label>
-        <nav class="sidebar__nav" hx-boost="true">
+        <nav class="sidebar__nav" hx-boost="true" id="nav">
           {% with active=active_page|default:'' %}
 
           <a hx-swap="innerHTML transition:true"
@@ -28,7 +28,9 @@
           href="{% url 'admin-dashboard' %}"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 13h4v8H3zM9 3h4v18H9zM15 8h4v13h-4z"/></svg><span>Dashboard</span></a>
         
           <a 
+          id="orders-"
           hx-swap="innerHTML transition:true"
+          hx-target=".admin-layout__main"
           class="nav-item {% if active == 'orders' %}nav-item--active{% endif %}" 
           href="{% url 'admin-orders' %}"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="14" height="12" rx="2"/><path d="M3 9h14"/></svg><span>Orders</span></a>
 
@@ -49,7 +51,6 @@
         
           <a 
           hx-swap="innerHTML transition:true"
-
           class="nav-item {% if active == 'product-edit' %}nav-item--active{% endif %}" 
           href="{% url 'admin-product-add' %}"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 13l8-8 3 3-8 8H4v-3z"/><path d="M13 3l2-2 3 3-2 2"/></svg><span>Add Product</span></a>
           {% endwith %}
@@ -60,7 +61,7 @@
       </div>
     </aside>
 
-    <div   class="admin-layout__main">
+    <div hx-target="this"  class="admin-layout__main">
 
       {% block content %}
 
