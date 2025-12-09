@@ -70,6 +70,10 @@ def admin_product_add(request):
     print(request.headers.get("HX-Target"))
     
     categories = Category.objects.all()
+
+    if  request.htmx:
+        context = {"active_page": "product-edit", "categories":categories,}
+        return render(request, "admin_dashboard/partials/admin-product-add.html",context)
     
     context = {
         "active_page": "product-edit",
