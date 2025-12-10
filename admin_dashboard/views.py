@@ -95,6 +95,10 @@ def admin_customers(request):
 
 
 def admin_settings(request):
+    if  request.htmx:
+        context = {"active_page": "settings"}
+        return render(request, "admin_dashboard/partials/admin-settings.html",context)
+    
     return render(
         request,
         "admin_dashboard/admin-settings.html",
