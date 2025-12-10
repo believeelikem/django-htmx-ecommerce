@@ -1,8 +1,10 @@
 from itertools import product
+from multiprocessing import context
 import re
 from turtle import st
-
+from.models import TempImage
 from django.test import tag
+from django.shortcuts import get_object_or_404
 from .colors import colors
 
 
@@ -70,7 +72,7 @@ def validate_product_name(product_name):
             
     elif re.search(r"^\s+", product_name):
         error = "name cannot contain spaces"           
-    elif re.search(r"\W+", product_name):
+    elif re.search(r"[^\w\s-]", product_name):
         error  = "name cannot contain non word char"
     elif len(product_name) < 3:
         error = "name cannot be less than 3 chars"
@@ -120,7 +122,6 @@ def validate_quantity(quantity):
     return error
     
     
-import string
 def validate_size(size):
     error = ""
     if not size:
@@ -196,3 +197,53 @@ def is_string_integer(s):
         return True
     except ValueError:
         return False
+
+
+def add_to_list_session_handler(view_func):
+    def wrapper(request):
+        temp_image = request.FILES["product_image"]
+        temp_image = TempImage.objects.create(temp_image = temp_image)
+        
+        product_details = []
+        
+        if "product_details" not in request.session:
+            product_details = request.session["product_details"] = product_details
+            
+        else:
+            product_details = request.session["product_details"]
+            
+        product_details.append(
+            {
+                "product_image_id":temp_image.id,
+                "product_name":request.POST["product_name"],
+                "category_name": request.POST["category_name"],
+                "tag_name":request.POST["tag_name"],
+                "is_digital":request.POST["is_digital"],
+                "quantity":request.POST["quantity"],
+                "size":request.POST["size"],
+                "color":request.POST["color"],
+                "price":request.POST["price"],
+                "description":request.POST["description"]
+            }
+        )
+       
+        
+        context = {
+            "product_details": product_details.copy(),
+        }
+        
+        return view_func(request, context = context)
+    return wrapper
+
+
+def attach_product_images(context):
+    for product in context["product_details"]:
+        product["total_price"] = round(int(product["price"]) * int(product["quantity"]), 2)
+        try:
+            product["image_url"] = get_object_or_404(TempImage, id = product["product_image_id"]).temp_image.url
+        except TempImage.DoesNotExist as e:
+            print("Didnt find image")
+            print(e)
+        
+            
+    return context

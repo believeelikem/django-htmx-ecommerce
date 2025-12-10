@@ -1,7 +1,9 @@
+import re
 from django.http import HttpResponse
 from django.shortcuts import render
-from .utils import error_processor
+from .utils import add_to_list_session_handler, error_processor,attach_product_images
 from shop.models import  Product, ProductImage, Category
+from .models import TempImage
 
 
 
@@ -39,6 +41,7 @@ def admin_order_detail(request):
 
 
 # < -------   PRODUCTS    -------- >
+
 def admin_products(request):
     if  request.htmx:
         context = {"active_page": "products"}
@@ -80,6 +83,14 @@ def admin_product_add(request):
         "categories":categories,
     }
     return render(request,"admin_dashboard/admin-product-add.html", context)
+
+
+@add_to_list_session_handler
+def add_product_to_list(request,context = None):
+    context_images_attached = attach_product_images(context)
+    if context_images_attached:
+        context = context_images_attached
+    return render(request, "admin_dashboard/partials/product-lists.html", context)
 
 
 def admin_customers(request):

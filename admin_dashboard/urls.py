@@ -16,7 +16,8 @@ urlpatterns = [
 
 htmx_patterns = [
     path("validate/", views.validate_product_add_error, name="validate-product-error"),
-    path("create-product/", views.create_product, name = "create-product")
+    path("add-product-to-list/", views.add_product_to_list, name = "add-product-to-list"),
+    path("create-product/", views.create_product, name = "create-product"),
 ]
 
 urlpatterns += htmx_patterns

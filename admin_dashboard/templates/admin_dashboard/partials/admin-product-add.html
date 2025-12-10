@@ -16,9 +16,10 @@
   <main class="section">
     <form class="card" method=""
       enctype="multipart/form-data"
-      hx-post="{% url 'create-product' %}"
+      hx-post="{% url 'add-product-to-list' %}"
       hx-trigger="submit"
       hx-target=".customers-table"
+      hx-swap="innerHTML"
       >
       <div class="form-grid">
         <div class="form__group">
