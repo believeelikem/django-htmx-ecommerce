@@ -205,8 +205,8 @@ def add_to_list_session_handler(view_func):
         temp_image = TempImage.objects.create(temp_image = temp_image)
         
         product_details = []
-        
         if "product_details" not in request.session:
+            print("Product details in session")
             product_details = request.session["product_details"] = product_details
             
         else:
@@ -226,6 +226,7 @@ def add_to_list_session_handler(view_func):
                 "description":request.POST["description"]
             }
         )
+        request.session["product_details"] = product_details
        
         
         context = {
@@ -244,6 +245,4 @@ def attach_product_images(context):
         except TempImage.DoesNotExist as e:
             print("Didnt find image")
             print(e)
-        
-            
     return context

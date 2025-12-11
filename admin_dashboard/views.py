@@ -88,6 +88,8 @@ def admin_product_add(request):
 @add_to_list_session_handler
 def add_product_to_list(request,context = None):
     context_images_attached = attach_product_images(context)
+    print("**** the final request sent *******")
+    print(request.session["product_details"]) 
     if context_images_attached:
         context = context_images_attached
     return render(request, "admin_dashboard/partials/product-lists.html", context)
