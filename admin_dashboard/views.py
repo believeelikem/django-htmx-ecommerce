@@ -71,7 +71,7 @@ def validate_product_add_error(request, error_message = "", css_class = ""):
 def create_product(request):
     if request.method == "POST":
         print(request.POST)
-           
+          
 def admin_product_add(request):
     print(request.headers.get("HX-Target"))
     
@@ -81,7 +81,9 @@ def admin_product_add(request):
         "active_page": "product-edit",
         "categories":categories,
     }
-    
+
+    request.session.flush()   
+  
     if "product_details" in request.session:   
         if request.session["product_details"]:
             print("has product details = ", bool(request.session["product_details"]))

@@ -164,7 +164,11 @@ def validate_price(price):
 
     elif classify_number_value(price.strip()) == 'Not a number':
         error = "price must be positive integer or float"
-            # elif int(price.strip()) < 0:
+    
+    elif classify_number_value(price.strip()) == "Float":
+        if len(price.strip().split(".")[1]) > 2:
+            error = "Cannot enter more than 2 decimal places"
+   
     #     error = "price must not be negative"   
     # elif int(price) <= 0 :
     #     error = "size cannot be negative"
@@ -232,9 +236,11 @@ def add_to_list_session_handler(view_func):
             
         else:
             product_details = request.session["product_details"]
+        
             
         product_details.append(
             {
+                "product_id": get_id(product_details),
                 "product_image_id":temp_image.id,
                 "product_name":request.POST["product_name"],
                 "category_name": request.POST["category_name"],
@@ -247,6 +253,7 @@ def add_to_list_session_handler(view_func):
                 "description":request.POST["description"]
             }
         )
+        
         request.session["product_details"] = product_details
        
         
@@ -260,7 +267,7 @@ def add_to_list_session_handler(view_func):
 
 def attach_product_images(context):
     for product in context["product_details"]:
-        product["total_price"] = round(int(product["price"]) * int(product["quantity"]), 2)
+        product["total_price"] = f"{float(product['price']) * float(product['quantity']):,.2f}"
         try:
             product["image_url"] = get_object_or_404(TempImage, id = product["product_image_id"]).temp_image.url
         except TempImage.DoesNotExist as e:
@@ -268,8 +275,28 @@ def attach_product_images(context):
             print(e)
     return context
 
+
 def get_table_total_price(product_details):
     total = 0
     for product in product_details:
-        total += product["total_price"]
+        total += float(product["total_price"].replace(",",""))
     return total
+
+
+def get_id(session_data):
+    current_max = get_max_id(session_data)
+    print("current max is ", current_max)
+    return current_max + 1
+
+    
+def get_max_id(session_data):
+    ids = []
+    return max([product["product_id"] for product in session_data ], default=0)
+
+    # if session_data:
+    #     for product in session_data:
+    #         ids.append(product["product_id"])
+    # else:
+    #     ids.append(1)
+        
+    # return max(ids)

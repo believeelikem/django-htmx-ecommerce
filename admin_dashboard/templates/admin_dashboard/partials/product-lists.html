@@ -1,4 +1,4 @@
-<table class="table">
+<table class="table" >
 <thead>
     <tr>
     <th>Image</th>
@@ -6,22 +6,34 @@
     <th>color</th>
     <th>quantity</th>
     <th>unit price</th>
+    <th>category</th>
     <th>unit total price</th>
-    <!-- <th>Actions</th> -->
+    <th>Actions</th>
     </tr>
 </thead>
+{% if product_details|length > 0 %}
 <tbody>
     {% for product in product_details %}
     <tr>
     <td style="display:flex; gap: var(--space-sm); align-items:center;">
         <img width="25px"  src="{{product.image_url}}" alt="Sofia">
-        Sofia Martens
     </td>
     <td>{{product.size}}</td>
     <td>{{product.color}}</td>
     <td>{{product.quantity}}</td>
     <td>{{product.price}}</td>
+    <td>{{product.category_name}}</td>
     <td>{{product.total_price}}</td>
+    <td style="display:flex; gap: var(--space-sm); align-items:center;">
+        <button 
+        class="btn"  style="background-color:brown;" type="button">Clear</button>   
+        <button class="btn"  style="background-color:#0d3b66" type="button">Edit</button>   
+    </td>
+    
+    <!-- <td style="display:flex; gap: var(--space-sm); ">
+        <button class="btn"  style="background-color:lightblue;" type="button">Edit</button>   
+    </td> -->
+
     <!-- <td class="table__actions">
         <a class="nav-link" href="#">View</a>
     </td> -->
@@ -42,3 +54,10 @@
 
 </tbody>
 </table>
+{% else %}
+<tr>
+    <td style="color: red;">
+        No products added yet
+    </td>
+</tr>
+{% endif %}
