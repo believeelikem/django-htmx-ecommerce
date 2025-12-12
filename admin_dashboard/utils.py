@@ -202,8 +202,8 @@ def is_string_integer(s):
 def add_to_list_session_handler(view_func):
     def wrapper(request):
         temp_image = request.FILES["product_image"]
-        temp_image = TempImage.objects.create(temp_image = temp_image)
-        
+        temp_image = TempImage(temp_image = temp_image)
+        temp_image.save()
         product_details = []
         if "product_details" not in request.session:
             print("Product details in session")

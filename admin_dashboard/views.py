@@ -1,6 +1,8 @@
 import re
 from django.http import HttpResponse
 from django.shortcuts import render
+
+from shop.views import product_detail
 from .utils import add_to_list_session_handler, error_processor,attach_product_images
 from shop.models import  Product, ProductImage, Category
 from .models import TempImage
@@ -73,26 +75,38 @@ def admin_product_add(request):
     print(request.headers.get("HX-Target"))
     
     categories = Category.objects.all()
-
-    if  request.htmx:
-        context = {"active_page": "product-edit", "categories":categories,}
-        return render(request, "admin_dashboard/partials/admin-product-add.html",context)
     
     context = {
         "active_page": "product-edit",
         "categories":categories,
     }
+    
+    
+    if "product_details" in request.session:   
+        if request.session["product_details"]:
+            print("has product details = ", bool(request.session["product_details"]))
+            context["product_details"] = request.session["product_details"]
+            
+            context = attach_product_images(context)
+        
+    if  request.htmx:
+        return render(request, "admin_dashboard/partials/admin-product-add.html",context)
+
     return render(request,"admin_dashboard/admin-product-add.html", context)
 
 
 @add_to_list_session_handler
 def add_product_to_list(request,context = None):
     context_images_attached = attach_product_images(context)
-    print("**** the final request sent *******")
-    print(request.session["product_details"]) 
+    # print("**** the final request sent *******")
+    # print(request.session["product_details"]) 
     if context_images_attached:
         context = context_images_attached
     return render(request, "admin_dashboard/partials/product-lists.html", context)
+
+
+
+
 
 
 def admin_customers(request):
