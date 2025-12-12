@@ -300,3 +300,5 @@ def get_max_id(session_data):
     #     ids.append(1)
         
     # return max(ids)
+    
+# def attach session data

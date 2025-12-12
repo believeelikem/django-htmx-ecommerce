@@ -27,7 +27,8 @@
     <td style="display:flex; gap: var(--space-sm); align-items:center;">
         <button 
         hx-delete="{% url 'delete-post-single' product.product_id %}"
-        class="btn"  style="background-color:brown;" type="button">Clear</button>   
+        hx-target=".table"
+        class="btn"  style="background-color:brown;" type="button">Delete</button>   
         <button class="btn"  style="background-color:#0d3b66" type="button">Edit</button>   
     </td>
     

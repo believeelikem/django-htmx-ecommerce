@@ -73,7 +73,6 @@ def create_product(request):
         print(request.POST)
           
 def admin_product_add(request):
-    print(request.headers.get("HX-Target"))
     
     categories = Category.objects.all()
     
@@ -82,11 +81,10 @@ def admin_product_add(request):
         "categories":categories,
     }
 
-    request.session.flush()   
+    # request.session.flush()   
   
     if "product_details" in request.session:   
         if request.session["product_details"]:
-            print("has product details = ", bool(request.session["product_details"]))
             context["product_details"] = request.session["product_details"]
             
             context = attach_product_images(context)
@@ -111,8 +109,23 @@ def add_product_to_list(request,context = None):
     return render(request, "admin_dashboard/partials/product-lists.html", context)
 
 
-def delete_product_from_list():
-    pass
+def delete_product_from_list(request, id):
+    product_details = request.session["product_details"]
+    for product in product_details:
+        if product["product_id"] == id:
+            product_details.pop(product_details.index(product))
+            request.session.modified = True
+            
+    context = {}        
+    if "product_details" in request.session:   
+        if request.session["product_details"]:
+            print("has product details = ", bool(request.session["product_details"]))
+            context["product_details"] = request.session["product_details"]
+            
+            context = attach_product_images(context)
+            
+            context["total_price"] = f"{get_table_total_price(context['product_details']):,} "
+    return render(request, "admin_dashboard/partials/product-lists.html",context)           
 
 
 def admin_customers(request):
