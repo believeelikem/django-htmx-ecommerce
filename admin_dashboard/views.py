@@ -3,7 +3,8 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 from shop.views import product_detail
-from .utils import add_to_list_session_handler, error_processor,attach_product_images
+from .utils import add_to_list_session_handler,\
+error_processor,attach_product_images, get_table_total_price
 from shop.models import  Product, ProductImage, Category
 from .models import TempImage
 
@@ -81,13 +82,15 @@ def admin_product_add(request):
         "categories":categories,
     }
     
-    
     if "product_details" in request.session:   
         if request.session["product_details"]:
             print("has product details = ", bool(request.session["product_details"]))
             context["product_details"] = request.session["product_details"]
             
             context = attach_product_images(context)
+            
+            context["total_price"] = f"{get_table_total_price(context['product_details']):,} "
+            
         
     if  request.htmx:
         return render(request, "admin_dashboard/partials/admin-product-add.html",context)
@@ -102,9 +105,8 @@ def add_product_to_list(request,context = None):
     # print(request.session["product_details"]) 
     if context_images_attached:
         context = context_images_attached
+    context["total_price"] = f"{get_table_total_price(context['product_details']):,} "
     return render(request, "admin_dashboard/partials/product-lists.html", context)
-
-
 
 
 

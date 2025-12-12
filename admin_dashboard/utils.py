@@ -154,16 +154,18 @@ def validate_color(color):
     return error
 
 def validate_price(price):
+    print("price is ", price)
     error = ""
     if not price:
         error =  "price cannot be empty"
         
     elif re.search(r"\s+", price):
         error = "price cannot contain spaces"
-    
-    elif not price.strip().isdigit():
-        error = "price must be a postive number"
-       
+
+    elif classify_number_value(price.strip()) == 'Not a number':
+        error = "price must be positive integer or float"
+            # elif int(price.strip()) < 0:
+    #     error = "price must not be negative"   
     # elif int(price) <= 0 :
     #     error = "size cannot be negative"
     
@@ -192,17 +194,36 @@ def validate_description(description):
 
 
 def is_string_integer(s):
+    
     try:
         int(s)
         return True
     except ValueError:
         return False
 
+def classify_number_value(s):
+    """
+    Classifies a string's numeric value as 'Integer', 'Float', or 'Not a number'.
+    Treats values like '10.0' as 'Integer'.
+    """
+    try:
+        num = float(s)
+        if num < 0:
+            raise ValueError()
+        if num.is_integer():
+            return 'Integer'
+        else:
+            return 'Float'
+        
+    except ValueError:
+        return 'Not a number'
+
+
+
 
 def add_to_list_session_handler(view_func):
     def wrapper(request):
-        temp_image = request.FILES["product_image"]
-        temp_image = TempImage(temp_image = temp_image)
+        temp_image = TempImage(temp_image = request.FILES["product_image"])
         temp_image.save()
         product_details = []
         if "product_details" not in request.session:
@@ -246,3 +267,9 @@ def attach_product_images(context):
             print("Didnt find image")
             print(e)
     return context
+
+def get_table_total_price(product_details):
+    total = 0
+    for product in product_details:
+        total += product["total_price"]
+    return total
