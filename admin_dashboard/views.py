@@ -111,6 +111,8 @@ def add_product_to_list(request,context = None):
     return render(request, "admin_dashboard/partials/product-lists.html", context)
 
 
+def delete_product_from_list():
+    pass
 
 
 def admin_customers(request):
