@@ -256,6 +256,7 @@ img {
   border: 1px solid var(--admin-border);
   border-radius: var(--admin-radius-lg);
   padding: var(--space-lg);
+  padding-bottom: 2.5rem;
   box-shadow: var(--admin-shadow);
 }
 

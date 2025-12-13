@@ -108,6 +108,8 @@ def delete_product_from_list(request, id, context = None):
 
     return render(request, "admin_dashboard/partials/product-lists.html",context)           
 
+def edit_product_from_list(request, id):
+    ...
 
 def admin_customers(request):
     if  request.htmx:

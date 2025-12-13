@@ -14,12 +14,12 @@
   </header>
 
   <main class="section">
-    <form class="card" method=""
+    <form id = "form" class="card" method=""
       enctype="multipart/form-data"
       hx-post="{% url 'add-product-to-list' %}"
       hx-trigger="submit"
       hx-target=".customers-table"
-      hx-swap="innerHTML"
+      hx-swap="innerHTML transition:true"
       >
       <div class="form-grid">
         <div class="form__group">
@@ -168,9 +168,16 @@
       </div>
 
       <div class="profile__actions" style="justify-content:flex-end;">
-        <button id="add-btn-1" style=" transform:scale(1.1); transition: all .5s ease;" class="btn" type="submit">Add to list</button>
+        <button
+         id="add-btn-1"
+          style=" transform:scale(1.1); transition: all .5s ease;"
+          class="btn" 
+          type="submit"
+          
+          >Add to list</button>
         <!-- <a class="btn btn--ghost" href="{% url 'admin-products' %}">Cancel</a> -->
       </div>
+
     </form>
 
     <div style="margin-top: 20px;" class="card customers-table">
