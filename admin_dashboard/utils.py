@@ -267,15 +267,23 @@ def add_product_to_list_session_handler(images_wrapper_func):
 
 
 def attach_product_images(view_func):
-    def attach_images_wrapper(request):
-        context = {"product_details": request.session["product_details"] .copy()}
-        for product in context["product_details"]:
-            product["total_price"] = f"{float(product['price']) * float(product['quantity']):,.2f}"
-            try:
-                product["image_url"] = get_object_or_404(TempImage, id = product["product_image_id"]).temp_image.url
-            except TempImage.DoesNotExist as e:
-                print("Didnt find image")
-                print(e)
+    def attach_images_wrapper(request,id = None):
+        context = {}
+        if "product_details" in request.session:
+            context = {"product_details": request.session["product_details"] .copy()}
+            for product in context["product_details"]:
+                product["total_price"] = f"{float(product['price']) * float(product['quantity']):,.2f}"
+                try:
+                    product["image_url"] = get_object_or_404(TempImage, id = product["product_image_id"]).temp_image.url
+                except TempImage.DoesNotExist as e:
+                    print("Didnt find image")
+                    print(e)
+            
+            context["total_price"] = f"{get_table_total_price(context['product_details']):,} "
+        
+        if request.method == "DELETE":
+            return view_func(request,id = id, context = context)
+        
         return view_func(request, context)
     return attach_images_wrapper
 
@@ -289,8 +297,6 @@ def get_table_total_price(product_details):
 
 def get_id(session_data):
     return _get_max_id(session_data) + 1
-    
-
     
 def _get_max_id(session_data):
     return max([product["product_id"] for product in session_data ], default=0)

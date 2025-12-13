@@ -72,24 +72,25 @@ def validate_product_add_error(request, error_message = "", css_class = ""):
 def create_product(request):
     if request.method == "POST":
         print(request.POST)
-          
-def admin_product_add(request):
+  
+@attach_product_images          
+def admin_product_add(request, context = None):
     
     categories = Category.objects.values("slug","name")
-    print(categories)
-    
-    context = {
+        
+    context.update( 
+        {
         "active_page": "product-edit",
         "categories":categories,
-    }
-  
-    if "product_details" in request.session:   
-        if request.session["product_details"]:
-            context["product_details"] = request.session["product_details"]
+        }
+    ) 
+    # if "product_details" in request.session:   
+    #     if request.session["product_details"]:
+    #         context["product_details"] = request.session["product_details"]
             
-            context = attach_product_images(context)
+    #         context = attach_product_images(context)
             
-            context["total_price"] = f"{get_table_total_price(context['product_details']):,} "
+    #         context["total_price"] = f"{get_table_total_price(context['product_details']):,} "
             
         
     if  request.htmx:
@@ -103,26 +104,19 @@ def add_product_to_list(request,context = None):
     # context_images_attached = attach_product_images(context)
     # if context_images_attached:
     #     context = context_images_attached
-    context["total_price"] = f"{get_table_total_price(context['product_details']):,} "
     return render(request, "admin_dashboard/partials/product-lists.html", context)
 
 
-def delete_product_from_list(request, id):
-    product_details = request.session["product_details"]
+@attach_product_images
+def delete_product_from_list(request, id, context = None):
+    
+    
+    product_details = context["product_details"]
     for product in product_details:
         if product["product_id"] == id:
             product_details.pop(product_details.index(product))
             request.session.modified = True
-            
-    context = {}        
-    if "product_details" in request.session:   
-        if request.session["product_details"]:
-            print("has product details = ", bool(request.session["product_details"]))
-            context["product_details"] = request.session["product_details"]
-            
-            context = attach_product_images(context)
-            
-            context["total_price"] = f"{get_table_total_price(context['product_details']):,} "
+
     return render(request, "admin_dashboard/partials/product-lists.html",context)           
 
 
