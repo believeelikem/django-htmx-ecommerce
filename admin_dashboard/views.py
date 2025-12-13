@@ -5,10 +5,10 @@ from django.shortcuts import render
 from shop.views import product_detail
 from .utils import add_product_to_list_session_handler,\
 error_processor,attach_product_images,\
-get_table_total_price
+get_table_total_price,get_product
 from shop.models import  Product, ProductImage, Category
 from .models import TempImage
-
+from django.shortcuts import get_object_or_404
 
 
 def admin_dashboard(request):
@@ -57,7 +57,7 @@ def admin_products(request):
         {"active_page": "products"},
     )
 
-
+#VALIDATE INPUTS
 @error_processor
 def validate_product_add_error(request, error_message = "", css_class = ""):
     print(request.headers.get("HX-Target"))
@@ -72,7 +72,8 @@ def validate_product_add_error(request, error_message = "", css_class = ""):
 def create_product(request):
     if request.method == "POST":
         print(request.POST)
-  
+ 
+# ADMIN-PRODUCT-ADD 
 @attach_product_images          
 def admin_product_add(request, context = None):
     
@@ -89,13 +90,13 @@ def admin_product_add(request, context = None):
 
     return render(request,"admin_dashboard/admin-product-add.html", context)
 
-
+#ADD-TO-LIST
 @add_product_to_list_session_handler
 @attach_product_images
 def add_product_to_list(request,context = None):
     return render(request, "admin_dashboard/partials/product-lists.html", context)
 
-
+#DELETE PRODUCT
 @attach_product_images
 def delete_product_from_list(request, id, context = None):  
     
@@ -108,8 +109,42 @@ def delete_product_from_list(request, id, context = None):
 
     return render(request, "admin_dashboard/partials/product-lists.html",context)           
 
+# EDIT PRODUCT 
 def edit_product_from_list(request, id):
-    ...
+    product = get_product(request,id)
+    
+    context = {
+        "categories" : Category.objects.values("slug","name")
+    }
+    
+    if product:
+        context.update({
+                "product_id": product["product_id"],
+                "product_image_id":product["product_image_id"],
+                "image_url" :  product["image_url"],
+                "product_name":product["product_name"],
+                "category_name": product["category_name"],
+                "tag_name":product["tag_name"],
+                "is_digital":product["is_digital"],
+                "quantity":product["quantity"],
+                "size":product["size"],
+                "color":product["color"],
+                "price":product["price"],
+                "description":product["description"]
+            }
+        )
+    return render(request, "admin_dashboard/partials/add-product-form.html",context)
+        
+    
+    
+    
+    
+
+
+
+
+
+
 
 def admin_customers(request):
     if  request.htmx:

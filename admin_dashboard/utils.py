@@ -297,4 +297,8 @@ def _get_max_id(session_data):
     return max([product["product_id"] for product in session_data ], default=0)
 
     
-# def attach session data
+def get_product(request,id):
+    for product in request.session["product_details"]:
+        if product["product_id"] == id:
+            return product
+    return None

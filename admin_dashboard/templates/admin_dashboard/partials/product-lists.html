@@ -30,7 +30,7 @@
         hx-target=".table"
         class="btn"  style="background-color:brown;" type="button">Delete</button>   
         <button
-        hx-post="{% url 'edit-post-single' product.product_id %}"
+        hx-get="{% url 'edit-post-single' product.product_id %}"
         hx-target="#form"
         hx-swap="innerHTML"
         class="btn"  style="background-color:#0d3b66" type="button">Edit</button>   
