@@ -83,39 +83,28 @@ def admin_product_add(request, context = None):
         "active_page": "product-edit",
         "categories":categories,
         }
-    ) 
-    # if "product_details" in request.session:   
-    #     if request.session["product_details"]:
-    #         context["product_details"] = request.session["product_details"]
-            
-    #         context = attach_product_images(context)
-            
-    #         context["total_price"] = f"{get_table_total_price(context['product_details']):,} "
-            
-        
+    )    
     if  request.htmx:
         return render(request, "admin_dashboard/partials/admin-product-add.html",context)
 
     return render(request,"admin_dashboard/admin-product-add.html", context)
 
+
 @add_product_to_list_session_handler
 @attach_product_images
 def add_product_to_list(request,context = None):
-    # context_images_attached = attach_product_images(context)
-    # if context_images_attached:
-    #     context = context_images_attached
     return render(request, "admin_dashboard/partials/product-lists.html", context)
 
 
 @attach_product_images
-def delete_product_from_list(request, id, context = None):
-    
+def delete_product_from_list(request, id, context = None):  
     
     product_details = context["product_details"]
-    for product in product_details:
-        if product["product_id"] == id:
-            product_details.pop(product_details.index(product))
-            request.session.modified = True
+    
+    print("product details is = ",product_details)
+    
+    context["product_details"] = request.session["product_details"] = [product for product in \
+        product_details if product["product_id"] != id ]
 
     return render(request, "admin_dashboard/partials/product-lists.html",context)           
 

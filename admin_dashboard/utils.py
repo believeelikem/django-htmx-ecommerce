@@ -236,7 +236,7 @@ def add_product_to_list_session_handler(images_wrapper_func):
             
         else:
             product_details = request.session["product_details"]
-        
+                    
             
         product_details.append(
             {
@@ -255,12 +255,7 @@ def add_product_to_list_session_handler(images_wrapper_func):
         )
         
         request.session["product_details"] = product_details
-       
-        
-        # context = {
-        #     "product_details": product_details.copy(),
-        # }
-        
+
         return images_wrapper_func(request)
     
     return product_details_wrapper
