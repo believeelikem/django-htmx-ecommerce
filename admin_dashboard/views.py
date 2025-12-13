@@ -3,8 +3,9 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 from shop.views import product_detail
-from .utils import add_to_list_session_handler,\
-error_processor,attach_product_images, get_table_total_price
+from .utils import add_product_to_list_session_handler,\
+error_processor,attach_product_images,\
+get_table_total_price
 from shop.models import  Product, ProductImage, Category
 from .models import TempImage
 
@@ -74,14 +75,13 @@ def create_product(request):
           
 def admin_product_add(request):
     
-    categories = Category.objects.all()
+    categories = Category.objects.values("slug","name")
+    print(categories)
     
     context = {
         "active_page": "product-edit",
         "categories":categories,
     }
-
-    # request.session.flush()   
   
     if "product_details" in request.session:   
         if request.session["product_details"]:
@@ -97,14 +97,12 @@ def admin_product_add(request):
 
     return render(request,"admin_dashboard/admin-product-add.html", context)
 
-
-@add_to_list_session_handler
+@add_product_to_list_session_handler
+@attach_product_images
 def add_product_to_list(request,context = None):
-    context_images_attached = attach_product_images(context)
-    # print("**** the final request sent *******")
-    # print(request.session["product_details"]) 
-    if context_images_attached:
-        context = context_images_attached
+    # context_images_attached = attach_product_images(context)
+    # if context_images_attached:
+    #     context = context_images_attached
     context["total_price"] = f"{get_table_total_price(context['product_details']):,} "
     return render(request, "admin_dashboard/partials/product-lists.html", context)
 

@@ -225,8 +225,8 @@ def classify_number_value(s):
 
 
 
-def add_to_list_session_handler(view_func):
-    def wrapper(request):
+def add_product_to_list_session_handler(images_wrapper_func):
+    def product_details_wrapper(request):
         temp_image = TempImage(temp_image = request.FILES["product_image"])
         temp_image.save()
         product_details = []
@@ -257,23 +257,27 @@ def add_to_list_session_handler(view_func):
         request.session["product_details"] = product_details
        
         
-        context = {
-            "product_details": product_details.copy(),
-        }
+        # context = {
+        #     "product_details": product_details.copy(),
+        # }
         
-        return view_func(request, context = context)
-    return wrapper
+        return images_wrapper_func(request)
+    
+    return product_details_wrapper
 
 
-def attach_product_images(context):
-    for product in context["product_details"]:
-        product["total_price"] = f"{float(product['price']) * float(product['quantity']):,.2f}"
-        try:
-            product["image_url"] = get_object_or_404(TempImage, id = product["product_image_id"]).temp_image.url
-        except TempImage.DoesNotExist as e:
-            print("Didnt find image")
-            print(e)
-    return context
+def attach_product_images(view_func):
+    def attach_images_wrapper(request):
+        context = {"product_details": request.session["product_details"] .copy()}
+        for product in context["product_details"]:
+            product["total_price"] = f"{float(product['price']) * float(product['quantity']):,.2f}"
+            try:
+                product["image_url"] = get_object_or_404(TempImage, id = product["product_image_id"]).temp_image.url
+            except TempImage.DoesNotExist as e:
+                print("Didnt find image")
+                print(e)
+        return view_func(request, context)
+    return attach_images_wrapper
 
 
 def get_table_total_price(product_details):
@@ -284,21 +288,12 @@ def get_table_total_price(product_details):
 
 
 def get_id(session_data):
-    current_max = get_max_id(session_data)
-    print("current max is ", current_max)
-    return current_max + 1
+    return _get_max_id(session_data) + 1
+    
 
     
-def get_max_id(session_data):
-    ids = []
+def _get_max_id(session_data):
     return max([product["product_id"] for product in session_data ], default=0)
 
-    # if session_data:
-    #     for product in session_data:
-    #         ids.append(product["product_id"])
-    # else:
-    #     ids.append(1)
-        
-    # return max(ids)
     
 # def attach session data
