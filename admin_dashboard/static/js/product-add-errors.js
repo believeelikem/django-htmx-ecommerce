@@ -1,8 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
-    initProductForm();
+    const form = document.querySelector("#form");
+    if (form) {
+        checkFormState(form);
+    }
 });
 
-// Shared config & state
 const errorSelectors = [
     ".product-errors-name",
     ".product-errors-category",
@@ -15,19 +17,22 @@ const errorSelectors = [
     ".product-errors-description"
 ];
 
-let form = null;
-let requiredFields = [];
-let submitBtn = null;
+// core logic: always works on the form passed in
+function checkFormState(form, currentField = null) {
+    if (!form) return;
 
-// This is your original logic, just moved out so we can call it again
-const checkFormState = (currentField = null) => {
-    if (!form || !submitBtn || !requiredFields.length) return;
+    const requiredFields = form.querySelectorAll("input[required], textarea[required], select[required]");
+    const submitBtn = form.querySelector("#add-btn-1");
+    if (!submitBtn || !requiredFields.length) return;
 
     const emptyFields = Array.from(requiredFields).filter(f => !f.value.trim());
-    const errors = Array.from(errorSelectors).map(sel => document.querySelector(sel));
-    const hasErrors = errors.some(err => err && err.innerText.trim() !== "");
 
-    // Enable/disable button
+    const errors = errorSelectors
+        .map(sel => form.querySelector(sel))
+        .filter(Boolean);
+
+    const hasErrors = errors.some(err => err.innerText.trim() !== "");
+
     if (emptyFields.length === 0 && !hasErrors) {
         submitBtn.disabled = false;
         submitBtn.style.opacity = "1";
@@ -36,7 +41,6 @@ const checkFormState = (currentField = null) => {
         submitBtn.style.opacity = "0.5";
     }
 
-    // Optional: highlight last empty field
     if (currentField) {
         if (emptyFields.length === 1 && emptyFields[0] === currentField) {
             currentField.style.borderColor = "green";
@@ -44,44 +48,47 @@ const checkFormState = (currentField = null) => {
             currentField.style.borderColor = "";
         }
     }
-};
-
-// Your original setup logic, now reusable
-function initProductForm() {
-    form = document.querySelector("form");
-    if (!form) {
-        return;
-    }
-
-    requiredFields = form.querySelectorAll("input[required], textarea[required], select[required]");
-    submitBtn = document.querySelector("#add-btn-1");
-
-    if (!submitBtn) {
-        return;
-    }
-
-    // Listen to input events (same behavior as before)
-    requiredFields.forEach(field => {
-        field.addEventListener("input", () => checkFormState(field));
-    });
-
-    // Initialize button state
-    checkFormState();
 }
 
-// HTMX: run the same setup when content is swapped in
+// attach listeners via delegation so swaps don't break anything
+document.body.addEventListener("input", (e) => {
+    const form = e.target.closest("#form");
+    if (!form) return;
+
+    // make sure this is one of the required fields
+    if (e.target.matches("input[required], textarea[required], select[required]")) {
+        checkFormState(form, e.target);
+    }
+});
+
+document.body.addEventListener("change", (e) => {
+    const form = e.target.closest("#form");
+    if (!form) return;
+
+    if (e.target.matches("input[required], textarea[required], select[required]")) {
+        checkFormState(form, e.target);
+    }
+});
+
+// when htmx swaps content, re-evaluate the form state
 document.body.addEventListener("htmx:afterSwap", (evt) => {
-    const target = evt.detail && evt.detail.target ? evt.detail.target : null;
+    const target = evt.detail?.target;
     if (!target) return;
 
-    // If the main content area (containing the form) was swapped, re-init form logic
-    if (target.matches(".admin-layout__main") || target.querySelector("form")) {
-        initProductForm();
+    // if the form itself or something containing it was swapped
+    const form =
+        target.matches("#form")
+            ? target
+            : target.querySelector("#form");
+
+    if (form) {
+        checkFormState(form);
         return;
     }
 
-    // Only recalc if an error element was updated (your original intent)
+    // if only an error <small> got swapped
     if (errorSelectors.some(sel => target.matches(sel) || target.querySelector(sel))) {
-        checkFormState();
+        const formEl = document.querySelector("#form");
+        if (formEl) checkFormState(formEl);
     }
 });

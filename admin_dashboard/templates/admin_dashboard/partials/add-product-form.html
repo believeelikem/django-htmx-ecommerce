@@ -15,7 +15,11 @@
         hx-target=".product-errors-name"
         hx-swap="outerHTML"
         required
-        value=""
+
+        {% if product_name %}
+            value="{{product_name}}"
+        {% endif %}
+
         id="product_name" placeholder="enter product name" name="product_name" class="form__control" type="text" >
         <small style="color: red;" class="product-errors-name">
         </small>        
@@ -33,7 +37,14 @@
         id="category" class="form__control" name="category_name">
         <option value="">Select Category </option>
         {% for category in categories %}
-        <option value="{{category.slug}}"> {{category.name}}</option>
+            <option value="{{category.slug}}" 
+
+            {% if category_name %}
+                {%  if category_name == category.name %} selected {% endif %}
+            {% endif %}
+
+             > {{category.name}}</option>
+
         {% endfor %}
         </select>
         <small style="color: red;" class="product-errors-category">
@@ -49,14 +60,27 @@
         hx-target=".product-errors-tag"
         hx-swap="outerHTML"
         required
-        name="tag_name" placeholder="enter tags" id="tags" class="form__control" type="text" value="">
+        name="tag_name" placeholder="enter tags" id="tags" class="form__control" type="text" 
+            {% if tag_name %} 
+            value="{{tag_name}}"
+            {% endif %}
+        >
         <small style="color: red;" class="product-errors-tag">
         </small>
     </div>
 
     <!-------   PRODUCT IS-DIGITAL   ------->
     <div class="form__group" style="display:flex; gap: var(--space-sm); align-items:center;">
-        <input name="is_digital" id="is_digital" type="checkbox" checked>
+        <input name="is_digital" id="is_digital" 
+        type="checkbox" 
+
+        {% if is_digital %}
+            {% if is_digital == "on" %}
+                checked
+            {% endif %}
+        {% endif %}
+
+        >
         <label for="is_digital">Is digital(wont' be shipped)</label>
     </div>
     
@@ -72,11 +96,14 @@
         hx-target=".product-errors-quantity"
         hx-swap="outerHTML"   
         required       
-        name="quantity" placeholder="enter product quantity" id="quantity" class="form__control" type="text" pattern="[0-9]+" value="" >
+        name="quantity" placeholder="enter product quantity" id="quantity" class="form__control" type="text" pattern="[0-9]+" 
+        {% if quantity %}
+            value="{{quantity}}" 
+        {% endif %}
+        >
         <small style="color: red;" class="product-errors-quantity">
         </small>        
     </div>
-
 
     <!-------   PRODUCT SIZE   ------->
     <div class="form__group">
@@ -87,7 +114,11 @@
         hx-target=".product-errors-size"
         hx-swap="outerHTML"  
         required       
-        name="size" id="size" placeholder="enter product size" class="form__control" type="text" value="">
+        name="size" id="size" placeholder="enter product size" class="form__control" type="text" 
+        {% if size %}
+            value="{{size}}"
+        {% endif %}
+        >
         <small style="color: red;" class="product-errors-size">
         </small>
     </div>
@@ -101,7 +132,12 @@
         hx-target=".product-errors-color"
         hx-swap="outerHTML"
         required
-        name="color" placeholder="enter product color" id="colors" class="form__control" type="text" value="">
+        name="color" placeholder="enter product color" id="colors" class="form__control" type="text" 
+        
+        {% if color %}
+            value="{{color}}"
+        {% endif %}
+        >
         <small style="color: red;" class="product-errors-color">
         </small>
     </div>
@@ -115,7 +151,12 @@
         hx-target=".product-errors-price"
         hx-swap="outerHTML"
         required
-        name="price" placeholder="enter product price" id="price" class="form__control" type="text" value="">
+        name="price" placeholder="enter product price" id="price" class="form__control" type="text" 
+        
+        {% if price %}
+            value="{{price}}"
+        {% endif %}
+        >
         <small style="color: red;" class="product-errors-price">
         </small>
     </div>
@@ -125,13 +166,14 @@
     <div class="form-grid">
     <div class="form__group" >
         <label class="form__label" for="image-file">Upload image</label>
+
         <input 
         hx-post="{% url 'validate-product-error' %}"
         hx-trigger="change"
         hx-target=".product-errors-image"
         hx-encoding="multipart/form-data"
         hx-swap="outerHTML"
-        required
+        {% if is_create_view %}required {% endif %}
         name="product_image"  id="image-file" class="form__control" type="file">
         <small style="color: red;" class="product-errors-image">
         </small>
@@ -147,7 +189,10 @@
         hx-target=".product-errors-description"
         hx-swap="outerHTML"
         required
-        name="description" placeholder="enter product description" id="description" class="form__control textarea"></textarea>
+        name="description"
+        placeholder="enter product description" 
+        id="description" 
+        class="form__control textarea">{{description}}</textarea>
         <small style="color: red;" class="product-errors-description">
         </small>          </div>
     </div>
@@ -155,7 +200,8 @@
     <div class="profile__actions" style="justify-content:flex-end;">
     <button
         id="add-btn-1"
-        style=" transform:scale(1.1); transition: all .5s ease;"
+        
+        style=" transform:scale(1.1); transition: all .5s ease; margin-top: {{ margin|default:'0' }}rem;"
         class="btn" 
         type="submit"
         

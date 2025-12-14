@@ -32,17 +32,10 @@
         <button
         hx-get="{% url 'edit-post-single' product.product_id %}"
         hx-target="#form"
-        hx-swap="innerHTML"
+        hx-swap="outerHTML show:window:top transition:true"
+        hx-push-url="true"
         class="btn"  style="background-color:#0d3b66" type="button">Edit</button>   
     </td>
-    
-    <!-- <td style="display:flex; gap: var(--space-sm); ">
-        <button class="btn"  style="background-color:lightblue;" type="button">Edit</button>   
-    </td> -->
-
-    <!-- <td class="table__actions">
-        <a class="nav-link" href="#">View</a>
-    </td> -->
     </tr>
     {% endfor %}
     <tr>
