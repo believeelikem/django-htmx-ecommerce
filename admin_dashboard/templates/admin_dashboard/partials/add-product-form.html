@@ -198,13 +198,23 @@
     </div>
 
     <div class="profile__actions" style="justify-content:flex-end;">
+        {% if image_url %}
+            <div class="current-image-preview">
+                <a href="{{image_url}}">Current image</a>
+                <p class="form__hint">Leave this field empty to keep the current image.</p>
+            </div>
+        {% endif %}
+
     <button
         id="add-btn-1"
-        
-        style=" transform:scale(1.1); transition: all .5s ease; margin-top: {{ margin|default:'0' }}rem;"
-        class="btn" 
+        style=" transform:scale(1.1); transition: all .5s ease;"
+        {% if is_create_view %}
+            class="btn" 
+        {% else %}
+            class="btn is_create_view"
+        {% endif %}
         type="submit"
-        
+
         >Add to list</button>
     <!-- <a class="btn btn--ghost" href="{% url 'admin-products' %}">Cancel</a> -->
     </div>

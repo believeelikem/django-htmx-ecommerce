@@ -12,12 +12,34 @@
 
 }
 
+.profile__actions{
+  position: relative;
+}
+
+.current-image-preview{
+  position: absolute;
+  bottom: 2.5rem;
+  font-size: .8rem;
+}
+.current-image-preview > p{
+  margin: 0;
+  color: green;
+
+}
+.current-image-preview > a{
+  text-decoration: underline;
+}
+
 small{
   position: absolute;
   top: 98%;
   font-size: .7rem;
   display: inline-block;
   /* text-align: center; */
+}
+
+.btn.is_create_view{
+  margin-top: 1.5rem;
 }
 
 .form__label {

@@ -83,7 +83,7 @@ def admin_product_add(request, context = None):
         {
         "active_page": "product-edit",
         "categories":categories,
-        "margin":1.5
+        "is_create_view":True
         }
     )    
     if  request.htmx:
