@@ -16,8 +16,8 @@
         hx-swap="outerHTML"
         required
 
-        {% if product_name %}
-            value="{{product_name}}"
+        {% if product.product_name %}
+            value="{{product.product_name}}"
         {% endif %}
 
         id="product_name" placeholder="enter product name" name="product_name" class="form__control" type="text" >
@@ -39,8 +39,8 @@
         {% for category in categories %}
             <option value="{{category.slug}}" 
 
-            {% if category_name %}
-                {%  if category_name == category.name %} selected {% endif %}
+            {% if product.category_name %}
+                {%  if product.category_name == category.name %} selected {% endif %}
             {% endif %}
 
              > {{category.name}}</option>
@@ -61,8 +61,8 @@
         hx-swap="outerHTML"
         required
         name="tag_name" placeholder="enter tags" id="tags" class="form__control" type="text" 
-            {% if tag_name %} 
-            value="{{tag_name}}"
+            {% if product.tag_name %} 
+            value="{{product.tag_name}}"
             {% endif %}
         >
         <small style="color: red;" class="product-errors-tag">
@@ -74,8 +74,8 @@
         <input name="is_digital" id="is_digital" 
         type="checkbox" 
 
-        {% if is_digital %}
-            {% if is_digital == "on" %}
+        {% if product.is_digital %}
+            {% if product.is_digital == "on" %}
                 checked
             {% endif %}
         {% endif %}
@@ -97,8 +97,8 @@
         hx-swap="outerHTML"   
         required       
         name="quantity" placeholder="enter product quantity" id="quantity" class="form__control" type="text" pattern="[0-9]+" 
-        {% if quantity %}
-            value="{{quantity}}" 
+        {% if product.quantity %}
+            value="{{product.quantity}}" 
         {% endif %}
         >
         <small style="color: red;" class="product-errors-quantity">
@@ -115,8 +115,8 @@
         hx-swap="outerHTML"  
         required       
         name="size" id="size" placeholder="enter product size" class="form__control" type="text" 
-        {% if size %}
-            value="{{size}}"
+        {% if product.size %}
+            value="{{product.size}}"
         {% endif %}
         >
         <small style="color: red;" class="product-errors-size">
@@ -134,8 +134,8 @@
         required
         name="color" placeholder="enter product color" id="colors" class="form__control" type="text" 
         
-        {% if color %}
-            value="{{color}}"
+        {% if product.color %}
+            value="{{product.color}}"
         {% endif %}
         >
         <small style="color: red;" class="product-errors-color">
@@ -153,8 +153,8 @@
         required
         name="price" placeholder="enter product price" id="price" class="form__control" type="text" 
         
-        {% if price %}
-            value="{{price}}"
+        {% if product.price %}
+            value="{{product.price}}"
         {% endif %}
         >
         <small style="color: red;" class="product-errors-price">
@@ -192,15 +192,15 @@
         name="description"
         placeholder="enter product description" 
         id="description" 
-        class="form__control textarea">{{description}}</textarea>
+        class="form__control textarea">{{product.description}}</textarea>
         <small style="color: red;" class="product-errors-description">
         </small>          </div>
     </div>
 
     <div class="profile__actions" style="justify-content:flex-end;">
-        {% if image_url %}
+        {% if product.image_url %}
             <div class="current-image-preview">
-                <a href="{{image_url}}">Current image</a>
+                <a href="{{product.image_url}}">Current image</a>
                 <p class="form__hint">Leave this field empty to keep the current image.</p>
             </div>
         {% endif %}
@@ -222,26 +222,51 @@
 </form>
 
 {% if not is_create_view %}
-<table
-id="edit-delete-{{product_id}}"
-hx-swap-oob="true"
->
-    <td 
-    style="display:flex; gap: var(--space-sm); align-items:center;"     
-    >    
-        <button 
-        hx-delete="{% url 'delete-post-single' product_id %}"
-        hx-target=".table"
-        hx-swap="outerHTML"
-        disabled
-        class="btn"  style="background-color:brown;opacity:0.5" type="button">Delete</button>   
+    <table
+    id="edit-delete-{{product.product_id}}"
+    hx-swap-oob="true"
+    >
+        <td 
+        style="display:flex; gap: var(--space-sm); align-items:center;"     
+        >    
+            <button 
+            hx-delete="{% url 'delete-post-single' product.product_id %}"
+            hx-target=".table"
+            hx-swap="outerHTML"
+            disabled
+            class="btn"  style="background-color:brown;opacity:0.5" type="button">Delete</button>   
 
-        <button
-        hx-get="{% url 'edit-post-single' product_id %}"
-        hx-target="#form"
-        hx-swap="outerHTML show:window:top transition:true"
-        hx-push-url="true"
-        class="btn"  style="background-color:#0d3b66" type="button">Edit</button>   
-    </td>
-</table>
+            <button
+            hx-get="{% url 'edit-post-single' product.product_id %}"
+            hx-target="#form"
+            hx-swap="outerHTML show:window:top transition:true"
+            hx-push-url="true"
+            class="btn"  style="background-color:#0d3b66" type="button">Edit</button>   
+        </td>
+    </table>
+{% endif %}
+
+{% if a_product_already_being_edited_id %}
+    <table
+    id="edit-delete-{{a_product_already_being_edited_id}}"
+    hx-swap-oob="true"
+    >
+        <td 
+        style="display:flex; gap: var(--space-sm); align-items:center;"     
+        >    
+            <button 
+            hx-delete="{% url 'delete-post-single' a_product_already_being_edited_id %}"
+            hx-target=".table"
+            hx-swap="outerHTML"
+            disabled
+            class="btn"  style="background-color:brown" type="button">Delete</button>   
+
+            <button
+            hx-get="{% url 'edit-post-single' a_product_already_being_edited_id %}"
+            hx-target="#form"
+            hx-swap="outerHTML show:window:top transition:true"
+            hx-push-url="true"
+            class="btn"  style="background-color:#0d3b66" type="button">Edit</button>   
+        </td>
+    </table>
 {% endif %}

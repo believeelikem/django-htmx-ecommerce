@@ -78,7 +78,7 @@ def create_product(request):
 def admin_product_add(request, context = None):
     
     categories = Category.objects.values("slug","name")
-        
+    # request.session.flush()
     context.update( 
         {
         "active_page": "product-edit",
@@ -111,48 +111,54 @@ def delete_product_from_list(request, id, context = None):
         product_details if product["product_id"] != id ]
 
 
-    print("request.meta is = ",request.META.get("HTTP_REFERER"))
-    if "edit-product" in request.META.get("HTTP_REFERER"):
-       product_id = request.META.get("HTTP_REFERER").split("/")[-1]
-       print(product_id)
-       context["from_edit_view"] = int(product_id)
+    # print("request.meta is = ",request.META.get("HTTP_REFERER"))
+    # if "edit-product" in request.META.get("HTTP_REFERER"):
+    #    product_id = request.META.get("HTTP_REFERER").split("/")[-1]
+    #    print(product_id)
+    #    context["from_edit_view"] = int(product_id)
        
     return render(request, "admin_dashboard/partials/product-lists.html",context)           
+
 
 # EDIT PRODUCT 
 def edit_product_from_list(request, id):
     product = get_product(request,id)
     
+    a_product_already_being_edited = None
+    
+    for _product in request.session["product_details"]:
+        if  _product != product  and  _product["is_being_edited"]:
+            print("a product already being edited initial, = ", _product)
+            _product["is_being_edited"] = False
+            request.session.modified = True
+            print("a product already being edited after, = ", _product)
+            a_product_already_being_edited = _product
+            break
+        
+            
     context = {
         "categories" : Category.objects.values("slug","name")
     }
+
+    print("Product already being edited = ",a_product_already_being_edited)
     
-    
+    if a_product_already_being_edited:
+        context["a_product_already_being_edited_id"] = a_product_already_being_edited["product_id"]
+
+        
     if product:
-        context.update({
-                "product_id": product["product_id"],
-                "product_image_id":product["product_image_id"],
-                "image_url" :  product["image_url"],
-                "product_name":product["product_name"],
-                "category_name": product["category_name"],
-                "tag_name":product["tag_name"],
-                "is_digital":product["is_digital"],
-                "quantity":product["quantity"],
-                "size":product["size"],
-                "color":product["color"],
-                "price":product["price"],
-                "description":product["description"],
-                # "is_being_edited"
-            }
-        )
+        index = request.session["product_details"].index(product)
+        product["is_being_edited"] = True
+        request.session["product_details"][index] = product
+        request.session.modified = True
+        print("product details is = ",product)
+        context["product"] = product
     return render(request, "admin_dashboard/partials/add-product-form.html",context)
         
     
     
     
     
-
-
 
 
 

@@ -250,7 +250,8 @@ def add_product_to_list_session_handler(images_wrapper_func):
                 "size":request.POST["size"],
                 "color":request.POST["color"],
                 "price":request.POST["price"],
-                "description":request.POST["description"]
+                "description":request.POST["description"],
+                "is_being_edited":False
             }
         )
         
@@ -274,7 +275,7 @@ def attach_product_images(view_func):
                     print("Didnt find image")
                     print(e)
             
-            context["total_price"] = f"{get_table_total_price(context['product_details']):,} "
+            context["total_price"] = f"{get_table_total_price(context['product_details']):,.2f} "
         
         if request.method == "DELETE":
             return view_func(request,id = id, context = context)

@@ -32,14 +32,10 @@
         hx-target=".table"
         hx-swap="outerHTML"
         hx-confirm="Are you sure you want to delete product {{product.product_name}}"
-        class="btn"
-        {% if from_edit_view %}
-        
-            {% if from_edit_view == product.product_id %}
-                style="background-color:brown;opacity:0.5" 
-                disabled
-            {% endif %}
-
+        class="btn"  
+        {% if product.is_being_edited %}
+            style="background-color:brown;opacity:0.5" 
+            disabled            
         {% else %}
             style="background-color:brown;" 
         {% endif %}
