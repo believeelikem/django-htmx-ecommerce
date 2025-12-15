@@ -78,7 +78,7 @@ def create_product(request):
 def admin_product_add(request, context = None):
     
     categories = Category.objects.values("slug","name")
-    # request.session.flush()
+    request.session.flush()
     context.update( 
         {
         "active_page": "product-edit",
