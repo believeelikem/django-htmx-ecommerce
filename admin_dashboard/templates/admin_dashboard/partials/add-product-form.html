@@ -220,3 +220,18 @@
     </div>
 
 </form>
+
+{% if not is_create_view %}
+    <td 
+    style="display:flex; gap: var(--space-sm); align-items:center;" 
+    id="edit-delete-{{product_id}}"
+    hx-swap-oob="true"
+    >
+        <button
+        hx-get="{% url 'edit-post-single' product_id %}"
+        hx-target="#form"
+        hx-swap="outerHTML show:window:top transition:true"
+        hx-push-url="true"
+        class="btn"  style="background-color:#0d3b66" type="button">Edit</button>   
+    </td>
+{% endif %}

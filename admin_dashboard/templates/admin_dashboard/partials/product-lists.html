@@ -24,10 +24,13 @@
     <td>{{product.price}}</td>
     <td>{{product.category_name}}</td>
     <td>{{product.total_price}}</td>
-    <td style="display:flex; gap: var(--space-sm); align-items:center;">
+    <td style="display:flex; gap: var(--space-sm); align-items:center;" 
+    id="edit-delete-{{product.product_id}}"
+    >
         <button 
         hx-delete="{% url 'delete-post-single' product.product_id %}"
         hx-target=".table"
+        hx-swap="outerHTML"
         class="btn"  style="background-color:brown;" type="button">Delete</button>   
         <button
         hx-get="{% url 'edit-post-single' product.product_id %}"

@@ -245,7 +245,7 @@ def add_product_to_list_session_handler(images_wrapper_func):
                 "product_name":request.POST["product_name"],
                 "category_name": request.POST["category_name"],
                 "tag_name":request.POST["tag_name"],
-                "is_digital":request.POST["is_digital"],
+                "is_digital":request.POST.get("is_digital", "off"),
                 "quantity":request.POST["quantity"],
                 "size":request.POST["size"],
                 "color":request.POST["color"],
