@@ -31,6 +31,7 @@
         hx-delete="{% url 'delete-post-single' product.product_id %}"
         hx-target=".table"
         hx-swap="outerHTML"
+        hx-confirm="Are you sure you want to delete product {{product.product_name}}"
         class="btn"  style="background-color:brown;" type="button">Delete</button>   
         <button
         hx-get="{% url 'edit-post-single' product.product_id %}"
