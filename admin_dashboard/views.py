@@ -78,7 +78,7 @@ def create_product(request):
 def admin_product_add(request, context = None):
     
     categories = Category.objects.values("slug","name")
-    request.session.flush()
+    # request.session.flush()
     context.update( 
         {
         "active_page": "product-edit",
@@ -102,11 +102,7 @@ def add_product_to_list(request,context = None):
 def delete_product_from_list(request, id, context = None):  
     
     product_details = context["product_details"]
-    
-    # print("request.meta is = ",request.META.get("HTTP_REFERER"))
- 
-        
-            
+
     context["product_details"] = request.session["product_details"] = [product for product in \
         product_details if product["product_id"] != id ]
        
@@ -119,21 +115,17 @@ def edit_product_from_list(request, id):
     
     a_product_already_being_edited = None
     
+    
     for _product in request.session["product_details"]:
         if  _product != product  and  _product["is_being_edited"]:
-            print("a product already being edited initial, = ", _product)
             _product["is_being_edited"] = False
             request.session.modified = True
-            print("a product already being edited after, = ", _product)
             a_product_already_being_edited = _product
-            break
-        
+            break      
             
     context = {
         "categories" : Category.objects.values("slug","name")
     }
-
-    print("Product already being edited = ",a_product_already_being_edited)
     
     if a_product_already_being_edited:
         context["a_product_already_being_edited_id"] = a_product_already_being_edited["product_id"]
@@ -144,9 +136,12 @@ def edit_product_from_list(request, id):
         product["is_being_edited"] = True
         request.session["product_details"][index] = product
         request.session.modified = True
-        print("product details is = ",product)
         context["product"] = product
-    return render(request, "admin_dashboard/partials/add-product-form.html",context)
+        
+    if request.htmx:       
+        return render(request, "admin_dashboard/partials/add-product-form.html",context)
+    
+    return render(request, )
         
     
     
