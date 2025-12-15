@@ -103,11 +103,20 @@ def delete_product_from_list(request, id, context = None):
     
     product_details = context["product_details"]
     
-    print("product details is = ",product_details)
-    
+    # print("request.meta is = ",request.META.get("HTTP_REFERER"))
+ 
+        
+            
     context["product_details"] = request.session["product_details"] = [product for product in \
         product_details if product["product_id"] != id ]
 
+
+    print("request.meta is = ",request.META.get("HTTP_REFERER"))
+    if "edit-product" in request.META.get("HTTP_REFERER"):
+       product_id = request.META.get("HTTP_REFERER").split("/")[-1]
+       print(product_id)
+       context["from_edit_view"] = int(product_id)
+       
     return render(request, "admin_dashboard/partials/product-lists.html",context)           
 
 # EDIT PRODUCT 
@@ -117,6 +126,7 @@ def edit_product_from_list(request, id):
     context = {
         "categories" : Category.objects.values("slug","name")
     }
+    
     
     if product:
         context.update({
@@ -131,7 +141,8 @@ def edit_product_from_list(request, id):
                 "size":product["size"],
                 "color":product["color"],
                 "price":product["price"],
-                "description":product["description"]
+                "description":product["description"],
+                # "is_being_edited"
             }
         )
     return render(request, "admin_dashboard/partials/add-product-form.html",context)

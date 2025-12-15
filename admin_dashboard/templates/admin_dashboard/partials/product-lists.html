@@ -32,13 +32,25 @@
         hx-target=".table"
         hx-swap="outerHTML"
         hx-confirm="Are you sure you want to delete product {{product.product_name}}"
-        class="btn"  style="background-color:brown;" type="button">Delete</button>   
+        class="btn"
+        {% if from_edit_view %}
+        
+            {% if from_edit_view == product.product_id %}
+                style="background-color:brown;opacity:0.5" 
+                disabled
+            {% endif %}
+
+        {% else %}
+            style="background-color:brown;" 
+        {% endif %}
+        type="button">Delete</button>   
         <button
         hx-get="{% url 'edit-post-single' product.product_id %}"
         hx-target="#form"
         hx-swap="outerHTML show:window:top transition:true"
         hx-push-url="true"
-        class="btn"  style="background-color:#0d3b66" type="button">Edit</button>   
+        class="btn"  
+        style="background-color:#0d3b66" type="button">Edit</button>   
     </td>
     </tr>
     {% endfor %}
