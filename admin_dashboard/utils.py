@@ -296,10 +296,17 @@ def get_id(session_data):
     
 def _get_max_id(session_data):
     return max([product["product_id"] for product in session_data ], default=0)
-
     
 def get_product(request,id):
     for product in request.session["product_details"]:
         if product["product_id"] == id:
             return product
     return None
+
+
+def refix_editing_status(request):
+        for _product in request.session["product_details"]:
+            if  _product["is_being_edited"]:
+                _product["is_being_edited"] = False
+                request.session.modified = True
+            

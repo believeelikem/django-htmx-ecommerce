@@ -3,9 +3,10 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 from shop.views import product_detail
-from .utils import add_product_to_list_session_handler,\
-error_processor,attach_product_images,\
-get_table_total_price,get_product
+from .utils import (
+    add_product_to_list_session_handler,error_processor,
+    attach_product_images,get_product,refix_editing_status
+)
 from shop.models import  Product, ProductImage, Category
 from .models import TempImage
 from django.shortcuts import get_object_or_404
@@ -76,7 +77,7 @@ def create_product(request):
 # ADMIN-PRODUCT-ADD 
 @attach_product_images          
 def admin_product_add(request, context = None):
-    
+    refix_editing_status(request)
     categories = Category.objects.values("slug","name")
     # request.session.flush()
     context.update( 
@@ -141,7 +142,7 @@ def edit_product_from_list(request, id):
     if request.htmx:       
         return render(request, "admin_dashboard/partials/add-product-form.html",context)
     
-    return render(request, )
+    return render(request, "admin_dashboard/admin-product-add.html", context)
         
     
     
