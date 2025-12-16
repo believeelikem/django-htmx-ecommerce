@@ -80,6 +80,7 @@ def admin_product_add(request, context = None):
     refix_editing_status(request)
     categories = Category.objects.values("slug","name")
     # request.session.flush()
+    
     context.update( 
         {
         "active_page": "product-edit",
@@ -87,6 +88,7 @@ def admin_product_add(request, context = None):
         "is_create_view":True
         }
     )    
+    
     if  request.htmx:
         return render(request, "admin_dashboard/partials/admin-product-add.html",context)
 
@@ -130,7 +132,6 @@ def edit_product_from_list(request, id):
     
     if a_product_already_being_edited:
         context["a_product_already_being_edited_id"] = a_product_already_being_edited
-
         
     if product:
         index = request.session["product_details"].index(product)

@@ -29,6 +29,23 @@
   text-decoration: underline;
 }
 
+.current-image-preview > button{
+  padding: .3rem;
+  color:#0d3b66;
+  border-radius:1rem;
+  border: 2px solid #0d3b66;
+  background-color: #fffaf4;
+}
+
+.see-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;    
+    width: 4rem;  
+    
+}
+
+
 small{
   position: absolute;
   top: 98%;
@@ -38,7 +55,7 @@ small{
 }
 
 .btn.is_create_view{
-  margin-top: 1.5rem;
+  margin-top: 2.8rem;
 }
 
 .form__label {
