@@ -5,7 +5,8 @@ from django.shortcuts import render
 from shop.views import product_detail
 from .utils import (
     add_product_to_list_session_handler,error_processor,
-    attach_product_images,get_product,refix_editing_status
+    attach_product_images,get_product,refix_editing_status,
+    get_product_already_being_edited,set_product_editing_status
 )
 from shop.models import  Product, ProductImage, Category
 from .models import TempImage
@@ -113,18 +114,12 @@ def delete_product_from_list(request, id, context = None):
 
 
 # EDIT PRODUCT 
-def edit_product_from_list(request, id):
+def get_product_edit_form(request, id):
     product = get_product(request,id)
     
-    a_product_already_being_edited = None
-    
-    
-    for _product in request.session["product_details"]:
-        if  _product != product  and  _product["is_being_edited"]:
-            _product["is_being_edited"] = False
-            request.session.modified = True
-            a_product_already_being_edited = _product
-            break      
+    a_product_already_being_edited = get_product_already_being_edited(
+        request, new_product=product
+    )
             
     context = {
         "categories" : Category.objects.values("slug","name"),
@@ -133,13 +128,9 @@ def edit_product_from_list(request, id):
     
     if a_product_already_being_edited:
         context["a_product_already_being_edited_id"] = a_product_already_being_edited
-        
+                
     if product:
-        index = request.session["product_details"].index(product)
-        product["is_being_edited"] = True
-        request.session["product_details"][index] = product
-        request.session.modified = True
-        context["product"] = product
+        context["product"] = set_product_editing_status(request, product)
         
     if request.htmx:       
         return render(request, "admin_dashboard/partials/add-product-form.html",context)
@@ -150,7 +141,8 @@ def edit_product_from_list(request, id):
 def product_image_modal(request, id):
     image_url = get_product(request, id)["image_url"]
     
-    return render(request, "admin_dashboard/partials/product-image-modal.html", context={"image_url":image_url})
+    context={"image_url":image_url}
+    return render(request, "admin_dashboard/partials/product-image-modal.html", context)
       
     
 

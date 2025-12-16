@@ -245,7 +245,7 @@
                 class="btn"  style="background-color:brown;opacity:0.5" type="button">Delete</button>   
 
                 <button
-                hx-get="{% url 'edit-post-single' product.product_id %}"
+                hx-get="{% url 'get-product-edit-form' product.product_id %}"
                 hx-target="#form"
                 hx-swap="outerHTML show:window:top transition:true"
                 hx-push-url="true"
@@ -271,7 +271,7 @@
             class="btn"  style="background-color:brown" type="button">Delete</button>   
 
             <button
-            hx-get="{% url 'edit-post-single' a_product_already_being_edited_id.product_id %}"
+            hx-get="{% url 'get-product-edit-form' a_product_already_being_edited_id.product_id %}"
             hx-target="#form"
             hx-swap="outerHTML show:window:top transition:true"
             hx-push-url="true"

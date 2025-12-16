@@ -41,7 +41,7 @@
         {% endif %}
         type="button">Delete</button>   
         <button
-        hx-get="{% url 'edit-post-single' product.product_id %}"
+        hx-get="{% url 'get-product-edit-form' product.product_id %}"
         hx-target="#form"
         hx-swap="outerHTML transition:true show:window:top"
         hx-push-url="true"

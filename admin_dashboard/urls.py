@@ -19,7 +19,7 @@ htmx_patterns = [
     path("add-product-to-list/", views.add_product_to_list, name = "add-product-to-list"),
     path("create-product/", views.create_product, name = "create-product"),
     path("delete-product/<int:id>", views.delete_product_from_list, name = "delete-post-single"),
-    path("edit-product/<int:id>", views.edit_product_from_list, name = "edit-post-single"),
+    path("get-product-edit-form/<int:id>", views.get_product_edit_form, name = "get-product-edit-form"),
     path("modal/<int:id>", views.product_image_modal, name = "product-image-modal"),
 ]
 

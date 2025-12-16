@@ -310,3 +310,23 @@ def refix_editing_status(request):
                 _product["is_being_edited"] = False
                 request.session.modified = True
             
+def get_product_already_being_edited(request, new_product):
+    product_already_being_edited = None
+    for _product in request.session["product_details"]:
+        if  _product != new_product  and  _product["is_being_edited"]:
+            _product["is_being_edited"] = False
+            request.session.modified = True
+            product_already_being_edited = _product
+            break
+    return product_already_being_edited 
+
+def set_product_editing_status(request,product):
+        index = request.session["product_details"].index(product)
+        product["is_being_edited"] = True
+        request.session["product_details"][index] = product
+        request.session.modified = True
+        
+        return product
+
+        
+        
