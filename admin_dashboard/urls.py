@@ -20,6 +20,7 @@ htmx_patterns = [
     path("create-product/", views.create_product, name = "create-product"),
     path("delete-product/<int:id>", views.delete_product_from_list, name = "delete-post-single"),
     path("edit-product/<int:id>", views.edit_product_from_list, name = "edit-post-single"),
+    path("modal/<int:id>", views.product_image_modal, name = "product-image-modal"),
 ]
 
 urlpatterns += htmx_patterns

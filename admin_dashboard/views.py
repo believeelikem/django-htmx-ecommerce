@@ -145,7 +145,12 @@ def edit_product_from_list(request, id):
     
     return render(request, "admin_dashboard/admin-product-add.html", context)
         
+  
+def product_image_modal(request, id):
+    image_url = get_product(request, id)["image_url"]
     
+    return render(request, "admin_dashboard/partials/product-image-modal.html", context={"image_url":image_url})
+      
     
 
 
