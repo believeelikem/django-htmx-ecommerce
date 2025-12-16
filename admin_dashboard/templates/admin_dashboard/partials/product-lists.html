@@ -43,7 +43,7 @@
         <button
         hx-get="{% url 'edit-post-single' product.product_id %}"
         hx-target="#form"
-        hx-swap="outerHTML show:window:top transition:true"
+        hx-swap="outerHTML transition:true show:window:top"
         hx-push-url="true"
         class="btn"  
         style="background-color:#0d3b66" type="button">Edit</button>   
