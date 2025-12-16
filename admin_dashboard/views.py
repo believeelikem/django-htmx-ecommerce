@@ -128,7 +128,7 @@ def edit_product_from_list(request, id):
     }
     
     if a_product_already_being_edited:
-        context["a_product_already_being_edited_id"] = a_product_already_being_edited["product_id"]
+        context["a_product_already_being_edited_id"] = a_product_already_being_edited
 
         
     if product:

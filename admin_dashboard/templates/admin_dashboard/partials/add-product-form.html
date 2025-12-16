@@ -248,21 +248,21 @@
 
 {% if a_product_already_being_edited_id %}
     <table
-    id="edit-delete-{{a_product_already_being_edited_id}}"
+    id="edit-delete-{{a_product_already_being_edited_id.product_id}}"
     hx-swap-oob="true"
     >
         <td 
         style="display:flex; gap: var(--space-sm); align-items:center;"     
         >    
             <button 
-            hx-delete="{% url 'delete-post-single' a_product_already_being_edited_id %}"
+            hx-delete="{% url 'delete-post-single' a_product_already_being_edited_id.product_id %}"
             hx-target=".table"
             hx-swap="outerHTML"
-            hx-confirm="Are you sure you want to delete product {{a_product_already_being_edited_id}}"
+            hx-confirm="Are you sure you want to delete product {{a_product_already_being_edited_id.product_name}}"
             class="btn"  style="background-color:brown" type="button">Delete</button>   
 
             <button
-            hx-get="{% url 'edit-post-single' a_product_already_being_edited_id %}"
+            hx-get="{% url 'edit-post-single' a_product_already_being_edited_id.product_id %}"
             hx-target="#form"
             hx-swap="outerHTML show:window:top transition:true"
             hx-push-url="true"
