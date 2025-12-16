@@ -6,7 +6,8 @@ from shop.views import product_detail
 from .utils import (
     add_product_to_list_session_handler,error_processor,
     attach_product_images,get_product,refix_editing_status,
-    get_product_already_being_edited,set_product_editing_status
+    get_product_already_being_edited,set_product_editing_status,
+    product_update_in_list
 )
 from shop.models import  Product, ProductImage, Category
 from .models import TempImage
@@ -123,7 +124,8 @@ def get_product_edit_form(request, id):
             
     context = {
         "categories" : Category.objects.values("slug","name"),
-        "product_details":request.session["product_details"]
+        "product_details":request.session["product_details"],
+        "from_edit":True
     }
     
     if a_product_already_being_edited:
@@ -143,8 +145,10 @@ def product_image_modal(request, id):
     
     context={"image_url":image_url}
     return render(request, "admin_dashboard/partials/product-image-modal.html", context)
-      
-    
+
+
+def save_product_update_to_list(request, id):
+    pass  
 
 
 

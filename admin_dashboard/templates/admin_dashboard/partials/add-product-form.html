@@ -212,18 +212,34 @@
             </div>
         {% endif %}
 
-    <button
-        id="add-btn-1"
-        style=" transform:scale(1.1); transition: all .5s ease;"
-        {% if is_create_view %}
-            class="btn" 
-        {% else %}
-            class="btn is_create_view"
-        {% endif %}
-        type="submit"
-        class="btn"
-        >Add to list</button>
-    <!-- <a class="btn btn--ghost" href="{% url 'admin-products' %}">Cancel</a> -->
+    
+    {% if from_edit %}
+        <button
+            id="add-btn-1"
+            style=" transform:scale(1.1); transition: all .5s ease;"
+            hx-vals='{"product_id": {{ product.product_id }} }'
+            {% if is_create_view %}
+                class="btn" 
+            {% else %}
+                class="btn is_edit_view"
+            {% endif %}
+            type="submit"
+            class="btn"
+            >Update List</button>
+    {% else %}
+
+        <button
+            id="add-btn-1"
+            style=" transform:scale(1.1); transition: all .5s ease;"
+            {% if is_create_view %}
+                class="btn" 
+            {% else %}
+                class="btn is_edit_view"
+            {% endif %}
+            type="submit"
+            class="btn"
+            >Add to list</button>
+    {% endif %}
     </div>
 
 </form>

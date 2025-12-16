@@ -328,5 +328,45 @@ def set_product_editing_status(request,product):
         
         return product
 
+
+
+def product_update_in_list(images_wrapper_func):
+    def product_update_details_wrapper(request, id):
+        if request.POST.get("product_id"):
+            old_product = get_product(request, id)
+            
+            temp_image = TempImage(temp_image = request.FILES["product_image"])
+            temp_image.save()
+            
+            new_product = {
+                {
+                    "product_id": old_product.product_id,
+                    "product_image_id":temp_image.id,
+                    "product_name":request.POST["product_name"],
+                    "category_name": request.POST["category_name"],
+                    "tag_name":request.POST["tag_name"],
+                    "is_digital":request.POST.get("is_digital", "off"),
+                    "quantity":request.POST["quantity"],
+                    "size":request.POST["size"],
+                    "color":request.POST["color"],
+                    "price":request.POST["price"],
+                    "description":request.POST["description"],
+                    "is_being_edited":False
+                }
+            }
         
+            old_product_index = request.session["product_details"].index(old_product)
+            request.session["product_details"][old_product_index] = new_product
+            request.session.modified = True
+            
+            return images_wrapper_func(request)
+            
+    return product_update_details_wrapper
+        
+        
+
+        
+        
+        
+    
         
