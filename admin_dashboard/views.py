@@ -127,7 +127,8 @@ def edit_product_from_list(request, id):
             break      
             
     context = {
-        "categories" : Category.objects.values("slug","name")
+        "categories" : Category.objects.values("slug","name"),
+        "product_details":request.session["product_details"]
     }
     
     if a_product_already_being_edited:

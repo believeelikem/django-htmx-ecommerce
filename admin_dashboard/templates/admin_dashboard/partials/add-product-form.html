@@ -228,29 +228,31 @@
 
 </form>
 
-{% if not is_create_view %}
-    <table
-    id="edit-delete-{{product.product_id}}"
-    hx-swap-oob="true"
-    >
-        <td 
-        style="display:flex; gap: var(--space-sm); align-items:center;"     
-        >    
-            <button 
-            hx-delete="{% url 'delete-post-single' product.product_id %}"
-            hx-target=".table"
-            hx-swap="outerHTML"
-            disabled
-            class="btn"  style="background-color:brown;opacity:0.5" type="button">Delete</button>   
+{% if request.htmx %}
+    {% if not is_create_view %}
+        <table
+        id="edit-delete-{{product.product_id}}"
+        hx-swap-oob="true"
+        >
+            <td 
+            style="display:flex; gap: var(--space-sm); align-items:center;"     
+            >    
+                <button 
+                hx-delete="{% url 'delete-post-single' product.product_id %}"
+                hx-target=".table"
+                hx-swap="outerHTML"
+                disabled
+                class="btn"  style="background-color:brown;opacity:0.5" type="button">Delete</button>   
 
-            <button
-            hx-get="{% url 'edit-post-single' product.product_id %}"
-            hx-target="#form"
-            hx-swap="outerHTML show:window:top transition:true"
-            hx-push-url="true"
-            class="btn"  style="background-color:#0d3b66" type="button">Edit</button>   
-        </td>
-    </table>
+                <button
+                hx-get="{% url 'edit-post-single' product.product_id %}"
+                hx-target="#form"
+                hx-swap="outerHTML show:window:top transition:true"
+                hx-push-url="true"
+                class="btn"  style="background-color:#0d3b66" type="button">Edit</button>   
+            </td>
+        </table>
+    {% endif %}
 {% endif %}
 
 {% if a_product_already_being_edited_id %}
