@@ -29,6 +29,7 @@ def error_processor(view_func):
                 css_class = "tag"
                 
             elif "quantity" in request.GET:
+                print("Hit here at 1:34")
                 error_message = validate_quantity(request.GET["quantity"])
                 css_class = "quantity"
                 
@@ -52,13 +53,21 @@ def error_processor(view_func):
             else:
                 error_message = "Unknown error"
         elif request.method == "POST":
-            print("product_image in request.FILES = ","product_image" in request.FILES)
             if "product_image" in request.FILES:
-                print(f"File attr is {request.FILES}")
                 error_message = validate_product_image(request.FILES["product_image"])
+                
+                    
+            if request.POST.get("product_id",""):
+                error_message = {
+                    "error_message":error_message,
+                    "product_id":request.POST.get("product_id"),
+                    "new_image_chosen": True if "product_image" in request.FILES else False
+                }
+                      
             css_class = "image"
             
-        print("css class is ", css_class)        
+            
+            
         return view_func(request, error_message = error_message, css_class = css_class)   
             
     return inner

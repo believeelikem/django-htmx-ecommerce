@@ -181,6 +181,11 @@
         hx-target=".product-errors-image"
         hx-encoding="multipart/form-data"
         hx-swap="outerHTML"
+
+        {% if "edit" in request.META.HTTP_REFERER %}
+            hx-vals='{"product_id": {{product.product_id}}}'
+        {% endif %}
+        
         {% if is_create_view %}required {% endif %}
         name="product_image"  id="image-file" class="form__control" type="file">
         <small style="color: red;" class="product-errors-image">
@@ -207,12 +212,13 @@
 
     <div class="profile__actions" style="justify-content:flex-end;">
         {% if product.image_url %}
-            <div class="current-image-preview">
+            <div id = "cur-img-preview" class="current-image-preview">
                 <button 
                 type="button"
                 class="see-btn"
                 hx-get="{% url 'product-image-modal' product.product_id %}"
                 hx-target="body"
+
                 hx-swap="beforeend"
                 > See
                 </button>

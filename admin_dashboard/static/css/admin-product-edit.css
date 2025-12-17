@@ -12,6 +12,10 @@
 
 }
 
+/* .product-errors{
+  color: red;
+} */
+
 .profile__actions{
   position: relative;
 }
@@ -66,7 +70,7 @@ small{
 }
 
 .btn.is_edit_view{
-  margin-top: 2.8rem;
+  margin-top: 3.1rem;
 }
 
 

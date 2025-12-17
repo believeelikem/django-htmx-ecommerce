@@ -1,3 +1,4 @@
+from hmac import new
 import re
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -63,12 +64,31 @@ def admin_products(request):
 #VALIDATE INPUTS
 @error_processor
 def validate_product_add_error(request, error_message = "", css_class = ""):
+    new_image_chosen = False
+    product = None
+    # error_message = error_message
+    
+    if isinstance(error_message, dict):
+        print("error is = ",error_message)
+        new_image_chosen = error_message["new_image_chosen"]
+        product = get_product(request, int(error_message["product_id"]))
+        error_message = error_message["error_message"]
+        
     
     context = {
         "btn_is_valid":request.headers.get('HX-Request'),
         "message":error_message,
         "class":css_class
     }
+    
+    if new_image_chosen:
+        context.update({"new_image_chosen":True})
+        
+    
+    context.update({
+            "product":product
+        })
+        
     return render(request, "admin_dashboard/partials/product-add-errors.html", context)   
    
 def create_product(request):

@@ -2,6 +2,43 @@
     {{message}}
 </small>
 
-<!-- {% if btn_is_valid %}
-<button class="btn" style="opacity:1" id="add-btn-1" type="submit" hx-swap-oob="true">Add to list</button>
-{% endif %} -->
+{%  if product %}
+    {% if new_image_chosen %}
+        <div 
+        id = "cur-img-preview" 
+        class="current-image-preview"
+        hx-swap-oob="true"
+        >
+            <!-- <button 
+            type="button"
+            class="see-btn"
+            hx-get="{% url 'product-image-modal' product.product_id %}"
+            hx-target="body"
+            hx-swap="beforeend"
+            style="opacity: 0.3;"
+            disabled
+            > See
+            </button> -->
+            <p 
+            style="padding-bottom:1rem"
+            class="form__hint">Newly Selected Image will be used </p>
+        </div>
+    {% else %}
+        <div 
+        id = "cur-img-preview" 
+        class="current-image-preview"
+        hx-swap-oob="true"
+        >
+            <button 
+            type="button"
+            class="see-btn"
+            hx-get="{% url 'product-image-modal' product.product_id %}"
+            hx-target="body"
+            hx-swap="beforeend"
+            > See
+            </button>
+            <p 
+            class="form__hint">Leave this field empty to keep the current image.</p>
+        </div>
+    {% endif %}
+{% endif %}
