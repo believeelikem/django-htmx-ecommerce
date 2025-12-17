@@ -56,9 +56,9 @@ def error_processor(view_func):
             if "product_image" in request.FILES:
                 print(f"File attr is {request.FILES}")
                 error_message = validate_product_image(request.FILES["product_image"])
-                css_class = "image"
+            css_class = "image"
             
-                
+        print("css class is ", css_class)        
         return view_func(request, error_message = error_message, css_class = css_class)   
             
     return inner
@@ -223,8 +223,6 @@ def classify_number_value(s):
         return 'Not a number'
 
 
-
-
 def add_product_to_list_session_handler(images_wrapper_func):
     def product_details_wrapper(request):
         temp_image = TempImage(temp_image = request.FILES["product_image"])
@@ -269,8 +267,11 @@ def attach_product_images(view_func):
             context = {"product_details": request.session["product_details"] .copy()}
             for product in context["product_details"]:
                 product["total_price"] = f"{float(product['price']) * float(product['quantity']):,.2f}"
+                
                 try:
-                    product["image_url"] = get_object_or_404(TempImage, id = product["product_image_id"]).temp_image.url
+                    product["image_url"] = get_object_or_404(TempImage, id = \
+                    product["product_image_id"]).temp_image.url
+                    
                 except TempImage.DoesNotExist as e:
                     print("Didnt find image")
                     print(e)
@@ -279,7 +280,7 @@ def attach_product_images(view_func):
         
         if request.method == "DELETE":
             return view_func(request,id = id, context = context)
-        
+       
         return view_func(request, context)
     return attach_images_wrapper
 
@@ -298,7 +299,7 @@ def _get_max_id(session_data):
     return max([product["product_id"] for product in session_data ], default=0)
     
 def get_product(request,id):
-    for product in request.session["product_details"]:
+    for product in request.session["product_details"]:        
         if product["product_id"] == id:
             return product
     return None
@@ -329,19 +330,27 @@ def set_product_editing_status(request,product):
         return product
 
 
-
 def product_update_in_list(images_wrapper_func):
-    def product_update_details_wrapper(request, id):
-        if request.POST.get("product_id"):
-            old_product = get_product(request, id)
+    def product_update_details_wrapper(request):
+        to_be_edited_product_id = request.POST.get("product_id")
+     
+        if to_be_edited_product_id:
+            to_be_edited_product = get_product(request, int(to_be_edited_product_id))
             
-            temp_image = TempImage(temp_image = request.FILES["product_image"])
-            temp_image.save()
+            image_id = None
             
-            new_product = {
-                {
-                    "product_id": old_product.product_id,
-                    "product_image_id":temp_image.id,
+            if "product_image" in request.FILES:               
+                temp_image = TempImage(temp_image = request.FILES["product_image"])    
+                temp_image.save()
+                image_id = temp_image.id  
+                                             
+            else:
+                image_id = to_be_edited_product["product_image_id"]
+                                             
+            new_product_details = {
+                
+                    "product_id": to_be_edited_product["product_id"],
+                    "product_image_id":image_id,
                     "product_name":request.POST["product_name"],
                     "category_name": request.POST["category_name"],
                     "tag_name":request.POST["tag_name"],
@@ -352,15 +361,19 @@ def product_update_in_list(images_wrapper_func):
                     "price":request.POST["price"],
                     "description":request.POST["description"],
                     "is_being_edited":False
-                }
+                
             }
-        
-            old_product_index = request.session["product_details"].index(old_product)
-            request.session["product_details"][old_product_index] = new_product
+            
+            to_be_edited_product_index = request.session["product_details"].index(
+                to_be_edited_product
+            )
+            request.session["product_details"][to_be_edited_product_index] = new_product_details
             request.session.modified = True
             
             return images_wrapper_func(request)
-            
+        else:
+            print("Theres no id")
+        
     return product_update_details_wrapper
         
         

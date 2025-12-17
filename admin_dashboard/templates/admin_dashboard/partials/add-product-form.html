@@ -1,6 +1,14 @@
 <form id = "form" class="card" method=""
     enctype="multipart/form-data"
-    hx-post="{% url 'add-product-to-list' %}"
+
+
+    {% if from_edit %}
+        hx-post="{% url 'save-product-update-to-list' %}"
+        hx-vals='{"product_id": {{ product.product_id }} }'
+    {% else %}
+        hx-post="{% url 'add-product-to-list' %}"
+    {% endif %}
+
     hx-trigger="submit"
     hx-target=".customers-table"
     hx-swap="innerHTML transition:true"
@@ -217,7 +225,6 @@
         <button
             id="add-btn-1"
             style=" transform:scale(1.1); transition: all .5s ease;"
-            hx-vals='{"product_id": {{ product.product_id }} }'
             {% if is_create_view %}
                 class="btn" 
             {% else %}

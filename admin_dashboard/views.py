@@ -63,7 +63,6 @@ def admin_products(request):
 #VALIDATE INPUTS
 @error_processor
 def validate_product_add_error(request, error_message = "", css_class = ""):
-    print(request.headers.get("HX-Target"))
     
     context = {
         "btn_is_valid":request.headers.get('HX-Request'),
@@ -113,7 +112,6 @@ def delete_product_from_list(request, id, context = None):
        
     return render(request, "admin_dashboard/partials/product-lists.html",context)           
 
-
 # EDIT PRODUCT 
 def get_product_edit_form(request, id):
     product = get_product(request,id)
@@ -139,7 +137,7 @@ def get_product_edit_form(request, id):
     
     return render(request, "admin_dashboard/admin-product-add.html", context)
         
-  
+# PRODUCT IMAGE MODAL
 def product_image_modal(request, id):
     image_url = get_product(request, id)["image_url"]
     
@@ -147,10 +145,11 @@ def product_image_modal(request, id):
     return render(request, "admin_dashboard/partials/product-image-modal.html", context)
 
 
-def save_product_update_to_list(request, id):
-    pass  
-
-
+# PRODUCT UPDATE-SAVE
+@product_update_in_list
+@attach_product_images
+def save_product_update_to_list(request, context = None):
+    return render(request, "admin_dashboard/partials/product-lists.html", context)
 
 def admin_customers(request):
     if  request.htmx:

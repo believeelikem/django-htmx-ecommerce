@@ -9,7 +9,7 @@ class TempImage(models.Model):
     def save(self):
         super().save()
         img = Image.open(self.temp_image.path)
-        if img.height > 1000 or img.width > 1000:
-            output_size = (1000,1000)
+        if img.height > 900 or img.width > 900:
+            output_size = (900,900)
             img.thumbnail(output_size)
             img.save(self.temp_image.path)
