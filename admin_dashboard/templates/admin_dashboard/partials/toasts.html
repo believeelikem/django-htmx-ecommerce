@@ -5,7 +5,7 @@
         {{ message }}
 
         <a 
-        hx-target=".toast"
+        hx-target="closest .toast"
         hx-delete="{% url 'cancel-toast' %}"
         hx-swap="outerHTML"
         style="color: white;font-weight:900"> &#10005; </a>

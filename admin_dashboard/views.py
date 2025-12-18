@@ -182,7 +182,6 @@ def cancel_toast(request):
     return render(request,"admin_dashboard/partials/cancel_toast.html")
 
 
-
 def admin_customers(request):
     if  request.htmx:
         context = {"active_page": "customers"}
