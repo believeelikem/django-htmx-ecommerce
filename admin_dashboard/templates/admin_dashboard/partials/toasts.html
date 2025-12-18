@@ -3,6 +3,12 @@
     {% for message in messages %}
       <div class="toast toast--{{ message.tags }}">
         {{ message }}
+
+        <a 
+        hx-target=".toast"
+        hx-delete="{% url 'cancel-toast' %}"
+        hx-swap="outerHTML"
+        style="color: white;font-weight:900"> &#10005; </a>
       </div>
     {% endfor %}
   </div>

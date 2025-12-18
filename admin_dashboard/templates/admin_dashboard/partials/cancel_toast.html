@@ -1,0 +1,8 @@
+<div class="toast toast--{{ message.tags }}">
+    {{ message }}
+    <a 
+    hx-target=".toast"
+    hx-delete="{% url 'cancel-toast' %}"
+    hx-swap="outerHTML"
+    style="color: white;font-weight:700;display:none;"> &#10005; </a>
+</div>

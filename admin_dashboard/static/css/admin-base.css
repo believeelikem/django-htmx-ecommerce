@@ -149,7 +149,7 @@ img {
 }
 
 .toast {
-  background: #0f172a;
+  /* background: #0f172a; */
   color: #fff;
   padding: 0.75rem 1rem;
   border-radius: 6px;
@@ -160,6 +160,7 @@ img {
 .toast--success { background: #065f46; }
 .toast--error   { background: #7f1d1d; }
 .toast--warning { background: #92400e; }
+.toast--info    {background:rgb(24, 165, 212);}
 
 .toast {
   animation: fadeOut 4s forwards;

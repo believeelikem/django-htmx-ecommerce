@@ -132,6 +132,8 @@ def delete_product_from_list(request, id, context = None):
 
     context["product_details"] = request.session["product_details"] = [product for product in \
         product_details if product["product_id"] != id ]
+    
+    messages.error(request, "Product deleted successfully")
        
     return render(request, "admin_dashboard/partials/product-lists.html",context)           
 
@@ -172,7 +174,14 @@ def product_image_modal(request, id):
 @product_update_in_list
 @attach_product_images
 def save_product_update_to_list(request, context = None):
+    messages.info(request, "Product edited successfully")
     return render(request, "admin_dashboard/partials/product-lists.html", context)
+
+
+def cancel_toast(request):
+    return render(request,"admin_dashboard/partials/cancel_toast.html")
+
+
 
 def admin_customers(request):
     if  request.htmx:
