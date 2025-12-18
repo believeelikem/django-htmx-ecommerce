@@ -64,6 +64,7 @@ img {
   background: var(--admin-bg);
 }
 
+
 .sidebar-toggle {
   position: absolute;
   opacity: 0;
@@ -136,6 +137,43 @@ img {
   font-weight: 700;
   justify-content: center;
 }
+
+
+/* ------- TOAST --------- */
+
+#toast-container {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 9999;
+}
+
+.toast {
+  background: #0f172a;
+  color: #fff;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+  box-shadow: 0 10px 20px rgba(0,0,0,.2);
+}
+
+.toast--success { background: #065f46; }
+.toast--error   { background: #7f1d1d; }
+.toast--warning { background: #92400e; }
+
+.toast {
+  animation: fadeOut 4s forwards;
+}
+
+@keyframes fadeOut {
+  0%   { opacity: 1 }
+  80%  { opacity: 1 }
+  100% { opacity: 0 }
+}
+
+
+
+/* -------ENDTOAST -------- */
 
 .admin-layout__main {
   display: grid;

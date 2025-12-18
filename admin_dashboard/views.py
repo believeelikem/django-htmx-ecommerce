@@ -1,7 +1,7 @@
 from hmac import new
 import re
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
 from shop.views import product_detail
 from .utils import (
@@ -13,6 +13,7 @@ from .utils import (
 from shop.models import  Product, ProductImage, Category
 from .models import TempImage
 from django.shortcuts import get_object_or_404
+from django.contrib import messages
 
 
 def admin_dashboard(request):
@@ -110,6 +111,7 @@ def admin_product_add(request, context = None):
         }
     )    
     
+    
     if  request.htmx:
         return render(request, "admin_dashboard/partials/admin-product-add.html",context)
 
@@ -119,6 +121,7 @@ def admin_product_add(request, context = None):
 @add_product_to_list_session_handler
 @attach_product_images
 def add_product_to_list(request,context = None):
+    messages.success(request, "Product added successfully")
     return render(request, "admin_dashboard/partials/product-lists.html", context)
 
 #DELETE PRODUCT

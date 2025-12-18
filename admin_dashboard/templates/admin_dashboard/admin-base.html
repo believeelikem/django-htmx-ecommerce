@@ -12,6 +12,10 @@
 </head>
  
 <body hx-headers='{"x-csrftoken": "{{ csrf_token }}"}' >
+  <div id="toast-container">
+      {% include "admin_dashboard/partials/toasts.html" %}
+  </div>
+
   <input class="sidebar-toggle" type="checkbox" id="sidebar-toggle">
   <div class="admin-layout">
     <aside class="admin-layout__sidebar">
