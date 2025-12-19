@@ -55,7 +55,13 @@ id="product-listings-table"
     {% endfor %}
     <tr>
     <td style="display:flex; gap: var(--space-sm); align-items:center;">
-        <button class="btn" type="button">Save all</button>
+        <button 
+        class="btn" 
+        type="button"
+        hx-post="{% url 'save-products-to-db' %}"
+        hx-target="#product-listings-table"
+        hx-swap="outerHTML"       
+        >Save all</button>
     </td>
     <td><button style="background-color:brown;"
         class="btn" 

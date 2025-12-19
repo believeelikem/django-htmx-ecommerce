@@ -91,10 +91,6 @@ def validate_product_add_error(request, error_message = "", css_class = ""):
         })
         
     return render(request, "admin_dashboard/partials/product-add-errors.html", context)   
-   
-def create_product(request):
-    if request.method == "POST":
-        print(request.POST)
  
 # ADMIN-PRODUCT-ADD 
 @attach_product_images          
@@ -187,17 +183,11 @@ def clear_all_products_from_list(request):
     request.session.flush()
     return render(request, "admin_dashboard/partials/product-lists.html")
 
-
-
-
 def cancel_toast(request):
     return render(request,"admin_dashboard/partials/cancel_toast.html")
 
-
-
-
-
-
+def save_products_to_db(request):
+    ...
 
 def admin_customers(request):
     if  request.htmx:

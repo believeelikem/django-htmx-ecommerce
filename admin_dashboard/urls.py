@@ -17,7 +17,6 @@ urlpatterns = [
 htmx_patterns = [
     path("validate/", views.validate_product_add_error, name="validate-product-error"),
     path("add-product-to-list/", views.add_product_to_list, name = "add-product-to-list"),
-    path("create-product/", views.create_product, name = "create-product"),
     path("delete-product/<int:id>", views.delete_product_from_list, name = "delete-post-single"),
     path("get-product-edit-form/<int:id>", views.get_product_edit_form, name = "get-product-edit-form"),
     path("modal/<int:id>", views.product_image_modal, name = "product-image-modal"),
@@ -30,6 +29,9 @@ htmx_patterns = [
         "clear-all-products-from-list/", views.clear_all_products_from_list,
         name="clear-all-products-from-list"
     ),
+    path(
+        "save-products-to-db", views.save_products_to_db, name= "save-products-to-db"
+    )
 ]
 
 urlpatterns += htmx_patterns
