@@ -312,7 +312,14 @@ hx-swap-oob="true"
     <td style="display:flex; gap: var(--space-sm); align-items:center;">
         <button class="btn" type="button">Save all</button>
     </td>
-    <td><button style="background-color:brown;" class="btn" type="button">Clear All</button></td>
+    <td><button 
+        style="background-color:brown;" 
+        class="btn" 
+        type="button"
+        hx-delete="{% url 'clear-all-products-from-list' %}"
+        hx-target="#product-listings-table"
+        hx-swap="outerHTML"
+        >Clear All</button></td>
     <td></td>
     <td> </td>
     <td> Total price:</td>

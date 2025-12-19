@@ -99,7 +99,8 @@ def create_product(request):
 # ADMIN-PRODUCT-ADD 
 @attach_product_images          
 def admin_product_add(request, context = None):
-    refix_editing_status(request)
+    if "product_details" in request.session:    
+        refix_editing_status(request)
     categories = Category.objects.values("slug","name")
     # request.session.flush()
     
@@ -182,8 +183,20 @@ def save_product_update_to_list(request, context = None):
     messages.info(request, "Product edited successfully")
     return render(request, "admin_dashboard/partials/product-lists.html", context)
 
+def clear_all_products_from_list(request):   
+    request.session.flush()
+    return render(request, "admin_dashboard/partials/product-lists.html")
+
+
+
+
 def cancel_toast(request):
     return render(request,"admin_dashboard/partials/cancel_toast.html")
+
+
+
+
+
 
 
 def admin_customers(request):

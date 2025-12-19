@@ -25,7 +25,11 @@ htmx_patterns = [
         "save-product-update-to-list/", views.save_product_update_to_list, 
         name="save-product-update-to-list"
     ),
-    path("cancel-toast/", views.cancel_toast, name="cancel-toast")
+    path("cancel-toast/", views.cancel_toast, name="cancel-toast"),
+    path(
+        "clear-all-products-from-list/", views.clear_all_products_from_list,
+        name="clear-all-products-from-list"
+    ),
 ]
 
 urlpatterns += htmx_patterns
