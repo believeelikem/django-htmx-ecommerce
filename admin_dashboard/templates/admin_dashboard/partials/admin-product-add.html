@@ -16,11 +16,11 @@
   <main class="section">
     {% include "admin_dashboard/partials/add-product-form.html" %}
 
-    <div style="margin-top: 20px;" class="card customers-table">
-      {% include "admin_dashboard/partials/product-lists.html" %}
+    <div id="product-listings-wrapper" style="margin-top: 20px;" class="card customers-table">
+      {% include "admin_dashboard/partials/_product-lists.html" %}
     </div>
   </main>
-  
+ 
 {% if request.htmx %}
   {% include 'admin_dashboard/partials/nav.html'%}
 {% endif %}

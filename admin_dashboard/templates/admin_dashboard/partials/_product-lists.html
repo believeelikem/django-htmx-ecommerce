@@ -1,0 +1,77 @@
+<table 
+class="table" 
+id="product-listings-table"
+>
+<thead>
+    <tr>
+    <th>Image</th>
+    <th>Size</th>
+    <th>color</th>
+    <th>quantity</th>
+    <th>unit price</th>
+    <th>category</th>
+    <th>unit total price</th>
+    <th>Actions</th>
+    </tr>
+</thead>
+{% if product_details|length > 0 %}
+<tbody>
+    {% for product in product_details %}
+    <tr>
+    <td style="display:flex; gap: var(--space-sm); align-items:center;">
+        <img width="25px"  src="{{product.image_url}}" alt="Sofia">
+    </td>
+    <td>{{product.size}}</td>
+    <td>{{product.color}}</td>
+    <td>{{product.quantity}}</td>
+    <td>{{product.price}}</td>
+    <td>{{product.category_name}}</td>
+    <td>{{product.total_price}}</td>
+    <td style="display:flex; gap: var(--space-sm); align-items:center;" 
+    id="edit-delete-{{product.product_id}}"
+    >
+        <button 
+        hx-delete="{% url 'delete-post-single' product.product_id %}"
+        hx-target=".table"
+        hx-swap="outerHTML"
+        hx-confirm="Are you sure you want to delete product {{product.product_name}}"
+        class="btn"  
+        {% if product.is_being_edited %}
+            style="background-color:brown;opacity:0.5" 
+            disabled            
+        {% else %}
+            style="background-color:brown;" 
+        {% endif %}
+        type="button">Delete</button>   
+        <button
+        hx-get="{% url 'get-product-edit-form' product.product_id %}"
+        hx-target="#form"
+        hx-swap="outerHTML transition:true show:window:top"
+        hx-push-url="true"
+        class="btn"  
+        style="background-color:#0d3b66" type="button">Edit</button>   
+    </td>
+    </tr>
+    {% endfor %}
+    <tr>
+    <td style="display:flex; gap: var(--space-sm); align-items:center;">
+        <button class="btn" type="button">Save all</button>
+    </td>
+    <td><button style="background-color:brown;" class="btn" type="button">Clear All</button></td>
+    <td></td>
+    <td> </td>
+    <td> Total price:</td>
+    <td> ${{total_price}}</td>
+    <!-- <td class="table__actions">
+    </td> -->
+    </tr>
+
+</tbody>
+</table>
+{% else %}
+<tr>
+    <td style="color: red;">
+        No products added yet
+    </td>
+</tr>
+{% endif %}

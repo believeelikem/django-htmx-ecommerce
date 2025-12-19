@@ -1,4 +1,262 @@
-<table class="table" >
+<form id = "form" class="card" method=""
+    enctype="multipart/form-data"
+    {% if from_edit %}
+        hx-post="{% url 'save-product-update-to-list' %}"
+        hx-vals='{"product_id": {{ product.product_id }} }'
+    {% else %}
+        hx-post="{% url 'add-product-to-list' %}"
+    {% endif %}
+    hx-trigger="submit"
+    hx-swap="innerHTML transition:true"
+    >
+    <div class="form-grid">
+    <div class="form__group">
+        <!-------   PRODUCT NAME    ------->
+        <label class="form__label" for="name">Product name</label>
+        <input 
+        hx-get="{% url 'validate-product-error' %}"
+        hx-trigger="keyup changed delay:300ms"
+        hx-target=".product-errors-name"
+        hx-swap="outerHTML"
+        required
+
+        {% if product.product_name %}
+            value="{{product.product_name}}"
+        {% endif %}
+
+        id="product_name" placeholder="enter product name" name="product_name" class="form__control" type="text" >
+        <small style="color: red;" class="product-errors-name">
+        </small>        
+    </div>
+    
+    <!-------   PRODUCT CATEGORY   ------->
+    <div class="form__group">
+        <label class="form__label" for="category">Category</label>
+        <select 
+        hx-get="{% url 'validate-product-error' %}"
+        hx-trigger="keyup changed delay:300ms"
+        hx-target=".product-errors"
+        hx-swap="outerHTML"
+        required
+        id="category" class="form__control" name="category_name">
+        <option value="">Select Category </option>
+        {% for category in categories %}
+            <option value="{{category.slug}}" 
+
+            {% if product.category_name %}
+                {%  if product.category_name == category.name %} selected {% endif %}
+            {% endif %}
+
+             > {{category.name}}</option>
+
+        {% endfor %}
+        </select>
+        <small style="color: red;" class="product-errors-category">
+        </small>
+    </div>
+
+    <!-------   PRODUCT TAG   ------->
+    <div class="form__group">
+        <label class="form__label" for="tags">Tags</label>
+        <input 
+        hx-get="{% url 'validate-product-error' %}"
+        hx-trigger="keyup changed delay:300ms"
+        hx-target=".product-errors-tag"
+        hx-swap="outerHTML"
+        required
+        name="tag_name" placeholder="enter tags" id="tags" class="form__control" type="text" 
+            {% if product.tag_name %} 
+            value="{{product.tag_name}}"
+            {% endif %}
+        >
+        <small style="color: red;" class="product-errors-tag">
+        </small>
+    </div>
+
+    <!-------   PRODUCT IS-DIGITAL   ------->
+    <div class="form__group" style="display:flex; gap: var(--space-sm); align-items:center;">
+        <input name="is_digital" id="is_digital" 
+        type="checkbox" 
+
+        {% if product.is_digital %}
+            {% if product.is_digital == "on" %}
+                checked
+            {% endif %}
+        {% endif %}
+
+        >
+        <label for="is_digital">Is digital(wont' be shipped)</label>
+    </div>
+    
+    </div>
+    
+    <!-------   PRODUCT QUANTITY   ------->
+    <div class="form-grid">
+    <div class="form__group">
+        <label class="form__label" for="quantity">Quantity</label>
+        <input
+        hx-get="{% url 'validate-product-error' %}"
+        hx-trigger="keyup changed delay:300ms"
+        hx-target=".product-errors-quantity"
+        hx-swap="outerHTML"   
+        required       
+        name="quantity" placeholder="enter product quantity" id="quantity" class="form__control" type="text" pattern="[0-9]+" 
+        {% if product.quantity %}
+            value="{{product.quantity}}" 
+        {% endif %}
+        >
+        <small style="color: red;" class="product-errors-quantity">
+        </small>        
+    </div>
+
+    <!-------   PRODUCT SIZE   ------->
+    <div class="form__group">
+        <label class="form__label" for="size">Size</label>
+        <input 
+        hx-get="{% url 'validate-product-error' %}"
+        hx-trigger="keyup changed delay:300ms"
+        hx-target=".product-errors-size"
+        hx-swap="outerHTML"  
+        required       
+        name="size" id="size" placeholder="enter product size" class="form__control" type="text" 
+        {% if product.size %}
+            value="{{product.size}}"
+        {% endif %}
+        >
+        <small style="color: red;" class="product-errors-size">
+        </small>
+    </div>
+
+    <!-------   PRODUCT COLOR   ------->
+    <div class="form__group">
+        <label class="form__label" for="colors">Colors</label>
+        <input
+        hx-get="{% url 'validate-product-error' %}"
+        hx-trigger="keyup changed delay:300ms"
+        hx-target=".product-errors-color"
+        hx-swap="outerHTML"
+        required
+        name="color" placeholder="enter product color" id="colors" class="form__control" type="text" 
+        
+        {% if product.color %}
+            value="{{product.color}}"
+        {% endif %}
+        >
+        <small style="color: red;" class="product-errors-color">
+        </small>
+    </div>
+
+    <!-------   PRODUCT PRICE  ------->
+    <div class="form__group">
+        <label class="form__label" for="price">Price</label>
+        <input
+        hx-get="{% url 'validate-product-error' %}"
+        hx-trigger="keyup changed delay:300ms"
+        hx-target=".product-errors-price"
+        hx-swap="outerHTML"
+        required
+        name="price" placeholder="enter product price" id="price" class="form__control" type="text" 
+        
+        {% if product.price %}
+            value="{{product.price}}"
+        {% endif %}
+        >
+        <small style="color: red;" class="product-errors-price">
+        </small>
+    </div>
+    </div>
+
+    <!-------   PRODUCT IMAGE   ------->
+    <div class="form-grid">
+    <div class="form__group" >
+        <label class="form__label" for="image-file">Upload image</label>
+
+        <input 
+        hx-post="{% url 'validate-product-error' %}"
+        hx-trigger="change"
+        hx-target=".product-errors-image"
+        hx-encoding="multipart/form-data"
+        hx-swap="outerHTML"
+
+        {% if "edit" in request.META.HTTP_REFERER %}
+            hx-vals='{"product_id": {{product.product_id}}}'
+        {% endif %}
+        
+        {% if is_create_view %}required {% endif %}
+        name="product_image"  id="image-file" class="form__control" type="file">
+        <small style="color: red;" class="product-errors-image">
+        </small>
+
+    </div>
+
+    <!-------   PRODUCT DESCRIPTION    ------->
+    <div class="form__group" margin-top: var(--space-lg);">
+        <label class="form__label" for="description">Description</label>
+        <textarea
+        hx-get="{% url 'validate-product-error' %}"
+        hx-trigger="keyup changed delay:300ms"
+        hx-target=".product-errors-description"
+        hx-swap="outerHTML"
+        required
+        name="description"
+        placeholder="enter product description" 
+        id="description" 
+        class="form__control textarea">{{product.description}}</textarea>
+        <small style="color: red;" class="product-errors-description">
+        </small>          </div>
+    </div>
+
+    <div class="profile__actions" style="justify-content:flex-end;">
+        {% if product.image_url %}
+            <div id = "cur-img-preview" class="current-image-preview">
+                <button 
+                type="button"
+                class="see-btn"
+                hx-get="{% url 'product-image-modal' product.product_id %}"
+                hx-target="body"
+
+                hx-swap="beforeend"
+                > See
+                </button>
+                <p class="form__hint">Leave this field empty to keep the current image.</p>
+            </div>
+        {% endif %}
+
+    
+    {% if from_edit %}
+        <button
+            id="add-btn-1"
+            style=" transform:scale(1.1); transition: all .5s ease;"
+            {% if is_create_view %}
+                class="btn" 
+            {% else %}
+                class="btn is_edit_view"
+            {% endif %}
+            type="submit"
+            class="btn"
+            >Update List</button>
+    {% else %}
+
+        <button
+            id="add-btn-1"
+            style=" transform:scale(1.1); transition: all .5s ease;"
+            {% if is_create_view %}
+                class="btn" 
+            {% else %}
+                class="btn is_edit_view"
+            {% endif %}
+            type="submit"
+            class="btn"
+            >Add to list</button>
+    {% endif %}
+    </div>
+
+</form>
+<table 
+class="table" 
+id="product-listings-table"
+hx-swap-oob="true"
+>
 <thead>
     <tr>
     <th>Image</th>
@@ -72,5 +330,4 @@
     </td>
 </tr>
 {% endif %}
-
 {% include "admin_dashboard/partials/toasts.html" %}

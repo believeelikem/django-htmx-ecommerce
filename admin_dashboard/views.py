@@ -177,7 +177,6 @@ def save_product_update_to_list(request, context = None):
     messages.info(request, "Product edited successfully")
     return render(request, "admin_dashboard/partials/product-lists.html", context)
 
-
 def cancel_toast(request):
     return render(request,"admin_dashboard/partials/cancel_toast.html")
 
