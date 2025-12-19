@@ -121,8 +121,11 @@ def admin_product_add(request, context = None):
 @add_product_to_list_session_handler
 @attach_product_images
 def add_product_to_list(request,context = None):
+    
+    context["is_create_view"] = True
     messages.success(request, "Product added successfully")
     return render(request, "admin_dashboard/partials/product-lists.html", context)
+
 
 #DELETE PRODUCT
 @attach_product_images
