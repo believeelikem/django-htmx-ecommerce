@@ -4,6 +4,7 @@ from django.http import HttpResponse
 
 
 def sign_in(request):
+    print("Hit here")
     return render(request, "users/sign-in.html")
 
 def sign_up(request):

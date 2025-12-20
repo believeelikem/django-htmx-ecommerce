@@ -272,14 +272,17 @@ def add_product_to_list_session_handler(images_wrapper_func):
 def attach_product_images(view_func):
     def attach_images_wrapper(request,id = None):
         context = {}
-        if "product_details" in request.session:
+        if "product_details" in request.session :
             context = {"product_details": request.session["product_details"] .copy()}
             for product in context["product_details"]:
                 product["total_price"] = f"{float(product['price']) * float(product['quantity']):,.2f}"
                 
                 try:
+                    
                     product["image_url"] = get_object_or_404(TempImage, id = \
                     product["product_image_id"]).temp_image.url
+                    
+                    
                     
                 except TempImage.DoesNotExist as e:
                     print("Didnt find image")

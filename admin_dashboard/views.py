@@ -118,6 +118,7 @@ def admin_product_add(request, context = None):
 @add_product_to_list_session_handler
 @attach_product_images
 def add_product_to_list(request,context = None):
+    print("len of details is  = ",len(request.session["product_details"]))
     
     context["is_create_view"] = True
     context["categories"] = Category.objects.values("slug","name")
@@ -183,8 +184,8 @@ def save_product_update_to_list(request, context = None):
 
 def clear_all_products_from_list(request):   
     if "product_details" in request.session:
-        request.session["product_details"] = []
-        request.session.modiefied = True
+        del request.session["product_details"]
+        request.session.modified = True
     messages.error(request,"Cleared data from list")
     return render(request, "admin_dashboard/partials/product-lists.html")
 
@@ -193,6 +194,9 @@ def cancel_toast(request):
 
 @save_to_db
 def save_products_to_db(request):
+    if "product_details" in request.session:
+        del request.session["product_details"]
+        request.session.modified = True
     return render(request, "admin_dashboard/partials/product-lists.html")
 
 def admin_customers(request):

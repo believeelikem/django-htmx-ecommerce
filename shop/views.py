@@ -2,7 +2,7 @@ import re
 from django.http import HttpResponse
 from django.shortcuts import render
 
-def shop(request):
+def home(request):
     return render(request, "shop/index.html")
 
 def cart(request):
