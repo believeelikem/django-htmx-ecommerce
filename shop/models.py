@@ -59,7 +59,7 @@ class Product(models.Model):
     slug = models.SlugField(unique=True, blank=True, null=True)
     name = models.CharField(blank=True, null=True)
     quantity = models.PositiveSmallIntegerField(blank=True, null=True)
-    category = models.ManyToManyField(to=Category)
+    category = models.ManyToManyField(to=Category,related_name="products")
     tag = models.ManyToManyField(to=Tag, blank=True, null=True)
     added_by = models.ForeignKey(
         to=settings.AUTH_USER_MODEL,
@@ -73,13 +73,14 @@ class Product(models.Model):
     def __str__(self):
         return self.name
     
+    
     def save(self, *args, **kwargs):
         sluggy(Product, self)
         return super().save(*args, **kwargs)
    
 class ProductImage(models.Model):
     photo = models.ImageField(null=True, blank=True, upload_to="products_images/")
-    product = models.ForeignKey(to=Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(to=Product, on_delete=models.CASCADE,blank=True, null=True)
     
     def __str__(self):
         return f"{self.get_photo_name()} belongs to {self.product}"

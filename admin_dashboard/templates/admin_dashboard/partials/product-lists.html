@@ -7,7 +7,7 @@
         hx-post="{% url 'add-product-to-list' %}"
     {% endif %}
     hx-trigger="submit"
-    hx-swap="innerHTML transition:true"
+    hx-swap="outerHTML transition:true"
     >
     <div class="form-grid">
     <div class="form__group">
@@ -316,6 +316,7 @@ hx-swap-oob="true"
         hx-post="{% url 'save-products-to-db' %}"
         hx-target="#product-listings-table"
         hx-swap="outerHTML"  
+        hx-confirm="Are you sure you want to save all products to store?"
         >Save all</button>
     </td>
     <td><button 
@@ -325,7 +326,7 @@ hx-swap-oob="true"
         hx-delete="{% url 'clear-all-products-from-list' %}"
         hx-target="#product-listings-table"
         hx-swap="outerHTML"
-
+        hx-confirm="Are you sure you want to clear all products from list ?"
         >Clear All</button></td>
     <td></td>
     <td> </td>

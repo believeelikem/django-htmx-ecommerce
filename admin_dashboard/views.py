@@ -8,12 +8,13 @@ from .utils import (
     add_product_to_list_session_handler,error_processor,
     attach_product_images,get_product,refix_editing_status,
     get_product_already_being_edited,set_product_editing_status,
-    product_update_in_list
+    product_update_in_list,save_to_db
 )
 from shop.models import  Product, ProductImage, Category
 from .models import TempImage
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
+from django.shortcuts import get_object_or_404
 
 
 def admin_dashboard(request):
@@ -98,7 +99,6 @@ def admin_product_add(request, context = None):
     if "product_details" in request.session:    
         refix_editing_status(request)
     categories = Category.objects.values("slug","name")
-    # request.session.flush()
     
     context.update( 
         {
@@ -120,6 +120,7 @@ def admin_product_add(request, context = None):
 def add_product_to_list(request,context = None):
     
     context["is_create_view"] = True
+    context["categories"] = Category.objects.values("slug","name")
     messages.success(request, "Product added successfully")
     return render(request, "admin_dashboard/partials/product-lists.html", context)
 
@@ -176,18 +177,23 @@ def product_image_modal(request, id):
 def save_product_update_to_list(request, context = None):
     
     context["is_create_view"] = True
+    Category.objects.values("slug","name")
     messages.info(request, "Product edited successfully")
     return render(request, "admin_dashboard/partials/product-lists.html", context)
 
 def clear_all_products_from_list(request):   
-    request.session.flush()
+    if "product_details" in request.session:
+        request.session["product_details"] = []
+        request.session.modiefied = True
+    messages.error(request,"Cleared data from list")
     return render(request, "admin_dashboard/partials/product-lists.html")
 
 def cancel_toast(request):
     return render(request,"admin_dashboard/partials/cancel_toast.html")
 
+@save_to_db
 def save_products_to_db(request):
-    ...
+    return render(request, "admin_dashboard/partials/product-lists.html")
 
 def admin_customers(request):
     if  request.htmx:
@@ -200,8 +206,8 @@ def admin_customers(request):
         {"active_page": "customers"},
     )
 
-
 def admin_settings(request):
+    request.session.flush()
     if  request.htmx:
         context = {"active_page": "settings"}
         return render(request, "admin_dashboard/partials/admin-settings.html",context)

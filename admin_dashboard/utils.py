@@ -1,11 +1,11 @@
-from itertools import product
-from multiprocessing import context
-import re
-from turtle import st
+from unicodedata import category
 from.models import TempImage
-from django.test import tag
 from django.shortcuts import get_object_or_404
 from .colors import colors
+from shop.models import  Product, ProductImage, Category
+from django.core.files.base import ContentFile
+import os
+import re
 
 
 def validate():
@@ -313,13 +313,12 @@ def get_product(request,id):
             return product
     return None
 
-
 def refix_editing_status(request):
-        for _product in request.session["product_details"]:
-            if  _product["is_being_edited"]:
-                _product["is_being_edited"] = False
-                request.session.modified = True
-            
+    for _product in request.session["product_details"]:
+        if  _product["is_being_edited"]:
+            _product["is_being_edited"] = False
+            request.session.modified = True
+        
 def get_product_already_being_edited(request, new_product):
     product_already_being_edited = None
     for _product in request.session["product_details"]:
@@ -384,11 +383,86 @@ def product_update_in_list(images_wrapper_func):
             print("Theres no id")
         
     return product_update_details_wrapper
+           
+def save_to_db(view_func):
+    def save_to_db_wrapper(request):
         
+        grouped_products = group_products(request.session["product_details"])
         
-
+        # loop through grouped items 
+        for _product_name in grouped_products:
+            product = Product.objects.create(name = _product_name)
+            quantity = 1
+            
+            
+            # loop through details of an item to save to db
+            for _product_detail in grouped_products[_product_name]:
+                quantity *= float(_product_detail["quantity"])
+                
+                #get temporary image of product
+                _product_detail_temp_image = get_object_or_404(
+                    TempImage, id = _product_detail["product_image_id"]
+                )
+                
+                # create actual product obj and assign temp image 
+                _product_detail_product_image = ProductImage()
+                
+                # extract basename of tempimage to use as name for new product to be added to db
+                _product_detail_temp_image_basename = os.path.basename(
+                    _product_detail_temp_image.temp_image.path
+                )
+                
+                # extract the bytes of the image and save it to new product
+                _product_detail_product_image.photo.save(
+                    _product_detail_temp_image_basename, 
+                    ContentFile(
+                        _product_detail_temp_image.temp_image.read()
+                    ),
+                    save= False
+                )
+                
+                # save new product image early so it can be linked to product
+                _product_detail_product_image.product = product
+                _product_detail_product_image.save()
+                
+                # append other details to the product
+                product.details.append(
+                    {
+                     'tag_name': _product_detail["tag_name"], 
+                     'is_digital': _product_detail["is_digital"], 
+                     'quantity': _product_detail["quantity"], 
+                     'size': _product_detail["size"], 
+                     'color': _product_detail["color"], 
+                     'unit_price': _product_detail["price"], 
+                     'description': _product_detail["description"] ,
+                     'image_id':_product_detail_product_image.id,
+                     'total_price': float(_product_detail["total_price"].replace(",",""))
+                    }
+                )
+                
+                
+                _product_detail_temp_image.temp_image.delete(save=False)
+                _product_detail_temp_image.delete()
+            
+                
+            product.category.add(
+                get_object_or_404(Category,
+                                  name = grouped_products[_product_name][0]["category_name"]
+                        )
+            )
+            product.is_digital = True if   grouped_products[_product_name][0]["is_digital"] \
+                == "on" else False
+            product.quantity = quantity
+            product.save()
+                
         
-        
-        
+        return view_func(request)
+    return save_to_db_wrapper
     
-        
+def group_products(product_data):
+    grouped_products = {}
+    
+    for _product in product_data:
+        grouped_products.setdefault(_product["product_name"], []).append(_product)        
+    return grouped_products
+
