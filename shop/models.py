@@ -80,8 +80,11 @@ class Product(models.Model):
    
 class ProductImage(models.Model):
     photo = models.ImageField(null=True, blank=True, upload_to="products_images/")
-    product = models.ForeignKey(to=Product, on_delete=models.CASCADE,blank=True, null=True)
-    
+    product = models.ForeignKey(
+        to=Product, on_delete=models.CASCADE,blank=True, 
+        null=True, related_name="images"
+    )
+       
     def __str__(self):
         return f"{self.get_photo_name()} belongs to {self.product}"
     
@@ -100,7 +103,7 @@ class Order(models.Model):
     slug = models.SlugField(blank=True, null=True, unique=True)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, on_delete=models.SET_NULL)
     is_completed = models.BooleanField(default=False)
-    staus = models.CharField(choices=STATUS,blank=True, null=True)
+    status = models.CharField(choices=STATUS,blank=True, null=True)
     started_at = models.DateTimeField(auto_now_add=True)
     completed_at = models.DateTimeField(blank=True, null=True)
 

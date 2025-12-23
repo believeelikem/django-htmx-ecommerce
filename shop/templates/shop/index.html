@@ -30,7 +30,7 @@
           <a class="nav-link" href="products.html">Browse all</a>
         </div>
         <div class="categories">
-          <a class="category-button" href="{% url 'products' %}">Work essentials</a>
+          <a class="category-button" href="{% url 'shop:products' %}">Work essentials</a>
           <a class="category-button" href="products.html">Casual layers</a>
           <a class="category-button" href="products.html">Accessories</a>
           <a class="category-button" href="products.html">Home & lifestyle</a>
@@ -46,14 +46,15 @@
           <a class="nav-link" href="products.html">View catalog</a>
         </div>
         <div class="grid grid--four">
+          {% for product in products %}
           <article class="card product-card">
-            <a class="product-card__link" href="{% url 'product-detail' %}">
+            <a class="product-card__link" href="{% url 'shop:product-detail' %}">
               <div class="product-card__image">
-                <img src="https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?auto=format&fit=crop&w=800&q=80" alt="Structured blazer">
+                <img src="media/{{product.first_image_for_cover}}" alt="Structured blazer">
               </div>
-              <h3 class="product-card__title">Structured Italian Blazer</h3>
+              <h3 class="product-card__title">{{product.name}}</h3>
               <div class="product-card__meta">
-                <span>$240</span>
+                <span>${{product.details.0.unit_price}}</span>
                 <span class="rating">
                   <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.1 8.4 22 9.2 17 14.1 18.3 21 12 17.5 5.7 21 7 14.1 2 9.2 8.9 8.4 12 2"/></svg>
                   4.8
@@ -62,86 +63,7 @@
             </a>
             <button class="btn btn--secondary" type="button">Add to cart <span class="btn__counter">0</span></button>
           </article>
-          <article class="card product-card">
-            <a class="product-card__link" href="product-detail.html">
-              <div class="product-card__image">
-                <img src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=800&q=80" alt="Leather tote">
-              </div>
-              <h3 class="product-card__title">Full-Grain Leather Tote</h3>
-              <div class="product-card__meta">
-                <span>$190</span>
-                <span class="rating">
-                  <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.1 8.4 22 9.2 17 14.1 18.3 21 12 17.5 5.7 21 7 14.1 2 9.2 8.9 8.4 12 2"/></svg>
-                  4.7
-                </span>
-              </div>
-            </a>
-            <button class="btn btn--secondary" type="button">Add to cart <span class="btn__counter">0</span></button>
-          </article>
-          <article class="card product-card">
-            <a class="product-card__link" href="product-detail.html">
-              <div class="product-card__image">
-                <img src="https://images.unsplash.com/photo-1515548233081-69b1c1b2992d?auto=format&fit=crop&w=800&q=80" alt="Classic sneaker">
-              </div>
-              <h3 class="product-card__title">Classic Court Sneaker</h3>
-              <div class="product-card__meta">
-                <span>$120</span>
-                <span class="rating">
-                  <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.1 8.4 22 9.2 17 14.1 18.3 21 12 17.5 5.7 21 7 14.1 2 9.2 8.9 8.4 12 2"/></svg>
-                  4.6
-                </span>
-              </div>
-            </a>
-            <button class="btn btn--secondary" type="button">Add to cart <span class="btn__counter">0</span></button>
-          </article>
-          <article class="card product-card">
-            <a class="product-card__link" href="product-detail.html">
-              <div class="product-card__image">
-                <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80" alt="Minimal watch">
-              </div>
-              <h3 class="product-card__title">Minimal Steel Watch</h3>
-              <div class="product-card__meta">
-                <span>$260</span>
-                <span class="rating">
-                  <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.1 8.4 22 9.2 17 14.1 18.3 21 12 17.5 5.7 21 7 14.1 2 9.2 8.9 8.4 12 2"/></svg>
-                  4.9
-                </span>
-              </div>
-            </a>
-            <button class="btn btn--secondary" type="button">Add to cart <span class="btn__counter">0</span></button>
-          </article>
-          <article class="card product-card">
-            <a class="product-card__link" href="product-detail.html">
-              <div class="product-card__image">
-                <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80" alt="Oxford shirt">
-              </div>
-              <h3 class="product-card__title">Tailored Oxford Shirt</h3>
-              <div class="product-card__meta">
-                <span>$110</span>
-                <span class="rating">
-                  <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.1 8.4 22 9.2 17 14.1 18.3 21 12 17.5 5.7 21 7 14.1 2 9.2 8.9 8.4 12 2"/></svg>
-                  4.5
-                </span>
-              </div>
-            </a>
-            <button class="btn btn--secondary" type="button">Add to cart <span class="btn__counter">0</span></button>
-          </article>
-          <article class="card product-card">
-            <a class="product-card__link" href="product-detail.html">
-              <div class="product-card__image">
-                <img src="https://images.unsplash.com/photo-1542293787938-4d272614c4f9?auto=format&fit=crop&w=800&q=80" alt="Leather boots">
-              </div>
-              <h3 class="product-card__title">Heritage Leather Boot</h3>
-              <div class="product-card__meta">
-                <span>$240</span>
-                <span class="rating">
-                  <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.1 8.4 22 9.2 17 14.1 18.3 21 12 17.5 5.7 21 7 14.1 2 9.2 8.9 8.4 12 2"/></svg>
-                  4.7
-                </span>
-              </div>
-            </a>
-            <button class="btn btn--secondary" type="button">Add to cart <span class="btn__counter">0</span></button>
-          </article>
+          {% endfor %}
         </div>
         <div class="pagination">
           <span class="pagination__item pagination__item--active">1</span>

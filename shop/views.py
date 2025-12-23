@@ -1,9 +1,35 @@
 import re
 from django.http import HttpResponse
 from django.shortcuts import render
+from .models import Product,ProductImage
+from django.db import connection
+from django.db.models import F
+from django.db.models import OuterRef, Subquery
+
 
 def home(request):
-    return render(request, "shop/index.html")
+
+    # Get the first image for each product specifically
+    image_subquery = ProductImage.objects.filter(
+        product=OuterRef('pk')
+    ).order_by('id').values('photo')[:1]
+
+    products = Product.objects.annotate(
+        first_image_for_cover = Subquery(image_subquery)
+    )
+    
+    print(vars(products.first()))
+        
+    # # print(products.first().images.first().photo.name)
+    
+    print("Querioes is = ", len(connection.queries))
+    
+    
+    context = {
+        "products":products
+    }
+    return render(request, "shop/index.html", context = context )
+
 
 def cart(request):
     return render(request, "shop/cart.html")
