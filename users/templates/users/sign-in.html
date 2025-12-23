@@ -12,11 +12,23 @@
         <form class="form">
           <div class="form__group">
             <label class="form__label" for="email">Email</label>
-            <input id="email" class="form__control" type="email" placeholder="you@company.com">
+            <input 
+            id="email" 
+            class="form__control" 
+            type="email" 
+            placeholder="you@company.com"
+            name="email"
+            hx-get="{% url 'users:check-email' %}"
+            hx-target=".email-errors"
+            hx-swap="outerHTML"
+            hx-trigger="keyup changed delay:300mx"
+            >
+            <small style="color: red;transition:3s ease-in" class="email-errors">
+            </small>
           </div>
           <div class="form__group">
             <label class="form__label" for="password">Password</label>
-            <input id="password" class="form__control" type="password" placeholder="••••••••">
+            <input id="password" class="form__control email" type="password" placeholder="••••••••">
           </div>
           <div class="cta-row">
             

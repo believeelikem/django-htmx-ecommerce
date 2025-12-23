@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 
+
 app_name = "users"
 
 urlpatterns = [
@@ -10,3 +11,10 @@ urlpatterns = [
     path("password-reset/",views.password_reset, name="password-reset"),
     path("password-update/",views.password_update, name="password-update"),
 ]
+
+
+htmx_patterns = [
+    path("check-email/", views.check_email, name="check-email")
+]
+
+urlpatterns += htmx_patterns

@@ -16,14 +16,7 @@ def home(request):
 
     products = Product.objects.annotate(
         first_image_for_cover = Subquery(image_subquery)
-    )
-    
-    print(vars(products.first()))
-        
-    # # print(products.first().images.first().photo.name)
-    
-    print("Querioes is = ", len(connection.queries))
-    
+    )    
     
     context = {
         "products":products

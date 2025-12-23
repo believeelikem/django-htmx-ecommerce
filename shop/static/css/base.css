@@ -383,7 +383,9 @@ textarea {
 .form__group {
   display: flex;
   flex-direction: column;
-  gap: var(--space-xs);
+  position: relative;
+
+  /* gap: var(--space-xs); */
 }
 
 .form__label {
@@ -395,6 +397,11 @@ textarea {
   border-radius: var(--radius-md);
   padding: var(--space-sm) var(--space-md);
   background: #fff;
+}
+
+.email-errors{
+  position: absolute;
+  top: 100%;
 }
 
 .layout {
