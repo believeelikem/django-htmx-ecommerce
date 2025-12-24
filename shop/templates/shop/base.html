@@ -10,7 +10,7 @@
   {% block extra_styles %}<link rel="stylesheet" href="{% static 'css/index.css' %}">{% endblock extra_styles %}
   {%htmx_script%}
 </head>
-<body hx-headers="{{ csrf_token }}">
+<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
   <div class="page">
    <header class="topbar">
     <div class="container topbar__inner">

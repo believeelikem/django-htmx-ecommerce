@@ -19,11 +19,11 @@ def sign_in(request):
             user = authenticate(request, email = email, password = password)
             
             print("user is ",user)
-            # if user is not None:
-            #       login(request)
-            #       return render(request, "shop/index.html")  
-            # else:
-            #     re
+            if user is not None:
+                  login(request, user)
+                  return render(request, "shop/index.html")  
+            else:
+                ...
         else:
             print("something went wrong")
     return render(request, "users/sign-in.html")

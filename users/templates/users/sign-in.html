@@ -16,6 +16,7 @@
         hx-trigger="submit"
         hx-target="body"
         hx-swap="outerHTML transition:true"
+        hx-push-url="{% url 'shop:home' %}"
         >
           <div class="form__group">
             <label class="form__label" for="email">Email</label>
@@ -25,10 +26,11 @@
             type="email" 
             placeholder="you@company.com"
             name="email-for-sign-in"
+            maxlength="30"
             hx-get="{% url 'users:validate-user-inputs' %}"
             hx-target=".user-validation-errors"
             hx-swap="outerHTML"
-            hx-trigger="keyup changed delay:50ms"
+            hx-trigger="keyup changed delay:500ms"
             required
             >
             <small style="color: red;transition:3s ease-in" class="user-validation-errors">
@@ -41,6 +43,7 @@
             class="form__control email" 
             type="password" 
             placeholder="••••••••"
+            name="password"
             required
             >
             
