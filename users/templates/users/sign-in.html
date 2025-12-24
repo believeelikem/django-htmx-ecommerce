@@ -10,7 +10,7 @@
           <p class="auth__subtitle">Access your orders, saved items, and account settings.</p>
         </div>
         <form 
-        id="form" 
+        id="user-form"
         class="form"
         hx-post="{% url 'users:sign-in' %}"
         hx-trigger="submit"
@@ -18,6 +18,13 @@
         hx-swap="outerHTML transition:true"
         hx-push-url="{% url 'shop:home' %}"
         >
+        <small
+          id="no-user-found"
+          class="error"
+        >
+          {{ error }}
+        </small>
+
           <div class="form__group">
             <label class="form__label" for="email">Email</label>
             <input 

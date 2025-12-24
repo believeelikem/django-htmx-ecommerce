@@ -378,6 +378,7 @@ textarea {
 .form {
   display: grid;
   gap: var(--space-md);
+  position: relative;
 }
 
 .form__group {

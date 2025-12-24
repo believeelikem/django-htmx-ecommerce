@@ -1,4 +1,4 @@
-const form = document.getElementById('form')
+const form = document.getElementById('user-form')
 const submitButton = document.getElementById('submit-btn')
 
 function hasEmailError() {

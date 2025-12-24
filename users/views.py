@@ -1,5 +1,6 @@
 from email import message
 import email
+from multiprocessing import context
 import re
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -23,7 +24,11 @@ def sign_in(request):
                   login(request, user)
                   return render(request, "shop/index.html")  
             else:
-                ...
+                context = {
+                    "error":"Invalid Login credentials"
+                }
+                
+                return render(request, "users/sign-in.html", context)
         else:
             print("something went wrong")
     return render(request, "users/sign-in.html")
