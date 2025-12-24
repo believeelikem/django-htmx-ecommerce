@@ -1,0 +1,67 @@
+{% load static %}
+{%if request.htmx %}
+    <link rel="stylesheet"  id="swappable-stylesheet" href="{% static 'users/css/auth.css' %}"
+    hx-swap-oob="true"
+    >
+{% endif %}
+<main id="main-container" class="container auth">
+    <div class="auth-card">
+    <div>
+        <p class="badge">Returning customer</p>
+        <h1 class="auth__title">Sign in</h1>
+        <p class="auth__subtitle">Access your orders, saved items, and account settings.</p>
+    </div>
+    <form 
+    id="user-form"
+    class="form"
+    hx-post="{% url 'users:sign-in' %}"
+    hx-trigger="submit"
+    hx-target="body"
+    hx-swap="outerHTML transition:true"
+    >
+    <small
+        id="no-user-found"
+        class="error"
+    >
+        {{ error }}
+    </small>
+
+        <div class="form__group">
+        <label class="form__label" for="email">Email</label>
+        <input 
+        id="email" 
+        class="form__control" 
+        type="email" 
+        placeholder="you@company.com"
+        name="email-for-sign-in"
+        maxlength="30"
+        hx-get="{% url 'users:validate-user-inputs' %}"
+        hx-target=".user-validation-errors"
+        hx-swap="outerHTML"
+        hx-trigger="keyup changed delay:500ms"
+        required
+        >
+        <small style="color: red;transition:3s ease-in" class="user-validation-errors">
+        </small>
+        </div>
+        <div class="form__group">
+        <label class="form__label" for="password">Password</label>
+        <input 
+        id="password" 
+        class="form__control email" 
+        type="password" 
+        placeholder="••••••••"
+        name="password"
+        required
+        >
+        
+        </div>
+        <div class="cta-row">
+        
+        <button id="submit-btn" class="btn btn--primary" type="submit">Sign in</button>
+        <a class="nav-link" href="password-reset.html">Forgot password?</a>
+        </div>
+    </form>
+    <p class="section__subtitle">New here? <a class="nav-link" href="sign-up.html">Create an account</a></p>
+    </div>
+</main>

@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth import get_user_model
 from django.contrib.auth import login,logout, authenticate
+from django.urls import reverse
 from .utils import validate_user_input
 
 User = get_user_model()
@@ -22,17 +23,27 @@ def sign_in(request):
             print("user is ",user)
             if user is not None:
                   login(request, user)
-                  return render(request, "shop/index.html")  
+                  
+                  print("reverse for ",reverse("shop:home"))
+                  response = render(request, "shop/index.html") 
+                  response["Hx-Push"] = reverse("shop:home") 
+                  print("response type is", type(response))
+                  return response
             else:
                 context = {
                     "error":"Invalid Login credentials"
                 }
                 
-                return render(request, "users/sign-in.html", context)
+                response =  render(request, "users/sign-in.html", context)
+                response["Hx-Push"] = reverse("users:sign-in")
+                print(reverse("users:sign-in"))
+                return response
         else:
             print("something went wrong")
+            
+    if request.htmx:
+        return render(request, "users/partials/_sign-in.html")       
     return render(request, "users/sign-in.html")
-
 
 @validate_user_input
 def validate_user_inputs(request, context):        

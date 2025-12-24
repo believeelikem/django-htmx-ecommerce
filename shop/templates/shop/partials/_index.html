@@ -1,0 +1,133 @@
+{% load static %}
+{%if request.htmx %}
+    <link rel="stylesheet"  id="swappable-stylesheet" href="{% static 'css/index.css' %}"
+    hx-swap-oob="true"
+    >
+{% endif %}
+<main id="main-container" class="container">
+    <section class="hero section">
+    <div class="hero__content">
+        <div class="badge">Trusted by modern teams</div>
+        <h1 class="hero__title">Build a refined wardrobe with premium essentials.</h1>
+        <p class="section__subtitle">Curated apparel, accessories, and lifestyle goods from designers who prioritize quality, fit, and sustainability.</p>
+        <div class="hero__actions">
+        <a class="btn btn--primary" href="products.html">Shop collections</a>
+        <a class="btn btn--ghost" href="about.html">Learn more</a>
+        </div>
+        <div class="chip-group">
+        <span class="chip">Free shipping over $75</span>
+        <span class="chip">30-day returns</span>
+        <span class="chip">Carbon-neutral packaging</span>
+        </div>
+    </div>
+    <div class="hero__image">
+        <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=1200&q=80" alt="Premium apparel display">
+    </div>
+    </section>
+
+    <section class="section">
+    <div class="section__header">
+        <div>
+        <h2 class="section__title">Featured categories</h2>
+        <p class="section__subtitle">Shop by department crafted for daily use.</p>
+        </div>
+        <a class="nav-link" href="products.html">Browse all</a>
+    </div>
+    <div class="categories">
+        <a class="category-button" href="{% url 'shop:products' %}">Work essentials</a>
+        <a class="category-button" href="products.html">Casual layers</a>
+        <a class="category-button" href="products.html">Accessories</a>
+        <a class="category-button" href="products.html">Home & lifestyle</a>
+    </div>
+    </section>
+
+    <section class="section">
+    <div class="section__header">
+        <div>
+        <h2 class="section__title">Featured products</h2>
+        <p class="section__subtitle">Handpicked pieces with enduring quality.</p>
+        </div>
+        <a class="nav-link" href="products.html">View catalog</a>
+    </div>
+    <div class="grid grid--four">
+        {% for product in products %}
+        <article class="card product-card">
+        <a class="product-card__link" href="{% url 'shop:product-detail' %}">
+            <div class="product-card__image">
+            <img src="media/{{product.first_image_for_cover}}" alt="Structured blazer">
+            </div>
+            <h3 class="product-card__title">{{product.name}}</h3>
+            <div class="product-card__meta">
+            <span>${{product.details.0.unit_price}}</span>
+            <span class="rating">
+                <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.1 8.4 22 9.2 17 14.1 18.3 21 12 17.5 5.7 21 7 14.1 2 9.2 8.9 8.4 12 2"/></svg>
+                4.8
+            </span>
+            </div>
+        </a>
+        <button class="btn btn--secondary" type="button">Add to cart <span class="btn__counter">0</span></button>
+        </article>
+        {% endfor %}
+    </div>
+    <div class="pagination">
+        <span class="pagination__item pagination__item--active">1</span>
+        <span class="pagination__item">2</span>
+        <span class="pagination__item">›</span>
+    </div>
+    </section>
+
+    <section class="section">
+    <div class="section__header">
+        <div>
+        <h2 class="section__title">Client testimonials</h2>
+        <p class="section__subtitle">Feedback from professionals who value timeless design.</p>
+        </div>
+    </div>
+    <div class="testimonials">
+        <article class="testimonial-card">
+        <div class="testimonial-card__profile">
+            <img class="avatar" src="https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=crop&w=200&q=80" alt="Client avatar">
+            <div>
+            <strong>Alexandra Chen</strong>
+            <p class="section__subtitle">Head of People, River & Oak</p>
+            </div>
+        </div>
+        <p>"Northwind makes it effortless to maintain a polished wardrobe. The fabric quality and fit are consistently excellent."</p>
+        </article>
+        <article class="testimonial-card">
+        <div class="testimonial-card__profile">
+            <img class="avatar" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80" alt="Client avatar">
+            <div>
+            <strong>Marcus Lee</strong>
+            <p class="section__subtitle">Creative Director, Slate Studio</p>
+            </div>
+        </div>
+        <p>"The accessories and tailoring strike the right balance between modern and understated. Reliable service every time."</p>
+        </article>
+        <article class="testimonial-card">
+        <div class="testimonial-card__profile">
+            <img class="avatar" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80" alt="Client avatar">
+            <div>
+            <strong>Priya Desai</strong>
+            <p class="section__subtitle">Operations Lead, Northbridge</p>
+            </div>
+        </div>
+        <p>"Thoughtful packaging and clear communication. I appreciate the sustainable approach without compromising style."</p>
+        </article>
+    </div>
+    </section>
+
+    <section class="section">
+    <div class="cta-banner">
+        <div>
+        <p class="section__subtitle" style="color: rgba(255,255,255,0.8); margin:0;">Limited release</p>
+        <h3 style="margin: var(--space-xs) 0;">Signature Travel Collection</h3>
+        <p style="margin:0;">Modular luggage, weather-ready outerwear, and streamlined accessories for seamless transit.</p>
+        </div>
+        <div class="cta-row">
+        <a class="btn btn--primary" href="products.html">Explore the drop</a>
+        <a class="btn btn--secondary" href="about.html">View our process</a>
+        </div>
+    </div>
+    </section>
+</main>

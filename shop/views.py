@@ -21,6 +21,8 @@ def home(request):
     context = {
         "products":products
     }
+    if request.htmx:
+        return render(request, "shop/partials/_index.html", context = context )
     return render(request, "shop/index.html", context = context )
 
 
