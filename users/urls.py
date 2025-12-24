@@ -14,7 +14,7 @@ urlpatterns = [
 
 
 htmx_patterns = [
-    path("check-email/", views.check_email, name="check-email")
+    path("validate-user-inputs/", views.validate_user_inputs, name="validate-user-inputs"),
 ]
 
 urlpatterns += htmx_patterns

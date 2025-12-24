@@ -384,7 +384,6 @@ textarea {
   display: flex;
   flex-direction: column;
   position: relative;
-
   /* gap: var(--space-xs); */
 }
 
@@ -399,7 +398,7 @@ textarea {
   background: #fff;
 }
 
-.email-errors{
+.user-validation-errors{
   position: absolute;
   top: 100%;
 }

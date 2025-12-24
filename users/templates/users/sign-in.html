@@ -1,6 +1,6 @@
 {% extends 'shop/base.html' %}
 {% load static %}
-{% block extra_styles %} <link rel="stylesheet" href="{% static 'css/auth.css' %}"> {% endblock extra_styles %}
+{% block extra_styles %} <link rel="stylesheet" href="{% static 'users/css/auth.css' %}"> {% endblock extra_styles %}
 {% block content %}
     <main class="container auth">
       <div class="auth-card">
@@ -9,7 +9,14 @@
           <h1 class="auth__title">Sign in</h1>
           <p class="auth__subtitle">Access your orders, saved items, and account settings.</p>
         </div>
-        <form class="form">
+        <form 
+        id="form" 
+        class="form"
+        hx-post="{% url 'users:sign-in' %}"
+        hx-trigger="submit"
+        hx-target="body"
+        hx-swap="outerHTML transition:true"
+        >
           <div class="form__group">
             <label class="form__label" for="email">Email</label>
             <input 
@@ -17,22 +24,30 @@
             class="form__control" 
             type="email" 
             placeholder="you@company.com"
-            name="email"
-            hx-get="{% url 'users:check-email' %}"
-            hx-target=".email-errors"
+            name="email-for-sign-in"
+            hx-get="{% url 'users:validate-user-inputs' %}"
+            hx-target=".user-validation-errors"
             hx-swap="outerHTML"
-            hx-trigger="keyup changed delay:300mx"
+            hx-trigger="keyup changed delay:50ms"
+            required
             >
-            <small style="color: red;transition:3s ease-in" class="email-errors">
+            <small style="color: red;transition:3s ease-in" class="user-validation-errors">
             </small>
           </div>
           <div class="form__group">
             <label class="form__label" for="password">Password</label>
-            <input id="password" class="form__control email" type="password" placeholder="••••••••">
+            <input 
+            id="password" 
+            class="form__control email" 
+            type="password" 
+            placeholder="••••••••"
+            required
+            >
+            
           </div>
           <div class="cta-row">
             
-            <button class="btn btn--primary" type="button">Sign in</button>
+            <button id="submit-btn" class="btn btn--primary" type="submit">Sign in</button>
             <a class="nav-link" href="password-reset.html">Forgot password?</a>
           </div>
         </form>

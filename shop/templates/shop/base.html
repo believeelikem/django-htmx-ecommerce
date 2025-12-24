@@ -10,9 +10,9 @@
   {% block extra_styles %}<link rel="stylesheet" href="{% static 'css/index.css' %}">{% endblock extra_styles %}
   {%htmx_script%}
 </head>
-<body>
+<body hx-headers="{{ csrf_token }}">
   <div class="page">
-<header class="topbar">
+   <header class="topbar">
     <div class="container topbar__inner">
     <a class="brand" href="{% url 'shop:home' %}">Northwind Commerce</a>
     <label class="search" for="search">
@@ -80,5 +80,7 @@
     </div>
 </footer>
 </div>
+
+<script src="{% static 'users/js/user-validation.js' %}"></script>
 </body>
 </html>
