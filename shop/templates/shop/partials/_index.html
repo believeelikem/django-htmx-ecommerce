@@ -1,6 +1,6 @@
 {% load static %}
 {%if request.htmx %}
-    <link rel="stylesheet"  id="swappable-stylesheet" href="{% static 'css/index.css' %}"
+    <link rel="stylesheet"  id="swappable-stylesheet" href="{% static 'shop/css/index.css' %}"
     hx-swap-oob="true"
     >
 {% endif %}
@@ -49,10 +49,20 @@
         </div>
         <a class="nav-link" href="products.html">View catalog</a>
     </div>
-    <div class="grid grid--four">
+    <div 
+    class="grid grid--four" 
+    hx-boost="true"
+    hx-target="body"
+    hx-swap="innerHTML transition:true"
+    >
         {% for product in products %}
         <article class="card product-card">
-        <a class="product-card__link" href="{% url 'shop:product-detail' %}">
+        <a 
+        class="product-card__link" 
+        hx-push-url="true"
+        href="{% url 'shop:product-detail' product.slug %}"
+
+        >
             <div class="product-card__image">
             <img src="media/{{product.first_image_for_cover}}" alt="Structured blazer">
             </div>
@@ -65,7 +75,11 @@
             </span>
             </div>
         </a>
-        <button class="btn btn--secondary" type="button">Add to cart <span class="btn__counter">0</span></button>
+        <button 
+        class="btn btn--secondary" 
+        type="button"
+        
+        >Add to cart <span class="btn__counter">0</span></button>
         </article>
         {% endfor %}
     </div>

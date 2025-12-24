@@ -1,0 +1,191 @@
+{% load static %}
+{%if request.htmx %}
+    <link rel="stylesheet"  id="swappable-stylesheet" href="{% static 'shop/css/product-detail.css' %}"
+    hx-swap-oob="true"
+    >
+{% endif %}
+
+<main id="main-container" class="container section">
+    <div class="product-detail">
+    <section class="gallery">
+        <div class="gallery__main">
+        <img src="https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?auto=format&fit=crop&w=1200&q=80" alt="Product main">
+        </div>
+        <div class="gallery__thumbs">
+        <div class="gallery__thumb">
+            <img src="https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?auto=format&fit=crop&w=400&q=80" alt="Thumb 1">
+        </div>
+        <div class="gallery__thumb">
+            <img src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=400&q=80" alt="Thumb 2">
+        </div>
+        <div class="gallery__thumb">
+            <img src="https://images.unsplash.com/photo-1521572181900-4985c1cd1c91?auto=format&fit=crop&w=400&q=80" alt="Thumb 3">
+        </div>
+        <div class="gallery__thumb">
+            <img src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=400&q=80" alt="Thumb 4">
+        </div>
+        </div>
+    </section>
+
+    <section class="detail-panel">
+        <div class="badge">New arrival</div>
+        <h1 style="margin:0;">Structured Italian Blazer</h1>
+        <div class="product-card__meta">
+        <strong style="font-size:1.4rem;">$240</strong>
+        <span class="rating">
+            <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.1 8.4 22 9.2 17 14.1 18.3 21 12 17.5 5.7 21 7 14.1 2 9.2 8.9 8.4 12 2"/></svg>
+            4.8 (142 reviews)
+        </span>
+        </div>
+        <p class="section__subtitle">Tailored in Northern Italy with a breathable wool blend and soft shoulder construction.</p>
+
+        <div class="options">
+        <div class="option-row">
+            <label class="form__label" for="size">Size</label>
+            <select id="size" class="form__control">
+            <option>Select</option>
+            <option>36</option>
+            <option>38</option>
+            <option>40</option>
+            <option>42</option>
+            </select>
+        </div>
+        <div class="option-row">
+            <label class="form__label" for="color">Color</label>
+            <select id="color" class="form__control">
+            <option>Navy</option>
+            <option>Charcoal</option>
+            <option>Stone</option>
+            </select>
+        </div>
+        <div class="option-row">
+            <span class="form__label">Quantity</span>
+            <div class="quantity">
+            <button class="quantity__btn" type="button">-</button>
+            <span>1</span>
+            <button class="quantity__btn" type="button">+</button>
+            </div>
+        </div>
+        </div>
+
+        <div class="cta-row">
+        <button class="btn btn--primary" type="button">Add to cart</button>
+        <button class="btn btn--ghost" type="button">Save for later</button>
+        </div>
+
+        <div class="specs">
+        <strong>Highlights</strong>
+        <ul>
+            <li>Soft shoulder, half-lined for breathability</li>
+            <li>Horn buttons, interior media pocket</li>
+            <li>Certified mills with responsible sourcing</li>
+        </ul>
+        </div>
+    </section>
+    </div>
+
+    <section class="section">
+    <h2 class="section__title">Product details</h2>
+    <p class="section__subtitle">Designed for boardrooms and after-hours gatherings with ease of movement.</p>
+    <table class="table">
+        <tbody>
+        <tr>
+            <th scope="row">Fabric</th>
+            <td>Wool blend with recycled poly lining</td>
+        </tr>
+        <tr>
+            <th scope="row">Fit</th>
+            <td>Tailored, true to size</td>
+        </tr>
+        <tr>
+            <th scope="row">Care</th>
+            <td>Dry clean; steam to refresh</td>
+        </tr>
+        <tr>
+            <th scope="row">Origin</th>
+            <td>Made in Italy</td>
+        </tr>
+        </tbody>
+    </table>
+    </section>
+
+    <section class="section reviews">
+    <div class="section__header">
+        <div>
+        <h2 class="section__title">Reviews</h2>
+        <p class="section__subtitle">Balanced rating from professionals and frequent travelers.</p>
+        </div>
+        <div class="badge">4.8 average</div>
+    </div>
+    <div class="grid">
+        <article class="review-card">
+        <div class="testimonial-card__profile">
+            <img class="avatar" src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=200&q=80" alt="Reviewer">
+            <div>
+            <strong>Daniel Ruiz</strong>
+            <p class="section__subtitle">Operations, Logistics</p>
+            </div>
+        </div>
+        <p>"Lightweight yet structured. The navy tone pairs well with most of my work staples."</p>
+        </article>
+        <article class="review-card">
+        <div class="testimonial-card__profile">
+            <img class="avatar" src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=200&q=80" alt="Reviewer">
+            <div>
+            <strong>Sofia Martens</strong>
+            <p class="section__subtitle">Consultant</p>
+            </div>
+        </div>
+        <p>"Excellent drape and interior pocketing. Runs true to size with room for a knit layer."</p>
+        </article>
+    </div>
+    </section>
+
+    <section class="section related">
+    <div class="section__header">
+        <h2 class="section__title">Related products</h2>
+        <a class="nav-link" href="products.html">View all</a>
+    </div>
+    <div class="grid grid--three">
+        <a class="card product-card" href="product-detail.html">
+        <div class="product-card__image">
+            <img src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=800&q=80" alt="Coat">
+        </div>
+        <h3 class="product-card__title">Commuter Mac Coat</h3>
+        <div class="product-card__meta">
+            <span>$280</span>
+            <span class="rating">
+            <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.1 8.4 22 9.2 17 14.1 18.3 21 12 17.5 5.7 21 7 14.1 2 9.2 8.9 8.4 12 2"/></svg>
+            4.7
+            </span>
+        </div>
+        </a>
+        <a class="card product-card" href="product-detail.html">
+        <div class="product-card__image">
+            <img src="https://images.unsplash.com/photo-1475180098004-ca77a66827be?auto=format&fit=crop&w=800&q=80" alt="Bag">
+        </div>
+        <h3 class="product-card__title">Weekender Duffel</h3>
+        <div class="product-card__meta">
+            <span>$210</span>
+            <span class="rating">
+            <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.1 8.4 22 9.2 17 14.1 18.3 21 12 17.5 5.7 21 7 14.1 2 9.2 8.9 8.4 12 2"/></svg>
+            4.6
+            </span>
+        </div>
+        </a>
+        <a class="card product-card" href="product-detail.html">
+        <div class="product-card__image">
+            <img src="https://images.unsplash.com/photo-1521572181900-4985c1cd1c91?auto=format&fit=crop&w=800&q=80" alt="Pants">
+        </div>
+        <h3 class="product-card__title">Travel Trouser</h3>
+        <div class="product-card__meta">
+            <span>$150</span>
+            <span class="rating">
+            <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.1 8.4 22 9.2 17 14.1 18.3 21 12 17.5 5.7 21 7 14.1 2 9.2 8.9 8.4 12 2"/></svg>
+            4.8
+            </span>
+        </div>
+        </a>
+    </div>
+    </section>
+</main>

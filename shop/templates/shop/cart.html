@@ -1,87 +1,9 @@
 {% extends 'shop/base.html' %}
 {% load static %}
-{% block extra_styles %} <link rel="stylesheet" href="{% static 'css/cart.css' %}"> {% endblock extra_styles %}
+{% block extra_styles %} <link rel="stylesheet" href="{% static 'shop/css/cart.css' %}"> {% endblock extra_styles %}
 
 {% block content %}
-    <main class="container section">
-      <div class="section__header">
-        <div>
-          <h1 class="section__title">Shopping cart</h1>
-          <p class="section__subtitle">Review items before proceeding to checkout.</p>
-        </div>
-        <a class="nav-link" href="products.html">Continue shopping</a>
-      </div>
-
-      <div class="layout">
-        <div class="cart-items">
-          <article class="cart-item">
-            <img src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=400&q=80" alt="Coat">
-            <div class="cart-item__info">
-              <strong>Commuter Mac Coat</strong>
-              <span class="section__subtitle">Color: Storm, Size: M</span>
-              <div class="quantity">
-                <button class="quantity__btn" type="button">-</button>
-                <span>1</span>
-                <button class="quantity__btn" type="button">+</button>
-              </div>
-            </div>
-            <div class="cart-item__actions">
-              <strong>$280</strong>
-              <span class="section__subtitle">Subtotal $280</span>
-              <a class="nav-link" href="#">Remove</a>
-            </div>
-          </article>
-
-          <article class="cart-item">
-            <img src="https://images.unsplash.com/photo-1475180098004-ca77a66827be?auto=format&fit=crop&w=400&q=80" alt="Bag">
-            <div class="cart-item__info">
-              <strong>Weekender Duffel</strong>
-              <span class="section__subtitle">Color: Navy</span>
-              <div class="quantity">
-                <button class="quantity__btn" type="button">-</button>
-                <span>2</span>
-                <button class="quantity__btn" type="button">+</button>
-              </div>
-            </div>
-            <div class="cart-item__actions">
-              <strong>$420</strong>
-              <span class="section__subtitle">Subtotal $420</span>
-              <a class="nav-link" href="#">Remove</a>
-            </div>
-          </article>
-        </div>
-
-        <aside class="cart-summary">
-          <div>
-            <h3 style="margin:0;">Summary</h3>
-          </div>
-          <div class="promo">
-            <label class="form__label" for="promo">Promo code</label>
-            <input id="promo" class="form__control" type="text" placeholder="Enter code">
-          </div>
-          <div class="totals">
-            <div class="totals__row">
-              <span>Subtotal</span>
-              <span>$700</span>
-            </div>
-            <div class="totals__row">
-              <span>Shipping estimate</span>
-              <span>$20</span>
-            </div>
-            <div class="totals__row">
-              <span>Tax estimate</span>
-              <span>$65</span>
-            </div>
-            <div class="totals__row totals__grand">
-              <span>Order total</span>
-              <span>$785</span>
-            </div>
-          </div>
-          <a class="btn btn--primary" href="checkout.html">Proceed to checkout</a>
-        </aside>
-      </div>
-    </main>
-
+{% include 'shop/partials/_cart.html'%}
 {% endblock content %}
 
     <!-- <footer class="footer">

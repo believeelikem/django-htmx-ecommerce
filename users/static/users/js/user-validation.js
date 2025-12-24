@@ -10,7 +10,9 @@ function updateSubmitState() {
   submitButton.disabled = !form.checkValidity() || hasEmailError()
 }
 
-form.addEventListener('input', updateSubmitState)
+if(form){
+  form.addEventListener('input', updateSubmitState)
+}
 
 document.body.addEventListener('htmx:afterSwap', (e) => {
   if (e.target.classList.contains("user-validation-errors")) {
