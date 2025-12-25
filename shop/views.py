@@ -54,7 +54,8 @@ def product_detail(request,slug):
     context = {
         "variants":details,
         "sizes": get_related_specifics(details,key = "size"),
-        "colors":get_related_specifics(details, key= "color")
+        "colors":get_related_specifics(details, key= "color"),
+        "current":details[0]
     }
     
     return render(request, "shop/product-detail.html", context)
