@@ -13,9 +13,13 @@
         </div>
         <div class="gallery__thumbs">
             {% for variant in variants %}
-            <div class="gallery__thumb">
-                <img src="{{variant.image_url}}" alt="Thumb 1">
-            </div>
+                {% if variant == current %}
+                <div style="border: 2px solid blue;" class="gallery__thumb">
+                {% else %}
+                <div class="gallery__thumb">
+                {% endif %}
+                    <img src="{{variant.image_url}}" alt="Thumb 1">
+                </div>                
             {% endfor %}
             <!-- <div class="gallery__thumb">
                 <img src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=400&q=80" alt="Thumb 2">
