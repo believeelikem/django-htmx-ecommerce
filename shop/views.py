@@ -42,11 +42,25 @@ def products(request):
 def product_detail(request,slug):
     
     product = get_object_or_404(Product, slug = slug)
+    
+    details = product.details
+    for detail in details:
+        detail["image_url"] = (
+            get_object_or_404(
+                ProductImage,id = detail["image_id"]
+                ).photo.url
+        )   
+        
     context = {
-        "product":product
+        "variants":details,
+        "sizes": get_related_specifics(details,key = "size"),
+        "colors":get_related_specifics(details, key= "color")
     }
     
     return render(request, "shop/product-detail.html", context)
+
+def get_related_specifics(details, key):
+    return list(set(detail[key] for  detail in details))
 
 def checkout(request):
     return render(request, "shop/checkout.html")
