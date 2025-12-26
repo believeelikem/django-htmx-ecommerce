@@ -443,8 +443,6 @@ def save_to_db(view_func):
                      'total_price': float(_product_detail["total_price"].replace(",","")),
                     }
                 )
-                
-                
                 _product_detail_temp_image.temp_image.delete(save=False)
                 _product_detail_temp_image.delete()
             

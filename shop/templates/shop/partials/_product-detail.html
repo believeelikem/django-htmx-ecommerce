@@ -21,21 +21,12 @@
                     <img src="{{variant.image_url}}" alt="Thumb 1">
                 </div>                
             {% endfor %}
-            <!-- <div class="gallery__thumb">
-                <img src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=400&q=80" alt="Thumb 2">
-            </div>
-            <div class="gallery__thumb">
-                <img src="https://images.unsplash.com/photo-1521572181900-4985c1cd1c91?auto=format&fit=crop&w=400&q=80" alt="Thumb 3">
-            </div>
-            <div class="gallery__thumb">
-                <img src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=400&q=80" alt="Thumb 4">
-            </div> -->
         </div>
     </section>
 
     <section class="detail-panel">
         <div class="badge">New arrival</div>
-        <h1 style="margin:0;">Structured Italian Blazer</h1>
+        <h1 style="margin:0;">{{product_name}}</h1>
         <div class="product-card__meta">
         <strong style="font-size:1.4rem;">$240</strong>
         <strong style="color: red;"> {{current.quantity}} remaining </strong>
@@ -47,30 +38,49 @@
         <p class="section__subtitle">Tailored in Northern Italy with a breathable wool blend and soft shoulder construction.</p>
 
         <div class="options">
-        <div class="option-row">
-            <label class="form__label" for="size">Size</label>
-            <select id="size" class="form__control">
-                {% for size in sizes %}
-                <option> {{size}} </option>
-                {% endfor %}
-            </select>
-        </div>
-        <div class="option-row">
-            <label class="form__label" for="color">Color</label>
-            <select id="color" class="form__control">
-                {% for color in colors %}
-                <option> {{color}} </option>
-                {% endfor %}
-            </select>
-        </div>
-        <div class="option-row">
-            <span class="form__label">Quantity</span>
-            <div class="quantity">
-            <button class="quantity__btn" type="button">-</button>
-            <span>1</span>
-            <button class="quantity__btn" type="button">+</button>
+            <div class="option-row">
+                <label class="form__label" for="color">Color</label>
+                <select id="color" class="form__control">
+                    {% for color in colors %}
+                    <option
+                        {% if color == current.color %}
+                        selected
+                        {% endif %}
+                    > {{color}} </option>
+                    {% endfor %}
+                </select>
             </div>
-        </div>
+            <div class="option-row">
+                <label class="form__label" for="size">Size</label>
+                <select id="size" class="form__control">
+                    {% for size in sizes %}
+                    <option 
+                        {% if size == current.size %}
+                        selected
+                        {% endif %}
+
+                        {% if not size in available_sizes %}
+                            style="color:rgb(123, 121, 121)"
+                            disabled
+                        {% endif %}
+
+                    > {% if not size in available_sizes %} 
+                    {{size}}(unavailble)
+                    {% else %}
+                    {{size}}
+                    {% endif %}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="option-row">
+                <span class="form__label">Quantity</span>
+                <div class="quantity">
+                <button class="quantity__btn" type="button">-</button>
+                <span>1</span>
+                <button class="quantity__btn" type="button">+</button>
+                </div>
+            </div>
         </div>
 
         <div class="cta-row">
