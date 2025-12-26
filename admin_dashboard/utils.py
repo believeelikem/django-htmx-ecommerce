@@ -439,7 +439,8 @@ def save_to_db(view_func):
                      'unit_price': _product_detail["price"], 
                      'description': _product_detail["description"] ,
                      'image_id':_product_detail_product_image.id,
-                     'total_price': float(_product_detail["total_price"].replace(",",""))
+                     "image_url":_product_detail_product_image.photo.url,
+                     'total_price': float(_product_detail["total_price"].replace(",","")),
                     }
                 )
                 
