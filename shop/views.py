@@ -54,14 +54,15 @@ def product_detail(request,slug):
     
     color = request.GET.get("color")
     size = request.GET.get("size")
- 
+     
+    print(request.GET)
     current = get_variant(details, color, size)
     if current:
-        print("okayy")
         available_sizes = get_sizes_for_chosen_color(details,current["color"])
-        print("available sizes is = ",available_sizes)
     else:
         print("Something wrong")
+        
+    
     
     context = {
         "variants":details,
@@ -69,8 +70,11 @@ def product_detail(request,slug):
         "colors":get_related_specifics(details, key= "color"), 
         "current":current,
         "product_name":product.name,
+        "product_slug":product.slug,
         "available_sizes":available_sizes
     }
+    
+    
     return render(request, "shop/product-detail.html", context)
 
 def get_variant(details, color, size):

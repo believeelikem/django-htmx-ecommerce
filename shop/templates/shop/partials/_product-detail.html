@@ -6,10 +6,10 @@
 {% endif %}
 
 <main id="main-container" class="container section">
-    <div class="product-detail">
+    <div id="product-detail" class="product-detail">
     <section class="gallery">
         <div class="gallery__main">
-        <img src="{{variants.0.image_url}}" alt="Product main">
+        <img src="{{current.image_url}}" alt="Product main">
         </div>
         <div class="gallery__thumbs">
             {% for variant in variants %}
@@ -37,10 +37,19 @@
         </div>
         <p class="section__subtitle">Tailored in Northern Italy with a breathable wool blend and soft shoulder construction.</p>
 
-        <div class="options">
+        <form 
+        id="variant-form"
+        class="options"
+        hx-get="{% url 'shop:product-detail' product_slug %}"
+        hx-trigger="change"
+        hx-swap="outerHTML transition:true show:top"
+        hx-push-url="true"
+        hx-select="#product-detail"
+        hx-target="#product-detail"
+        >
             <div class="option-row">
                 <label class="form__label" for="color">Color</label>
-                <select id="color" class="form__control">
+                <select id="color" class="form__control" name="color">
                     {% for color in colors %}
                     <option
                         {% if color == current.color %}
@@ -52,7 +61,7 @@
             </div>
             <div class="option-row">
                 <label class="form__label" for="size">Size</label>
-                <select id="size" class="form__control">
+                <select id="size" class="form__control" name="size">
                     {% for size in sizes %}
                     <option 
                         {% if size == current.size %}
@@ -81,7 +90,7 @@
                 <button class="quantity__btn" type="button">+</button>
                 </div>
             </div>
-        </div>
+        </form>
 
         <div class="cta-row">
         <button class="btn btn--primary" type="button">Add to cart</button>
