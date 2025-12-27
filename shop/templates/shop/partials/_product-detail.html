@@ -191,45 +191,23 @@
         <a class="nav-link" href="products.html">View all</a>
     </div>
     <div class="grid grid--three">
-        <a class="card product-card" href="product-detail.html">
-        <div class="product-card__image">
-            <img src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=800&q=80" alt="Coat">
-        </div>
-        <h3 class="product-card__title">Commuter Mac Coat</h3>
-        <div class="product-card__meta">
-            <span>$280</span>
-            <span class="rating">
-            <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.1 8.4 22 9.2 17 14.1 18.3 21 12 17.5 5.7 21 7 14.1 2 9.2 8.9 8.4 12 2"/></svg>
-            4.7
-            </span>
-        </div>
-        </a>
-        <a class="card product-card" href="product-detail.html">
-        <div class="product-card__image">
-            <img src="https://images.unsplash.com/photo-1475180098004-ca77a66827be?auto=format&fit=crop&w=800&q=80" alt="Bag">
-        </div>
-        <h3 class="product-card__title">Weekender Duffel</h3>
-        <div class="product-card__meta">
-            <span>$210</span>
-            <span class="rating">
-            <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.1 8.4 22 9.2 17 14.1 18.3 21 12 17.5 5.7 21 7 14.1 2 9.2 8.9 8.4 12 2"/></svg>
-            4.6
-            </span>
-        </div>
-        </a>
-        <a class="card product-card" href="product-detail.html">
-        <div class="product-card__image">
-            <img src="https://images.unsplash.com/photo-1521572181900-4985c1cd1c91?auto=format&fit=crop&w=800&q=80" alt="Pants">
-        </div>
-        <h3 class="product-card__title">Travel Trouser</h3>
-        <div class="product-card__meta">
-            <span>$150</span>
-            <span class="rating">
-            <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.1 8.4 22 9.2 17 14.1 18.3 21 12 17.5 5.7 21 7 14.1 2 9.2 8.9 8.4 12 2"/></svg>
-            4.8
-            </span>
-        </div>
-        </a>
+        {% for product in related_products %}
+            <a class="card product-card" href="{% url 'shop:product-detail' product.slug %}">
+            <div class="product-card__image">
+                <img src="/media/{{product.first_image_for_cover}}" alt="{{product.name}}">
+            </div>
+            <h3 class="product-card__title">{{product.name}}</h3>
+            <div class="product-card__meta">
+                <span>${{product.details.0.unit_price}}</span>
+                <span class="rating">
+                <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.1 8.4 22 9.2 17 14.1 18.3 21 12 17.5 5.7 21 7 14.1 2 9.2 8.9 8.4 12 2"/></svg>
+                4.7
+                </span>
+            </div>
+            </a>
+        {% endfor %}
     </div>
     </section>
 </main>
+<!-- media/products_images/camera-white_SmPHSmB.jpg -->
+<!-- media/products_images/camera-white_SmPHSmB.jpg -->

@@ -1,9 +1,10 @@
 from multiprocessing import context
+from os import name
 import re
 from zoneinfo import available_timezones
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
-from .models import Product,ProductImage
+from .models import Product,ProductImage, Category
 from django.db import connection
 from django.db.models import F
 from django.db.models import OuterRef, Subquery
@@ -35,7 +36,6 @@ def cart(request):
         return render(request, "shop/partials/_cart.html")
     
     return render(request, "shop/cart.html")
-
 
 
 def products(request):
@@ -74,7 +74,24 @@ def product_detail(request,slug):
     if should_reset:
         request.session[f"{product.slug}_quantity"] = int(current["quantity"])
         request.session.modified = True
+        
+    image_subquery = ProductImage.objects.filter(
+        product=OuterRef('pk')
+    ).order_by('id').values('photo')[:1]
+
+    # related_products = pro.objects.annotate(
+    #     first_image_for_cover = Subquery(image_subquery)
+    # )
     
+    related_products = Product.objects.filter(
+        categories__in = product.categories.all()
+    ).distinct().exclude(id = product.id).annotate(
+        first_image_for_cover = Subquery(image_subquery)
+    )
+    
+    for p in related_products:
+        print(vars(p))
+
     context = {
         "variants":details,
         "sizes": get_related_specifics(details,key = "size"),
@@ -83,10 +100,10 @@ def product_detail(request,slug):
         "product_name":product.name,
         "product_slug":product.slug,
         "available_sizes":available_sizes,
-        "product_quantity":product_quantity
+        "product_quantity":product_quantity,
+        "related_products":related_products
     }
-    
-    
+       
     return render(request, "shop/product-detail.html", context)
 
 def decrease_quantity(request, slug):

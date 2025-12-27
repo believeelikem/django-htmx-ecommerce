@@ -59,7 +59,7 @@ class Product(models.Model):
     slug = models.SlugField(unique=True, blank=True, null=True)
     name = models.CharField(blank=True, null=True)
     quantity = models.PositiveSmallIntegerField(blank=True, null=True)
-    category = models.ManyToManyField(to=Category,related_name="products")
+    categories = models.ManyToManyField(to=Category,related_name="products")
     tag = models.ManyToManyField(to=Tag, blank=True, null=True)
     added_by = models.ForeignKey(
         to=settings.AUTH_USER_MODEL,
@@ -73,7 +73,7 @@ class Product(models.Model):
     def __str__(self):
         return self.name
     
-    
+  
     def save(self, *args, **kwargs):
         sluggy(Product, self)
         return super().save(*args, **kwargs)
