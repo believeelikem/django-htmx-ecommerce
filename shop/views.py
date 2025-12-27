@@ -7,6 +7,7 @@ from .models import Product,ProductImage
 from django.db import connection
 from django.db.models import F
 from django.db.models import OuterRef, Subquery
+from .utils import *
 
 
 def home(request):
@@ -88,39 +89,6 @@ def product_detail(request,slug):
     
     return render(request, "shop/product-detail.html", context)
 
-
-
-def get_variant(details, color, size):
-    if not all([color,size]):
-        return details[0]
-    
-    for detail in details:
-        if detail["color"] == color and detail["size"] == size:
-            return detail
-        
-    for detail in details:
-        if detail["color"] == color:
-            return detail
-    
-def get_sizes_for_chosen_color(details,color):
-    sizes = []
-    for detail in details:
-        if detail["color"] == color:
-            sizes.append(detail["size"])
-    return sizes
-    
-def get_related_specifics(details, key):
-    return list(set(detail[key] for  detail in details))
-
-def get_product_quantity(max_quantity,product_quantity_in_session):
-    print("p quantity in session = ",product_quantity_in_session)
-    should_reset = False
-    if product_quantity_in_session > max_quantity:
-        should_reset = True
-        return max_quantity, should_reset
-    return product_quantity_in_session, should_reset
-
-
 def decrease_quantity(request, slug):
     if not request.session[f"{slug}_quantity"] <= 1:
         request.session[f"{slug}_quantity"] -= 1
@@ -135,7 +103,6 @@ def increase_quantity(request, slug):
     product = get_object_or_404(Product, slug = slug)
     
     current = get_variant(product.details, request.POST.get("color"), request.POST.get("size"))
-    print("current is = ",current)
     if  int(current["quantity"]) > request.session[f"{slug}_quantity"]:
         request.session[f"{slug}_quantity"] += 1
         request.session.modified = True 
