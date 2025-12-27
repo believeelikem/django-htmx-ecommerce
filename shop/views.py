@@ -62,7 +62,10 @@ def product_detail(request,slug):
     else:
         print("Something wrong")
         
+    if not request.session.get(f"{product.name}_quantity"):
+        request.session[f"{product.name}_quantity"] = 1
     
+    print("quantity is = ",request.session[f"{product.name}_quantity"])
     
     context = {
         "variants":details,
@@ -71,11 +74,14 @@ def product_detail(request,slug):
         "current":current,
         "product_name":product.name,
         "product_slug":product.slug,
-        "available_sizes":available_sizes
+        "available_sizes":available_sizes,
+        "product_quantity":request.session[f"{product.name}_quantity"],
     }
     
     
     return render(request, "shop/product-detail.html", context)
+
+
 
 def get_variant(details, color, size):
     if not all([color,size]):
@@ -98,6 +104,29 @@ def get_sizes_for_chosen_color(details,color):
     
 def get_related_specifics(details, key):
     return list(set(detail[key] for  detail in details))
+
+def decrease_quantity(request, name):
+    print("quantity is received is = ",request.session[f"{name}_quantity"])
+    request.session[f"{name}_quantity"] -= 1
+    request.session.modified = True 
+    print("quantity after decreasing is = ",request.session[f"{name}_quantity"])
+    return render(
+        request, 
+        "shop/partials/_product_quantity_count.html",
+        {"new_count":request.session[f"{name}_quantity"]}
+    )
+    
+def increase_quantity(request, name):
+    print("quantity is received is = ",request.session[f"{name}_quantity"])
+    request.session[f"{name}_quantity"] += 1
+    request.session.modified = True 
+    print("quantity after increasing is = ",request.session[f"{name}_quantity"])
+
+    return render(
+        request, 
+        "shop/partials/_product_quantity_count.html",
+        {"new_count":request.session[f"{name}_quantity"]}
+    )
 
 def checkout(request):
     return render(request, "shop/checkout.html")
