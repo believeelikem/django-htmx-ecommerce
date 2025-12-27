@@ -55,17 +55,24 @@ def product_detail(request,slug):
     color = request.GET.get("color")
     size = request.GET.get("size")
      
-    print(request.GET)
     current = get_variant(details, color, size)
     if current:
         available_sizes = get_sizes_for_chosen_color(details,current["color"])
     else:
         print("Something wrong")
         
-    if not request.session.get(f"{product.name}_quantity"):
-        request.session[f"{product.name}_quantity"] = 1
+    if not request.session.get(f"{product.slug}_quantity"):
+        request.session[f"{product.slug}_quantity"] = 1
+        
+     
+    product_quantity, should_reset = get_product_quantity(
+            max_quantity=int(current["quantity"]),
+            product_quantity_in_session = request.session[f"{product.slug}_quantity"]    
+    )
     
-    print("quantity is = ",request.session[f"{product.name}_quantity"])
+    if should_reset:
+        request.session[f"{product.slug}_quantity"] = int(current["quantity"])
+        request.session.modified = True
     
     context = {
         "variants":details,
@@ -75,7 +82,7 @@ def product_detail(request,slug):
         "product_name":product.name,
         "product_slug":product.slug,
         "available_sizes":available_sizes,
-        "product_quantity":request.session[f"{product.name}_quantity"],
+        "product_quantity":product_quantity
     }
     
     
@@ -105,27 +112,38 @@ def get_sizes_for_chosen_color(details,color):
 def get_related_specifics(details, key):
     return list(set(detail[key] for  detail in details))
 
-def decrease_quantity(request, name):
-    print("quantity is received is = ",request.session[f"{name}_quantity"])
-    request.session[f"{name}_quantity"] -= 1
-    request.session.modified = True 
-    print("quantity after decreasing is = ",request.session[f"{name}_quantity"])
+def get_product_quantity(max_quantity,product_quantity_in_session):
+    print("p quantity in session = ",product_quantity_in_session)
+    should_reset = False
+    if product_quantity_in_session > max_quantity:
+        should_reset = True
+        return max_quantity, should_reset
+    return product_quantity_in_session, should_reset
+
+
+def decrease_quantity(request, slug):
+    if not request.session[f"{slug}_quantity"] <= 1:
+        request.session[f"{slug}_quantity"] -= 1
+        request.session.modified = True 
     return render(
         request, 
         "shop/partials/_product_quantity_count.html",
-        {"new_count":request.session[f"{name}_quantity"]}
+        {"new_count":request.session[f"{slug}_quantity"]}
     )
     
-def increase_quantity(request, name):
-    print("quantity is received is = ",request.session[f"{name}_quantity"])
-    request.session[f"{name}_quantity"] += 1
-    request.session.modified = True 
-    print("quantity after increasing is = ",request.session[f"{name}_quantity"])
-
+def increase_quantity(request, slug):
+    product = get_object_or_404(Product, slug = slug)
+    
+    current = get_variant(product.details, request.POST.get("color"), request.POST.get("size"))
+    print("current is = ",current)
+    if  int(current["quantity"]) > request.session[f"{slug}_quantity"]:
+        request.session[f"{slug}_quantity"] += 1
+        request.session.modified = True 
+    
     return render(
         request, 
         "shop/partials/_product_quantity_count.html",
-        {"new_count":request.session[f"{name}_quantity"]}
+        {"new_count":request.session[f"{slug}_quantity"]}
     )
 
 def checkout(request):

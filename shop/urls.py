@@ -15,8 +15,8 @@ urlpatterns = [
 
 htmx_patterns = [
     path("products/<slug:slug>/detail/", views.product_detail, name="product-detail"),
-    path("increase-quantity/<str:name>/", views.decrease_quantity, name="decrease-quantity"),
-    path("decrease-quantity/<str:name>/", views.increase_quantity, name="increase-quantity"),
+    path("decrease-quantity/<slug:slug>/", views.decrease_quantity, name="decrease-quantity"),
+    path("increase-quantity/<slug:slug>/", views.increase_quantity, name="increase-quantity"),
 ]
 
 urlpatterns += htmx_patterns

@@ -88,7 +88,7 @@
                 <button 
                 class="quantity__btn"
                 type="button"
-                hx-post="{% url 'shop:decrease-quantity' product_name %}"
+                hx-post="{% url 'shop:decrease-quantity' product_slug %}"
                 hx-target="#quantity_count"
                 hx-push-url="false"
                 hx-swap="outerHTML"
@@ -96,12 +96,14 @@
                 >-</button>
                 <span
                 id = "quantity_count"
-                >{{product_quantity}}</span>
+                > 
+                {{product_quantity}}
+                </span>
                 <button 
                 hx-swap="outerHTML"
                 class="quantity__btn" 
                 type="button"
-                hx-post="{% url 'shop:increase-quantity' product_name %}"
+                hx-post="{% url 'shop:increase-quantity' product_slug %}"
                 hx-target="#quantity_count"
                 hx-push-url="false"
                 hx-select="unset"
