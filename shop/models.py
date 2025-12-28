@@ -1,5 +1,6 @@
 from pyexpat import model
 from tabnanny import verbose
+from tkinter import N
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
@@ -119,6 +120,8 @@ class OrderItem(models.Model):
     product = models.ForeignKey(to=Product,blank=True, null=True, on_delete=models.SET_NULL) 
     order = models.ForeignKey(to=Order,blank=True, null=True, on_delete=models.CASCADE)
     quantity = models.PositiveSmallIntegerField(blank=True, null=True)
+    color = models.CharField(max_length=150, blank=True, null=True)
+    size = models.CharField(max_length=150, blank=True, null=True)
     total = models.PositiveSmallIntegerField(blank=True, null=True)
     
     

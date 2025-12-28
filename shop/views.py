@@ -1,3 +1,4 @@
+from math import prod
 from multiprocessing import context
 from os import name
 import re
@@ -19,12 +20,26 @@ def home(request):
 
     products = Product.objects.annotate(
         first_image_for_cover = Subquery(image_subquery)
-    )    
+    ) 
+    # request.session["cart"] = {}
     
+    
+    if not request.user.is_authenticated:
+        if request.session.get("cart"):
+            cart = request.session["cart"]
+        else:
+            cart = request.session["cart"] = {}
+            
+        for product in products:
+            product.quantity_in_cart = \
+            request.session["cart"][product.slug]["quantity"] \
+            if cart and product.slug in request.session["cart"] else 0
+
+        
     context = {
-        "products":products
+    "products":products
     }
-    
+        
     if request.htmx:
         return render(request, "shop/partials/_index.html", context = context )
     return render(request, "shop/index.html", context = context )
@@ -37,6 +52,56 @@ def cart(request):
     
     return render(request, "shop/cart.html")
 
+def add_to_cart(request):
+    if request.user.is_authenticated:
+        ...
+    else:
+        if request.session.get("cart"):
+            cart = request.session["cart"]
+        else:
+            cart = request.session["cart"] = {}
+
+        order_item = {
+            "product_id":request.POST.get("id"),
+            "order":None,
+            "quantity": None,
+            "price":request.POST.get("price"),
+            "color":request.POST.get("color"),
+            "size":request.POST.get("size"),
+            "price":request.POST.get("price"),
+            "image_url":request.POST.get("image_url"),
+            "slug":request.POST.get("slug"),
+            
+        }
+        print("request.POST is = ", request.POST,"\n")       
+        if cart:
+            if is_already_in_cart(cart, order_item):
+                order_item["quantity"] = int(request.session["cart"][order_item["slug"]]["quantity"]) + 1
+        else:
+            order_item["quantity"] = 1
+        
+        cart[order_item["slug"]] = order_item
+        request.session["cart"] = cart
+        request.session.modified = True
+        print("cart is = ", cart)
+        context = {
+            "new_count":request.session["cart"][order_item["slug"]]["quantity"],
+            "total_cart_count": len(request.session["cart"]),
+            "product_id":order_item["product_id"]
+        }
+        
+        if request.POST.get("from_index"):
+            return render(request, "shop/partials/_cart-counter.html", context)
+                
+def is_already_in_cart(cart,order_item):    
+    for item in cart:
+        # print("o, r is = ",order_item)
+        if cart[item]["product_id"] == order_item["product_id"] \
+        and cart[item]["color"] == order_item["color"] and \
+        cart[item]["size"] == order_item["size"]:
+            return True
+    return False
+        
 
 def products(request):
     return render(request, "shop/product-listings.html")
@@ -110,6 +175,7 @@ def decrease_quantity(request, slug):
     if not request.session[f"{slug}_quantity"] <= 1:
         request.session[f"{slug}_quantity"] -= 1
         request.session.modified = True 
+        
     return render(
         request, 
         "shop/partials/_product_quantity_count.html",
