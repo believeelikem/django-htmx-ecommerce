@@ -34,10 +34,10 @@ def home(request):
             product.quantity_in_cart = \
             request.session["cart"][product.slug]["quantity"] \
             if cart and product.slug in request.session["cart"] else 0
-
-        
+       
     context = {
-    "products":products
+    "products":products,
+    "total_cart_count": len(request.session["cart"])
     }
         
     if request.htmx:
@@ -47,43 +47,28 @@ def home(request):
 
 def cart(request):
     
-    if request.htmx:
-        return render(request, "shop/partials/_cart.html")
+    context = {
+        "cart":request.session["cart"]
+    }
     
-    return render(request, "shop/cart.html")
+    if request.htmx:
+        return render(request, "shop/partials/_cart.html",context)
+    
+    return render(request, "shop/cart.html", context)
 
 def add_to_cart(request):
     if request.user.is_authenticated:
         ...
     else:
-        if request.session.get("cart"):
-            cart = request.session["cart"]
-        else:
-            cart = request.session["cart"] = {}
+        cart = get_cart_in_session(request.session)
+        
+        order_item = get_order_item(request)
 
-        order_item = {
-            "product_id":request.POST.get("id"),
-            "order":None,
-            "quantity": None,
-            "price":request.POST.get("price"),
-            "color":request.POST.get("color"),
-            "size":request.POST.get("size"),
-            "price":request.POST.get("price"),
-            "image_url":request.POST.get("image_url"),
-            "slug":request.POST.get("slug"),
-            
-        }
-        print("request.POST is = ", request.POST,"\n")       
-        if cart:
-            if is_already_in_cart(cart, order_item):
-                order_item["quantity"] = int(request.session["cart"][order_item["slug"]]["quantity"]) + 1
-        else:
-            order_item["quantity"] = 1
+        order_item["quantity"] = get_new_quantity(request, cart, order_item)
         
         cart[order_item["slug"]] = order_item
         request.session["cart"] = cart
         request.session.modified = True
-        print("cart is = ", cart)
         context = {
             "new_count":request.session["cart"][order_item["slug"]]["quantity"],
             "total_cart_count": len(request.session["cart"]),
@@ -92,15 +77,10 @@ def add_to_cart(request):
         
         if request.POST.get("from_index"):
             return render(request, "shop/partials/_cart-counter.html", context)
-                
-def is_already_in_cart(cart,order_item):    
-    for item in cart:
-        # print("o, r is = ",order_item)
-        if cart[item]["product_id"] == order_item["product_id"] \
-        and cart[item]["color"] == order_item["color"] and \
-        cart[item]["size"] == order_item["size"]:
-            return True
-    return False
+
+
+  
+
         
 
 def products(request):
@@ -163,10 +143,12 @@ def product_detail(request,slug):
         "colors":get_related_specifics(details, key= "color"), 
         "current":current,
         "product_name":product.name,
+        "product_id":product.id,
         "product_slug":product.slug,
         "available_sizes":available_sizes,
         "product_quantity":product_quantity,
-        "related_products":related_products
+        "related_products":related_products,
+        "total_cart_count": len(request.session["cart"])
     }
        
     return render(request, "shop/product-detail.html", context)

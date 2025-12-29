@@ -28,7 +28,7 @@
         <div class="badge">New arrival</div>
         <h1 style="margin:0;">{{product_name}}</h1>
         <div class="product-card__meta">
-        <strong style="font-size:1.4rem;">$240</strong>
+        <strong style="font-size:1.4rem;">${{current.unit_price}}</strong>
         <strong style="color: red;"> {{current.quantity}} remaining </strong>
         <span class="rating">
             <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.1 8.4 22 9.2 17 14.1 18.3 21 12 17.5 5.7 21 7 14.1 2 9.2 8.9 8.4 12 2"/></svg>
@@ -113,7 +113,26 @@
         </form>
 
         <div class="cta-row">
-        <button class="btn btn--primary" type="button">Add to cart</button>
+        <button 
+        class="btn btn--primary" 
+        type="button"
+        hx-post="{% url 'shop:add-to-cart' %}"
+        hx-include="#variant-form"
+        hx-vals = '{
+            "id": "{{product_id}}",
+            "name": "{{product_name}}",
+            "image_url": "{{current.image_url}}",
+            "quantity_left": "{{current.quantity}}",
+            "price":"{{current.unit_price}}"
+            "quantity_ordered": "{{current.quantity}}",
+            "slug": "{{product_slug}}",
+            "from_detail_page":"True"
+        }'
+        
+        hx-target="#cart-counter-on-product-{{product.id}}"
+        hx-swap="outerHTML"
+        
+        >Add to cart</button>
         <button class="btn btn--ghost" type="button">Save for later</button>
         </div>
 

@@ -27,6 +27,33 @@
   justify-items: end;
 }
 
+.quantity__btn{
+  border: none;
+  border-radius: .5rem;
+  padding: .15rem .5rem; 
+}
+
+.quantity__btn:hover{
+  cursor: pointer;
+}
+
+.quantity__btn--reduce{
+  background-color: rgb(232, 30, 30);
+  color: white;
+}
+
+.quantity__btn--reduce:hover{
+  opacity: .7;
+}
+
+.quantity__btn--add{
+  background-color: rgb(30, 232, 225);
+}
+
+.quantity__btn--add:hover{
+  background-color: rgb(16, 198, 192);
+}
+
 .cart-summary {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
