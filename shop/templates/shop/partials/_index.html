@@ -90,7 +90,7 @@
             "slug": "{{ product.slug }}",
             "from_index": "True"
         }'
-        hx-target="#cart-counter-on-product-{{product.id}}"
+        hx-target="#cart-count-top"
         hx-swap="outerHTML"
         >Add to cart <span id="cart-counter-on-product-{{product.id}}" class="btn__counter">{{product.quantity_in_cart}}</span></button>
         </article>

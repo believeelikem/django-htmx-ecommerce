@@ -40,13 +40,14 @@ def get_new_quantity(request, cart, order_item):
 def get_increment_val(request,slug):
     increment_val = 1
     if request.POST.get("from_detail"):
-        increment_val = request.session["cart"][slug]["quantity"]
+        increment_val = request.session[f"{slug}_quantity"]
     elif request.POST.get("from_index"):
         # same as 1
         pass
     elif request.POST.get("from_cart"):
         #same as 1
         pass
+    print("increment val is = ", increment_val)
     return increment_val
 
 def get_cart_in_session(session):
@@ -57,6 +58,8 @@ def get_cart_in_session(session):
     return cart  
  
 def get_order_item(request):
+    print(request.POST)
+    
     order_item = {
         "product_id":request.POST.get("id"),
         "order":None,
@@ -64,7 +67,7 @@ def get_order_item(request):
         "price":request.POST.get("price"),
         "color":request.POST.get("color"),
         "size":request.POST.get("size"),
-        "price":request.POST.get("price"),
+        "price":float(request.POST.get("price")),
         "image_url":request.POST.get("image_url"),
         "slug":request.POST.get("slug"),     
     }    

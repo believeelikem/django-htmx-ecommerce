@@ -1,11 +1,10 @@
-<span 
-id="cart-counter-on-product-{{product_id}}" 
-class="btn__counter"
-hx-target=""
->{{new_count}}</span>
+{% if from == "index" %}
+    <span 
+    id="cart-counter-on-product-{{product_id}}" 
+    class="btn__counter"
+    hx-swap-oob="true"
+    hx-target=""
+    >{{new_count}}</span>
+{% endif %}
 
-<span 
-id="cart-count-top" 
-class="cart-count"
-hx-swap-oob="true"
->{{total_cart_count}}</span>
+{% include 'shop/partials/_cart-counter-main.html' %} 

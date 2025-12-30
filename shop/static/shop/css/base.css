@@ -51,6 +51,11 @@ img {
   height: 100%;
 }
 
+.cart__image{
+  object-fit: cover;
+  border-radius: 5rem;
+}
+
 a {
   color: inherit;
   text-decoration: none;

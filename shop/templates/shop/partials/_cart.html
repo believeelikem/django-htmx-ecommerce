@@ -15,41 +15,29 @@
     
     <div class="layout">
     <div class="cart-items">
+    {% for item,values in cart.items %}
         <article class="cart-item">
-        <img src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=400&q=80" alt="Coat">
+        <img class="cart__image" src="/media/{{values.image_url}}" alt="Coat">
         <div class="cart-item__info">
-            <strong>Commuter Mac Coat</strong>
-            <span class="section__subtitle">Color: Storm, Size: M, price: $2</span>
+            <strong>{{item}}</strong>
+            <span class="section__subtitle">Color: {{values.color}}, 
+                Size: {{values.size}}, 
+                price: ${{values.price}},
+                quantity: {{values.quantity}}
+            </span>
             <div class="quantity">
             <button class="quantity__btn quantity__btn--reduce" type="button">-</button>
-            <span> Quantity here </span>
+            <span> {{values.quantity}} </span>
             <button class="quantity__btn quantity__btn--add" type="button">+</button>
             </div>
         </div>
         <div class="cart-item__actions">
-            <strong>$280</strong>
-            <span class="section__subtitle">Subtotal $280</span>
+            <strong>${{values.subtotal}}</strong>
+            <span class="section__subtitle">Subtotal ${{values.subtotal}}</span>
             <a class="nav-link" href="#">Remove</a>
         </div>
         </article>
-
-        <article class="cart-item">
-        <img src="https://images.unsplash.com/photo-1475180098004-ca77a66827be?auto=format&fit=crop&w=400&q=80" alt="Bag">
-        <div class="cart-item__info">
-            <strong>Weekender Duffel</strong>
-            <span class="section__subtitle">Color: Navy</span>
-            <div class="quantity">
-            <button class="quantity__btn" type="button">-</button>
-            <span>2</span>
-            <button class="quantity__btn" type="button">+</button>
-            </div>
-        </div>
-        <div class="cart-item__actions">
-            <strong>$420</strong>
-            <span class="section__subtitle">Subtotal $420</span>
-            <a class="nav-link" href="#">Remove</a>
-        </div>
-        </article>
+    {% endfor %}
     </div>
 
     <aside class="cart-summary">

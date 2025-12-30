@@ -47,9 +47,14 @@ def home(request):
 
 def cart(request):
     
+    
     context = {
         "cart":request.session["cart"]
     }
+    
+    for item in request.session["cart"]:
+        print(item," = ",request.session["cart"][item])
+        
     
     if request.htmx:
         return render(request, "shop/partials/_cart.html",context)
@@ -65,23 +70,22 @@ def add_to_cart(request):
         order_item = get_order_item(request)
 
         order_item["quantity"] = get_new_quantity(request, cart, order_item)
-        
+        order_item["subtotal"] = f"{order_item['quantity'] * order_item['price'] :,.2f}" 
         cart[order_item["slug"]] = order_item
         request.session["cart"] = cart
         request.session.modified = True
         context = {
             "new_count":request.session["cart"][order_item["slug"]]["quantity"],
             "total_cart_count": len(request.session["cart"]),
-            "product_id":order_item["product_id"]
+            "product_id":order_item["product_id"],
+            "from":None
         }
         
         if request.POST.get("from_index"):
-            return render(request, "shop/partials/_cart-counter.html", context)
+            context["from"] = "index"
+            
+        return render(request, "shop/partials/_cart-counter.html", context)
 
-
-  
-
-        
 
 def products(request):
     return render(request, "shop/product-listings.html")
