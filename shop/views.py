@@ -78,7 +78,8 @@ def add_to_cart(request):
             "new_count":request.session["cart"][order_item["slug"]]["quantity"],
             "total_cart_count": len(request.session["cart"]),
             "product_id":order_item["product_id"],
-            "from":None
+            "from":None,
+            "order_item":order_item
         }
         
        

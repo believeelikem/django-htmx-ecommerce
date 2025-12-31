@@ -1,5 +1,25 @@
 {% include 'shop/partials/_cart-counter-main.html' %} 
 
+<button 
+    class="btn btn--primary" 
+    type="button"
+    id="detail-add-to-cart"
+    hx-select="unset"
+    hx-post="{% url 'shop:add-to-cart' %}"
+    hx-include="#variant-form"
+    hx-vals = '{
+        "id": "{{order.product_id}}",
+        "name": "{{order.product_name}}",
+        "image_url": "{{order.image_url}}",
+        "price":"{{order.price}}",
+        "slug": "{{order.slug}}",
+        "from":"detail"
+    }'
+    hx-target="#cart-count-top"
+    hx-swap="outerHTML settle:1s"
+    hx-swap-oob="true"
+    >Add to cart</button>
+
 {% if from == "index" %}
     <span 
     id="cart-counter-on-product-{{product_id}}" 

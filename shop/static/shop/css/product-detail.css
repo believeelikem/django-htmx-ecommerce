@@ -46,6 +46,15 @@
   border: 1px solid var(--color-border);
 }
 
+#detail-add-to-cart.htmx-added{
+  opacity:0
+}
+
+#detail-add-to-cart{
+  opacity:1;
+  transition: opacity 1s ease-in;
+}
+
 .detail-panel {
   display: grid;
   gap: var(--space-md);

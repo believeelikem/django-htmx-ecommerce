@@ -116,6 +116,7 @@
         <button 
         class="btn btn--primary" 
         type="button"
+        id="detail-add-to-cart"
         hx-select="unset"
         hx-post="{% url 'shop:add-to-cart' %}"
         hx-include="#variant-form"
@@ -123,14 +124,12 @@
             "id": "{{product_id}}",
             "name": "{{product_name}}",
             "image_url": "{{current.image_url}}",
-            "quantity_left": "{{current.quantity}}",
             "price":"{{current.unit_price}}",
-            "quantity_ordered": "{{current.quantity}}",
             "slug": "{{product_slug}}",
             "from":"detail"
         }'
         hx-target="#cart-count-top"
-        hx-swap="outerHTML"
+        hx-swap="outerHTML settle:1s"
         
         >Add to cart</button>
         <button class="btn btn--ghost" type="button">Save for later</button>

@@ -54,6 +54,7 @@ def get_cart_in_session(session):
     return session.setdefault("cart", {}) 
  
 def get_order_item(request):
+    print(request.POST.get("image_url"))
     print(request.POST.get("image_url").split("/", 2)[-1])
     
     order_item = {
@@ -68,9 +69,6 @@ def get_order_item(request):
             if request.POST.get("from") == "detail" else request.POST.get("image_url"),
         "slug":request.POST.get("slug"),     
     }    
-    
-    
-    
     return order_item
       
 def is_already_in_cart(cart,order_item):    
