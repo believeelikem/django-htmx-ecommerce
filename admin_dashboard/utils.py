@@ -273,7 +273,7 @@ def attach_product_images(view_func):
     def attach_images_wrapper(request,id = None):
         context = {}
         if "product_details" in request.session :
-            context = {"product_details": request.session["product_details"] .copy()}
+            context = {"product_details": request.session["product_details"].copy()}
             for product in context["product_details"]:
                 product["total_price"] = f"{float(product['price']) * float(product['quantity']):,.2f}"
                 
@@ -447,7 +447,7 @@ def save_to_db(view_func):
                 _product_detail_temp_image.delete()
             
                 
-            product.category.add(
+            product.categories.add(
                 get_object_or_404(Category,
                                   name = grouped_products[_product_name][0]["category_name"]
                         )

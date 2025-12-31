@@ -27,9 +27,15 @@ def home(request):
         cart = get_cart_in_session(request.session)
             
         for product in products:
-            product.quantity_in_cart = \
-            request.session["cart"][product.slug]["quantity"] \
-            if cart and product.slug in request.session["cart"] else 0
+            # print("details = ", product.details)
+            # splt_url = get_object_or_404(ProductImage, id = product.details[0]['image_id']).photo.url.split("/")[-1]
+            # print("obj is = ",splt_url)
+            # print("= ",request.session["cart"][f"{product.slug}-{splt_url}"])
+            product.quantity_in_cart = request.session["cart"][f"{product.slug}-{get_object_or_404(ProductImage, id=product.details[0]['image_id']).photo.url.split('/')[-1]}"]["quantity"] if cart and product.slug in request.session["cart"] else 0
+            # print(product.quantity_in_cart)
+
+            
+    # print(len(request.session["cart"]))
         
     context = {
     "products":products,
@@ -95,7 +101,7 @@ def product_detail(request,slug):
                 ProductImage,id = detail["image_id"]
                 ).photo.url
         )   
-    
+    print(details)
     color = request.GET.get("color")
     size = request.GET.get("size")
      
@@ -132,9 +138,6 @@ def product_detail(request,slug):
         first_image_for_cover = Subquery(image_subquery)
     )
     
-    for p in related_products:
-        print(vars(p))
-
     context = {
         "variants":details,
         "sizes": get_related_specifics(details,key = "size"),
