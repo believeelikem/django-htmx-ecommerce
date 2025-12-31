@@ -11,7 +11,6 @@ from django.db.models import F
 from django.db.models import OuterRef, Subquery
 from .utils import *
 
-
 def home(request):
 
     image_subquery = ProductImage.objects.filter(
@@ -25,16 +24,13 @@ def home(request):
     
     
     if not request.user.is_authenticated:
-        if request.session.get("cart"):
-            cart = request.session["cart"]
-        else:
-            cart = request.session["cart"] = {}
+        cart = get_cart_in_session(request.session)
             
         for product in products:
             product.quantity_in_cart = \
             request.session["cart"][product.slug]["quantity"] \
             if cart and product.slug in request.session["cart"] else 0
-       
+        
     context = {
     "products":products,
     "total_cart_count": len(request.session["cart"])
@@ -46,8 +42,6 @@ def home(request):
 
 
 def cart(request):
-    
-    
     context = {
         "cart":request.session["cart"]
     }
@@ -71,11 +65,11 @@ def add_to_cart(request):
 
         order_item["quantity"] = get_new_quantity(request, cart, order_item)
         order_item["subtotal"] = f"{order_item['quantity'] * order_item['price'] :,.2f}" 
-        cart[order_item["slug"]] = order_item
+        cart[f'{order_item["slug"]}-{order_item["image_url"].split("/")[-1]}'] = order_item
         request.session["cart"] = cart
         request.session.modified = True
         context = {
-            "new_count":request.session["cart"][order_item["slug"]]["quantity"],
+            "new_count":request.session["cart"][f'{order_item["slug"]}-{order_item["image_url"].split("/")[-1]}']["quantity"],
             "total_cart_count": len(request.session["cart"]),
             "product_id":order_item["product_id"],
             "from":None,
@@ -86,7 +80,6 @@ def add_to_cart(request):
         context["from"] = request.POST.get("from")
             
         return render(request, "shop/partials/_cart-counter.html", context)
-
 
 def products(request):
     return render(request, "shop/product-listings.html")

@@ -19,8 +19,10 @@
             <article class="cart-item">
             <img class="cart__image" src="/media/{{values.image_url}}" alt="Coat">
             <div class="cart-item__info">
-                <strong> <a href="{% url 'shop:product-detail' item %}">
-                    {{item}}</a></strong>
+                <strong> 
+                    <a href="{% url 'shop:product-detail' values.slug %}?color={{values.color}}&size={{values.size}}"
+                    >{{values.slug}}</a>
+                </strong>
                 <span class="section__subtitle">Color: {{values.color}}, 
                     Size: {{values.size}}, 
                     price: ${{values.price}},
