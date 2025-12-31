@@ -81,8 +81,8 @@ def add_to_cart(request):
             "from":None
         }
         
-        if request.POST.get("from_index"):
-            context["from"] = "index"
+       
+        context["from"] = request.POST.get("from")
             
         return render(request, "shop/partials/_cart-counter.html", context)
 
