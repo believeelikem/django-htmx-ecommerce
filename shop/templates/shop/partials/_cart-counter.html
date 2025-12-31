@@ -1,3 +1,5 @@
+{% include 'shop/partials/_cart-counter-main.html' %} 
+
 {% if from == "index" %}
     <span 
     id="cart-counter-on-product-{{product_id}}" 
@@ -6,5 +8,3 @@
     hx-target=""
     >{{new_count}}</span>
 {% endif %}
-
-{% include 'shop/partials/_cart-counter-main.html' %} 
