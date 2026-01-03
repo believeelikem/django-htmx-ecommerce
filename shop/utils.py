@@ -73,7 +73,7 @@ def get_order_item(request):
         "slug":request.POST.get("slug"),     
     }    
     return order_item
-      
+       
 def is_already_in_cart(cart,order_item):    
     for item in cart:
         # print("o, r is = ",order_item)

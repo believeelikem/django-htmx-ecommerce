@@ -17,7 +17,7 @@
     <div class="cart-items">
         {% for item,values in cart.items %}
             <article class="cart-item">
-            <img class="cart__image" src="/media/{{values.image_url}}" alt="Coat">
+            <img class="cart__image" src="{{values.image_url}}" alt="Coat">
             <div class="cart-item__info">
                 <strong> 
                     <a href="{% url 'shop:product-detail' values.slug %}?color={{values.color}}&size={{values.size}}"

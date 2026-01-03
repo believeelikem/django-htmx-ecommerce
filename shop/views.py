@@ -8,7 +8,8 @@ from django.shortcuts import render, get_object_or_404
 from .models import Product,ProductImage, Category
 from django.db import connection
 from django.db.models import F
-from django.db.models import OuterRef, Subquery
+from django.db.models.functions import Concat
+from django.db.models import OuterRef, Subquery,Value, CharField
 from .utils import *
 from django.contrib import messages
 
@@ -19,8 +20,13 @@ def home(request):
     ).order_by('id').values('photo')[:1]
 
     products = Product.objects.annotate(
-        first_image_for_cover = Subquery(image_subquery)
+        first_image_for_cover = Concat(
+        Value('/media/'),
+        Subquery(image_subquery),
+        output_field=CharField()
+    )
     ) 
+    
     # request.session["cart"] = {}
     
     print("cart type is = ",request.session["cart"])
@@ -59,9 +65,8 @@ def cart(request):
     }
     
     for item in request.session["cart"]:
-        print(item," = ",request.session["cart"][item])
+        print(request.session["cart"][item],"\n")
         
-    
     if request.htmx:
         return render(request, "shop/partials/_cart.html",context)
     
@@ -89,8 +94,7 @@ def add_to_cart(request):
             "from":None,
             "order_item":order_item
         }
-        
-        messages.success(request, "Item added to cart")
+        messages.success(request, f"{order_item['name']} added to cart")
         context["from"] = request.POST.get("from")
             
         return render(request, "shop/partials/_cart-counter.html", context)
