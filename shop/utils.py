@@ -40,7 +40,7 @@ def get_new_quantity_or_err(request, cart, order_item):
         new_val = \
         int(request.session["cart"][f'{order_item["slug"]}-{order_item["image_id"]}']["quantity"]) \
         + new_val
-                
+    print(request.POST.get("curr_total_quantity"), "type is = ", type(request.POST.get("curr_total_quantity")))     
     if new_val:
         if new_val <= int(request.POST.get("curr_total_quantity")):
             return new_val if new_val else "Unexpected err from add_to_cart"
