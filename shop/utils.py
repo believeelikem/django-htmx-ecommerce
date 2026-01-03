@@ -56,11 +56,12 @@ def get_increment_val(request,slug):
 
 def get_cart_in_session(session):
     return session.setdefault("cart", {}) 
- 
+  
 def get_order_item(request):
     print(request.POST)
     order_item = {
         "product_id":request.POST.get("id"),
+        "name":request.POST.get("name"),
         "order":None,
         "quantity": None,
         "price":request.POST.get("price"),

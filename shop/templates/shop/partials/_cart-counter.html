@@ -8,12 +8,12 @@
     hx-post="{% url 'shop:add-to-cart' %}"
     hx-include="#variant-form"
     hx-vals = '{
-        "id": "{{order.product_id}}",
-        "name": "{{order.product_name}}",
-        "image_url": "{{order.image_url}}",
-        "price":"{{order.price}}",
-        "slug": "{{order.slug}}",
-        "image_id": "{{order.image_id}}",
+        "id": "{{order_item.product_id}}",
+        "name": "{{order_item.name}}",
+        "image_url": "{{order_item.image_url}}",
+        "price":"{{order_item.price}}",
+        "slug": "{{order_item.slug}}",
+        "image_id": "{{order_item.image_id}}",
         "from":"detail"
     }'
     hx-target="#cart-count-top"

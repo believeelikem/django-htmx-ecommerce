@@ -16,7 +16,7 @@
     // entrance animation
     requestAnimationFrame(() => toast.classList.add("is-in"));
 
-    const timeoutMs = parseInt(toast.dataset.timeout || "5000", 10);
+    const timeoutMs = parseInt(toast.dataset.timeout || "3000", 10);
     let timer = null;
     let start = Date.now();
     let remaining = timeoutMs;

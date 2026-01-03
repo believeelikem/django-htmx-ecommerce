@@ -80,6 +80,8 @@ def add_to_cart(request):
         cart[f'{order_item["slug"]}-{order_item["image_id"]}'] = order_item
         request.session["cart"] = cart
         request.session.modified = True
+        print("order item is = ", order_item)
+        
         context = {
             "new_count":request.session["cart"][f'{order_item["slug"]}-{order_item["image_id"]}']["quantity"],
             "total_cart_count": len(request.session["cart"]),
