@@ -34,21 +34,12 @@ def home(request):
         cart = get_cart_in_session(request.session)
             
         for product in products:
-            # print("details = ", product.details)
-            # splt_url = get_object_or_404(ProductImage, id = product.details[0]['image_id']).photo.url.split("/")[-1]
-            # print("obj is = ",splt_url)
-            # print("= ",request.session["cart"][f"{product.slug}-{splt_url}"])
-            print("from sesssion: ",request.session["cart"]
-                # request.session["cart"][f'{product.slug}-{product.details[0]["image_id"]}']
-            )
+
+            print("from sesssion: ",request.session["cart"])
             product.quantity_in_cart = \
             request.session["cart"][f'{product.slug}-{product.details[0]["image_id"]}']["quantity"] \
             if cart and f'{product.slug}-{product.details[0]["image_id"]}' in request.session["cart"] else 0
-            # print(product.quantity_in_cart)
 
-            
-    # print(len(request.session["cart"]))
-        
     context = {
     "products":products,
     "total_cart_count": len(request.session["cart"])
