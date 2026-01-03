@@ -23,7 +23,7 @@
             {% endfor %}
         </div>
     </section>
-
+    
     <section class="detail-panel">
         <div class="badge">New arrival</div>
         <h1 style="margin:0;">{{product_name}}</h1>
@@ -126,6 +126,7 @@
             "image_url": "{{current.image_url}}",
             "price":"{{current.unit_price}}",
             "slug": "{{product_slug}}",
+            "image_id":"{{current.image_id}}",
             "from":"detail"
         }'
         hx-target="#cart-count-top"

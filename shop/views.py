@@ -10,6 +10,7 @@ from django.db import connection
 from django.db.models import F
 from django.db.models import OuterRef, Subquery
 from .utils import *
+from django.contrib import messages
 
 def home(request):
 
@@ -22,7 +23,7 @@ def home(request):
     ) 
     # request.session["cart"] = {}
     
-    
+    print("cart type is = ",request.session["cart"])
     if not request.user.is_authenticated:
         cart = get_cart_in_session(request.session)
             
@@ -31,7 +32,12 @@ def home(request):
             # splt_url = get_object_or_404(ProductImage, id = product.details[0]['image_id']).photo.url.split("/")[-1]
             # print("obj is = ",splt_url)
             # print("= ",request.session["cart"][f"{product.slug}-{splt_url}"])
-            product.quantity_in_cart = request.session["cart"][f"{product.slug}-{get_object_or_404(ProductImage, id=product.details[0]['image_id']).photo.url.split('/')[-1]}"]["quantity"] if cart and product.slug in request.session["cart"] else 0
+            print("from sesssion: ",request.session["cart"]
+                # request.session["cart"][f'{product.slug}-{product.details[0]["image_id"]}']
+            )
+            product.quantity_in_cart = \
+            request.session["cart"][f'{product.slug}-{product.details[0]["image_id"]}']["quantity"] \
+            if cart and f'{product.slug}-{product.details[0]["image_id"]}' in request.session["cart"] else 0
             # print(product.quantity_in_cart)
 
             
@@ -71,21 +77,24 @@ def add_to_cart(request):
 
         order_item["quantity"] = get_new_quantity(request, cart, order_item)
         order_item["subtotal"] = f"{order_item['quantity'] * order_item['price'] :,.2f}" 
-        cart[f'{order_item["slug"]}-{order_item["image_url"].split("/")[-1]}'] = order_item
+        cart[f'{order_item["slug"]}-{order_item["image_id"]}'] = order_item
         request.session["cart"] = cart
         request.session.modified = True
         context = {
-            "new_count":request.session["cart"][f'{order_item["slug"]}-{order_item["image_url"].split("/")[-1]}']["quantity"],
+            "new_count":request.session["cart"][f'{order_item["slug"]}-{order_item["image_id"]}']["quantity"],
             "total_cart_count": len(request.session["cart"]),
             "product_id":order_item["product_id"],
             "from":None,
             "order_item":order_item
         }
         
-       
+        messages.success(request, "Item added to cart")
         context["from"] = request.POST.get("from")
             
         return render(request, "shop/partials/_cart-counter.html", context)
+
+def toast_clear(request):
+    return HttpResponse("")
 
 def products(request):
     return render(request, "shop/product-listings.html")
@@ -95,13 +104,13 @@ def product_detail(request,slug):
     product = get_object_or_404(Product, slug = slug)
     
     details = product.details
-    for detail in details:
-        detail["image_url"] = (
-            get_object_or_404(
-                ProductImage,id = detail["image_id"]
-                ).photo.url
-        )   
-    print(details)
+    # for detail in details:
+    #     detail["image_url"] = (
+    #         get_object_or_404(
+    #             ProductImage,id = detail["image_id"]
+    #             ).photo.url
+    #     )   
+    print("details = ",details)
     color = request.GET.get("color")
     size = request.GET.get("size")
      

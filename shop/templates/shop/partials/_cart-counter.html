@@ -13,6 +13,7 @@
         "image_url": "{{order.image_url}}",
         "price":"{{order.price}}",
         "slug": "{{order.slug}}",
+        "image_id": "{{order.image_id}}",
         "from":"detail"
     }'
     hx-target="#cart-count-top"
@@ -28,3 +29,5 @@
     hx-target=""
     >{{new_count}}</span>
 {% endif %}
+
+{% include 'shop/partials/_toasts.html' %}

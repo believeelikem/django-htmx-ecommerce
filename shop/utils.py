@@ -1,3 +1,6 @@
+import re
+
+
 def get_variant(details, color, size):
     if not all([color,size]):
         return details[0]
@@ -34,9 +37,8 @@ def get_new_quantity(request, cart, order_item):
         increment_val = increment_val
     else:
         increment_val = \
-        int(request.session["cart"][f'{order_item["slug"]}-{order_item["image_url"].split("/")[-1]}']["quantity"]) \
+        int(request.session["cart"][f'{order_item["slug"]}-{order_item["image_id"]}']["quantity"]) \
         + increment_val
-        
     return increment_val if increment_val else "Unexpected err from add_to_cart"
 
 def get_increment_val(request,slug):
@@ -56,7 +58,7 @@ def get_cart_in_session(session):
     return session.setdefault("cart", {}) 
  
 def get_order_item(request):
-    
+    print(request.POST)
     order_item = {
         "product_id":request.POST.get("id"),
         "order":None,
@@ -65,8 +67,8 @@ def get_order_item(request):
         "color":request.POST.get("color"),
         "size":request.POST.get("size"),
         "price":float(request.POST.get("price")),
-        "image_url": request.POST.get("image_url").split("/", 2)[-1] \
-            if request.POST.get("from") == "detail" else request.POST.get("image_url"),
+        "image_url": request.POST.get("image_url"),
+        "image_id": request.POST.get("image_id"),
         "slug":request.POST.get("slug"),     
     }    
     return order_item

@@ -12,6 +12,7 @@
   {%htmx_script%}
 </head>
 <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+
   <div class="page">
    <header 
    class="topbar" 
@@ -95,6 +96,10 @@
     </div>
 </footer>
 </div>
+<div id="toast-container" aria-live="polite" aria-relevant="additions text">
+    <div id="toast-stack"></div>
+</div>
+<script src="{% static 'shop/js/toasts.js' %}"></script>
 <script src="{% static 'users/js/user-validation.js' %}"></script>
 </body>
 </html>

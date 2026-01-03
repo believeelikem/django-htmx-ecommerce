@@ -1,0 +1,7 @@
+{% if messages %}
+  <div id="toast-stack" hx-swap-oob="afterbegin">
+    {% for message in messages %}
+      {% include "shop/partials/toast_item.html" with message=message %}
+    {% endfor %}
+  </div>
+{% endif %}

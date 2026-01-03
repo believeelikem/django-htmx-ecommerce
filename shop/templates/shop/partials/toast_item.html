@@ -1,0 +1,17 @@
+<div class="toast toast--{{ message.tags|default:'info' }}"
+     role="status"
+     data-toast
+     data-timeout="5000">
+  <div class="toast__body">
+    {{ message }}
+  </div>
+
+  <button class="toast__close"
+          type="button"
+          aria-label="Dismiss notification"
+          hx-delete="{% url 'shop:toast-clear' %}"
+          hx-target="closest .toast"
+          hx-swap="outerHTML">
+    ×
+  </button>
+</div>
