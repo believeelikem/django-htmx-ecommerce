@@ -88,7 +88,7 @@ def add_to_cart(request):
         }
         
         if "subtract" == request.POST.get("action"):
-            messages.error(request, f" —1({order_item['name']})  in cart")
+            messages.warning(request, f" —1({order_item['name']})  in cart")
         else:
             messages.success(request, f"{order_item['name']} added to cart")
             

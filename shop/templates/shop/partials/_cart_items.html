@@ -30,11 +30,11 @@
                 "action":"subtract",
                 "from": "cart"
             }'    
-            hx-target="#cart-counter-on-product-{{values.product_id}}"
+            hx-target="#cart-counter-on-product-{{values.product_id}}-{{values.image_id}}"
             hx-swap="outerHTML"                 
             >-</button>
             <span
-            id="cart-counter-on-product-{{values.product_id}}"
+            id="cart-counter-on-product-{{values.product_id}}-{{values.image_id}}"
             > {{values.quantity}} </span>
             <button 
             class="quantity__btn quantity__btn--add" 
@@ -52,7 +52,7 @@
                 "slug": "{{ values.slug }}",
                 "from": "cart"
             }'    
-            hx-target="#cart-counter-on-product-{{values.product_id}}"
+            hx-target="#cart-counter-on-product-{{values.product_id}}-{{values.image_id}}"
             hx-swap="outerHTML"            
             >+</button>
             </div>
