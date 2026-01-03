@@ -87,7 +87,11 @@ def add_to_cart(request):
             "order_item":order_item
         }
         
-        messages.success(request, f"{order_item['name']} added to cart")
+        if "subtract" == request.POST.get("action"):
+            messages.error(request, f" —1({order_item['name']})  in cart")
+        else:
+            messages.success(request, f"{order_item['name']} added to cart")
+            
         context["from"] = request.POST.get("from")    
         return render(request, "shop/partials/_cart-counter.html", context)
 
