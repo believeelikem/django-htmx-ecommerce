@@ -31,15 +31,16 @@ def get_product_quantity(max_quantity,product_quantity_in_session):
     return product_quantity_in_session, should_reset
 
 def get_new_quantity(request, cart, order_item):
-    increment_val = get_increment_val(request,order_item["slug"])
+    action = ""
+    new_val = get_increment_val(request,order_item["slug"])
     
     if not cart or not is_already_in_cart(cart, order_item):
-        increment_val = increment_val
+        new_val = new_val
     else:
-        increment_val = \
+        new_val = \
         int(request.session["cart"][f'{order_item["slug"]}-{order_item["image_id"]}']["quantity"]) \
-        + increment_val
-    return increment_val if increment_val else "Unexpected err from add_to_cart"
+        + new_val
+    return new_val if new_val else "Unexpected err from add_to_cart"
 
 def get_increment_val(request,slug):
     increment_val = 1
@@ -51,6 +52,9 @@ def get_increment_val(request,slug):
     elif request.POST.get("from_cart"):
         #same as 1
         pass
+    
+    if "subtract" == request.POST.get("action"):
+        increment_val = -increment_val
     return increment_val
 
 def get_cart_in_session(session):
