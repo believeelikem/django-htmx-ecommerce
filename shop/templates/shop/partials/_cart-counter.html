@@ -1,5 +1,7 @@
-{% include 'shop/partials/_cart-counter-main.html' %} 
-
+{% if from == "detail" or from == "index" %}
+    {% include 'shop/partials/_cart-counter-main.html' %} 
+{% endif %}
+{% if from == "detail" %}
 <button 
     class="btn btn--primary" 
     type="button"
@@ -20,6 +22,7 @@
     hx-swap="outerHTML settle:1s"
     hx-swap-oob="true"
     >Add to cart</button>
+{% endif %}
 
 {% if from == "index" %}
     <span 
@@ -28,6 +31,10 @@
     hx-swap-oob="true"
     hx-target=""
     >{{new_count}}</span>
+{% endif %}
+
+{% if from == "cart" %}
+{% include "shop/partials/_cart_page_counter.html" %}
 {% endif %}
 
 {% include 'shop/partials/_toasts.html' %}

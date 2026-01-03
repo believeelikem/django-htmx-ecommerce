@@ -64,6 +64,9 @@ def cart(request):
     return render(request, "shop/cart.html", context)
 
 def add_to_cart(request):
+    templates = {
+        "index":""
+    }
     if request.user.is_authenticated:
         ...
     else:
@@ -76,7 +79,6 @@ def add_to_cart(request):
         cart[f'{order_item["slug"]}-{order_item["image_id"]}'] = order_item
         request.session["cart"] = cart
         request.session.modified = True
-        print("order item is = ", order_item)
         
         context = {
             "new_count":request.session["cart"][f'{order_item["slug"]}-{order_item["image_id"]}']["quantity"],
@@ -85,9 +87,9 @@ def add_to_cart(request):
             "from":None,
             "order_item":order_item
         }
+        
         messages.success(request, f"{order_item['name']} added to cart")
-        context["from"] = request.POST.get("from")
-            
+        context["from"] = request.POST.get("from")    
         return render(request, "shop/partials/_cart-counter.html", context)
 
 def toast_clear(request):

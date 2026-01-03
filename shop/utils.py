@@ -46,12 +46,11 @@ def get_increment_val(request,slug):
     if request.POST.get("from") == "detail" :
         increment_val = request.session[f"{slug}_quantity"]
     elif request.POST.get("from") == "index":
-        # same as 1
+        #same as 1
         pass
     elif request.POST.get("from_cart"):
         #same as 1
         pass
-    print("increment val is = ", increment_val)
     return increment_val
 
 def get_cart_in_session(session):
