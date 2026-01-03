@@ -30,7 +30,7 @@ def get_product_quantity(max_quantity,product_quantity_in_session):
         return max_quantity, should_reset
     return product_quantity_in_session, should_reset
 
-def get_new_quantity(request, cart, order_item):
+def get_new_quantity_or_err(request, cart, order_item):
     action = ""
     new_val = get_increment_val(request,order_item["slug"])
     
@@ -40,7 +40,12 @@ def get_new_quantity(request, cart, order_item):
         new_val = \
         int(request.session["cart"][f'{order_item["slug"]}-{order_item["image_id"]}']["quantity"]) \
         + new_val
-    return new_val if new_val else "Unexpected err from add_to_cart"
+                
+    if new_val:
+        if new_val <= int(request.POST.get("curr_total_quantity")):
+            return new_val if new_val else "Unexpected err from add_to_cart"
+        else:
+            raise ValueError(" Cart exceed available items")
 
 def get_increment_val(request,slug):
     increment_val = 1
@@ -61,7 +66,7 @@ def get_cart_in_session(session):
     return session.setdefault("cart", {}) 
   
 def get_order_item(request):
-    print(request.POST)
+    print("post is ", request.POST)
     order_item = {
         "product_id":request.POST.get("id"),
         "name":request.POST.get("name"),
@@ -74,6 +79,7 @@ def get_order_item(request):
         "image_url": request.POST.get("image_url"),
         "image_id": request.POST.get("image_id"),
         "slug":request.POST.get("slug"),     
+        "curr_total_quantity":request.POST.get("curr_total_quantity"),
     }    
     return order_item
        

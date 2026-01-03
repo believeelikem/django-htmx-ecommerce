@@ -29,14 +29,13 @@ def home(request):
     ) 
     
     # request.session["cart"] = {}
+    # print(request.session["cart"])
     
-    print("cart type is = ",request.session["cart"])
     if not request.user.is_authenticated:
         cart = get_cart_in_session(request.session)
             
         for product in products:
 
-            print("from sesssion: ",request.session["cart"])
             product.quantity_in_cart = \
             request.session["cart"][f'{product.slug}-{product.details[0]["image_id"]}']["quantity"] \
             if cart and f'{product.slug}-{product.details[0]["image_id"]}' in request.session["cart"] else 0
@@ -64,21 +63,27 @@ def cart(request):
     return render(request, "shop/cart.html", context)
 
 def add_to_cart(request):
-    templates = {
-        "index":""
-    }
+
     if request.user.is_authenticated:
         ...
     else:
         cart = get_cart_in_session(request.session)
         
         order_item = get_order_item(request)
-
-        order_item["quantity"] = get_new_quantity(request, cart, order_item)
-        order_item["subtotal"] = f"{order_item['quantity'] * order_item['price'] :,.2f}" 
-        cart[f'{order_item["slug"]}-{order_item["image_id"]}'] = order_item
-        request.session["cart"] = cart
-        request.session.modified = True
+        
+        try:
+            order_item["quantity"] = get_new_quantity_or_err(request, cart, order_item)
+            order_item["subtotal"] = f"{order_item['quantity'] * order_item['price'] :,.2f}" 
+            cart[f'{order_item["slug"]}-{order_item["image_id"]}'] = order_item
+            request.session["cart"] = cart
+            request.session.modified = True
+        except ValueError as e:
+            messages.error(request, e)
+        else:
+            if "subtract" == request.POST.get("action"):
+                messages.warning(request, f" —1({order_item['name']})  in cart")
+            else:
+                messages.success(request, f"{order_item['name']} added to cart")            
         
         context = {
             "new_count":request.session["cart"][f'{order_item["slug"]}-{order_item["image_id"]}']["quantity"],
@@ -87,10 +92,7 @@ def add_to_cart(request):
             "order_item":order_item
         }
         
-        if "subtract" == request.POST.get("action"):
-            messages.warning(request, f" —1({order_item['name']})  in cart")
-        else:
-            messages.success(request, f"{order_item['name']} added to cart")
+
             
         context["from"] = request.POST.get("from")    
         return render(request, "shop/partials/_cart-counter.html", context)
