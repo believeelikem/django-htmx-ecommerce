@@ -15,6 +15,14 @@
   box-shadow: var(--shadow-soft);
 }
 
+.nav-link.remove{
+  border: none;
+}
+
+.nav-link.remove:hover{
+  background-color: brown;
+  cursor: pointer;
+}
 .cart-item__info {
   display: grid;
   gap: var(--space-xs);

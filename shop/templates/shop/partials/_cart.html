@@ -14,74 +14,7 @@
     </div>
     
     <div class="layout">
-    <div class="cart-items">
-        {% for item,values in cart.items %}
-            <article class="cart-item">
-            <img class="cart__image" src="{{values.image_url}}" alt="Coat">
-            <div class="cart-item__info">
-                <strong> 
-                    <a href="{% url 'shop:product-detail' values.slug %}?color={{values.color}}&size={{values.size}}"
-                    >{{values.slug}}</a>
-                </strong>
-                <span class="section__subtitle">Color: {{values.color}}, 
-                    Size: {{values.size}}, 
-                    price: ${{values.price}},
-                    quantity: {{values.quantity}}
-                </span>
-                <div class="quantity">
-                <button 
-                class="quantity__btn quantity__btn--reduce" 
-                type="button"
-                hx-post="{% url 'shop:add-to-cart' %}"
-                hx-vals = '{
-                    "id": "{{ values.product_id }}",
-                    "name": "{{ values.name}}",
-                    "image_url": "{{ values.image_url }}",
-                    "image_id": "{{ values.image_id}}",
-                    "price": "{{ values.price }}",
-                    "color": "{{ values.color }}",
-                    "quantity": "{{ values.quantity }}",
-                    "size": "{{ values.size }}",
-                    "slug": "{{ values.slug }}",
-                    "action":"subtract",
-                    "from": "cart"
-                }'    
-                hx-target="#cart-counter-on-product-{{values.product_id}}"
-                hx-swap="outerHTML"                 
-                >-</button>
-                <span
-                id="cart-counter-on-product-{{values.product_id}}"
-                > {{values.quantity}} </span>
-                <button 
-                class="quantity__btn quantity__btn--add" 
-                type="button"
-                hx-post="{% url 'shop:add-to-cart' %}"
-                hx-vals = '{
-                    "id": "{{ values.product_id }}",
-                    "name": "{{ values.name}}",
-                    "image_url": "{{ values.image_url }}",
-                    "image_id": "{{ values.image_id}}",
-                    "price": "{{ values.price }}",
-                    "color": "{{ values.color }}",
-                    "quantity": "{{ values.quantity }}",
-                    "size": "{{ values.size }}",
-                    "slug": "{{ values.slug }}",
-                    "from": "cart"
-                }'    
-                hx-target="#cart-counter-on-product-{{values.product_id}}"
-                hx-swap="outerHTML"            
-                >+</button>
-                </div>
-            </div>
-            <div class="cart-item__actions">
-                <strong>${{values.subtotal}}</strong>
-                <span class="section__subtitle">Subtotal ${{values.subtotal}}</span>
-                <a class="nav-link" href="#">Remove</a>
-            </div>
-            </article>
-        {% endfor %}
-    </div>
-
+    {% include 'shop/partials/_cart_items.html' %}
     <aside class="cart-summary">
         <div>
         <h3 style="margin:0;">Summary</h3>

@@ -1,3 +1,4 @@
+from email.mime import image
 from math import prod
 from multiprocessing import context
 from os import name
@@ -42,7 +43,6 @@ def home(request):
 
     context = {
     "products":products,
-    "total_cart_count": len(request.session["cart"])
     }
         
     if request.htmx:
@@ -82,7 +82,6 @@ def add_to_cart(request):
         
         context = {
             "new_count":request.session["cart"][f'{order_item["slug"]}-{order_item["image_id"]}']["quantity"],
-            "total_cart_count": len(request.session["cart"]),
             "product_id":order_item["product_id"],
             "from":None,
             "order_item":order_item
@@ -91,6 +90,15 @@ def add_to_cart(request):
         messages.success(request, f"{order_item['name']} added to cart")
         context["from"] = request.POST.get("from")    
         return render(request, "shop/partials/_cart-counter.html", context)
+
+def remove_from_cart(request):
+    del request.session["cart"][f"{request.POST.get('product_slug')}-{request.POST.get('image_id')}"]
+    request.session.modified = True
+    context = {
+        "cart":request.session["cart"]
+    }
+    messages.error(request, f"Deleted {request.POST.get('product_slug')} successfully")
+    return render(request, "shop/partials/_cart_items.html", context)
 
 def toast_clear(request):
     return HttpResponse("")
@@ -157,7 +165,6 @@ def product_detail(request,slug):
         "available_sizes":available_sizes,
         "product_quantity":product_quantity,
         "related_products":related_products,
-        "total_cart_count": len(request.session["cart"])
     }
        
     return render(request, "shop/product-detail.html", context)
