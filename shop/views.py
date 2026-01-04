@@ -1,9 +1,4 @@
-from email.mime import image
-from math import prod
-from multiprocessing import context
-from os import name
 import re
-from zoneinfo import available_timezones
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from .models import Product,ProductImage, Category
@@ -39,7 +34,7 @@ def home(request):
             product.quantity_in_cart = \
             request.session["cart"][f'{product.slug}-{product.details[0]["image_id"]}']["quantity"] \
             if cart and f'{product.slug}-{product.details[0]["image_id"]}' in request.session["cart"] else 0
-
+    
     context = {
     "products":products,
     }
@@ -72,6 +67,7 @@ def add_to_cart(request):
         order_item = get_order_item(request)
         
         try:
+            print("new q = ",get_new_quantity_or_err(request, cart, order_item))
             order_item["quantity"] = get_new_quantity_or_err(request, cart, order_item)
             order_item["subtotal"] = f"{order_item['quantity'] * order_item['price'] :,.2f}" 
             cart[f'{order_item["slug"]}-{order_item["image_id"]}'] = order_item
@@ -91,9 +87,7 @@ def add_to_cart(request):
             "from":None,
             "order_item":order_item
         }
-        
-
-            
+   
         context["from"] = request.POST.get("from")    
         return render(request, "shop/partials/_cart-counter.html", context)
 

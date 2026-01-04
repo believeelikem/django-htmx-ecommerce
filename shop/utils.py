@@ -31,8 +31,8 @@ def get_product_quantity(max_quantity,product_quantity_in_session):
     return product_quantity_in_session, should_reset
 
 def get_new_quantity_or_err(request, cart, order_item):
-    action = ""
     new_val = get_increment_val(request,order_item["slug"])
+    print("new val is = ",new_val)
     
     if not cart or not is_already_in_cart(cart, order_item):
         new_val = new_val
@@ -40,12 +40,16 @@ def get_new_quantity_or_err(request, cart, order_item):
         new_val = \
         int(request.session["cart"][f'{order_item["slug"]}-{order_item["image_id"]}']["quantity"]) \
         + new_val
-    print(request.POST.get("curr_total_quantity"), "type is = ", type(request.POST.get("curr_total_quantity")))     
+   
     if new_val:
+  
         if new_val <= int(request.POST.get("curr_total_quantity")):
             return new_val if new_val else "Unexpected err from add_to_cart"
         else:
             raise ValueError(" Cart exceed available items")
+    elif new_val == 0:
+       raise ValueError("Cannot go less than 0 quantity, kindly click on 'Remove' to clear") 
+   
 
 def get_increment_val(request,slug):
     increment_val = 1
@@ -57,7 +61,6 @@ def get_increment_val(request,slug):
     elif request.POST.get("from_cart"):
         #same as 1
         pass
-    
     if "subtract" == request.POST.get("action"):
         increment_val = -increment_val
     return increment_val
