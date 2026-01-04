@@ -1,11 +1,8 @@
-{% load static %}
-{%if request.htmx %}
-    <link rel="stylesheet"  id="swappable-stylesheet" href="{% static 'shop/css/product-detail.css' %}"
-    hx-swap-oob="true"
-    >
-{% endif %}
-
-<main id="main-container" class="container section">
+<!-- {% load static %}
+<link rel="stylesheet"  id="swappable-stylesheet" href="{% static 'shop/css/product-detail.css' %}"
+hx-swap-oob="true"
+> -->
+<main id="main-container" class="container section page-product-detail">
     <div id="product-detail" class="product-detail">
     <section class="gallery">
         <div class="gallery__main">
@@ -230,5 +227,3 @@
     </div>
     </section>
 </main>
-<!-- media/products_images/camera-white_SmPHSmB.jpg -->
-<!-- media/products_images/camera-white_SmPHSmB.jpg -->

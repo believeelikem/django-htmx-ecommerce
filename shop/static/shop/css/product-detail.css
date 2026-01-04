@@ -1,26 +1,30 @@
-.product-detail {
+/* ==========================
+   PRODUCT DETAIL — PAGE SCOPE
+   Applies ONLY inside .page-product-detail
+   ========================== */
+
+.page-product-detail .product-detail {
   display: grid;
   gap: var(--space-xl);
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   align-items: start;
 }
 
-.gallery {
+.page-product-detail .gallery {
   display: grid;
   gap: var(--space-md);
   /* grid-template-rows: 4fr 1fr;
   height: 660px; */
 }
 
-
-.gallery__main {
+.page-product-detail .gallery__main {
   border-radius: var(--radius-lg);
   overflow: hidden;
   border: 1px solid var(--color-border);
   height: 380px;
 }
 
-.gallery__main img {
+.page-product-detail .gallery__main img {
   transform: scale(1);
   transition: transform 150ms ease-in;
   will-change: transform;
@@ -29,33 +33,35 @@
   object-fit: cover;
 }
 
-.gallery__main:hover img {
+.page-product-detail .gallery__main:hover img {
   transform: scale(1.3);
 }
 
-
-.gallery__thumbs {
+.page-product-detail .gallery__thumbs {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
   gap: var(--space-sm);
 }
 
-.gallery__thumb {
+.page-product-detail .gallery__thumb {
   border-radius: var(--radius-md);
   overflow: hidden;
   border: 1px solid var(--color-border);
 }
 
-#detail-add-to-cart.htmx-added{
-  opacity:0
+/* NOTE on #detail-add-to-cart:
+   ID selectors are global. If another page ever reuses this ID (it shouldn't),
+   you want the rule scoped anyway. */
+.page-product-detail #detail-add-to-cart.htmx-added {
+  opacity: 0;
 }
 
-#detail-add-to-cart{
-  opacity:1;
+.page-product-detail #detail-add-to-cart {
+  opacity: 1;
   transition: opacity 1s ease-in;
 }
 
-.detail-panel {
+.page-product-detail .detail-panel {
   display: grid;
   gap: var(--space-md);
   background: var(--color-surface);
@@ -65,23 +71,23 @@
   box-shadow: var(--shadow-soft);
 }
 
-.options {
+.page-product-detail .options {
   display: grid;
   gap: var(--space-md);
 }
 
-.option-row {
+.page-product-detail .option-row {
   display: flex;
   align-items: center;
   gap: var(--space-sm);
   flex-wrap: wrap;
 }
 
-.option-row select {
+.page-product-detail .option-row select {
   min-width: 140px;
 }
 
-.quantity {
+.page-product-detail .quantity {
   display: inline-flex;
   align-items: center;
   gap: var(--space-sm);
@@ -90,7 +96,7 @@
   padding: var(--space-xs) var(--space-sm);
 }
 
-.quantity__btn {
+.page-product-detail .quantity__btn {
   border: none;
   background: transparent;
   padding: 6px 10px;
@@ -98,17 +104,17 @@
   font-weight: 700;
 }
 
-.specs {
+.page-product-detail .specs {
   display: grid;
   gap: var(--space-sm);
 }
 
-.reviews {
+.page-product-detail .reviews {
   display: grid;
   gap: var(--space-md);
 }
 
-.review-card {
+.page-product-detail .review-card {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   padding: var(--space-md);
@@ -117,7 +123,7 @@
   gap: var(--space-xs);
 }
 
-.related {
+.page-product-detail .related {
   display: grid;
   gap: var(--space-lg);
 }

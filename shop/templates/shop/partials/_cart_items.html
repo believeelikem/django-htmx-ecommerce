@@ -4,7 +4,9 @@
         <img class="cart__image" src="{{values.image_url}}" alt="Coat">
         <div class="cart-item__info">
             <strong> 
-                <a href="{% url 'shop:product-detail' values.slug %}?color={{values.color}}&size={{values.size}}"
+                <a 
+                title="click to see item"
+                href="{% url 'shop:product-detail' values.slug %}?color={{values.color}}&size={{values.size}}"
                 >{{values.slug}}</a>
             </strong>
             <span class="section__subtitle">Color: {{values.color}}, 
@@ -14,7 +16,7 @@
             </span>
             <div class="quantity">
             <button 
-            class="quantity__btn quantity__btn--reduce" 
+            class="quantity__btn quantity__btn--reduce"
             type="button"
             hx-post="{% url 'shop:add-to-cart' %}"
             hx-vals = '{

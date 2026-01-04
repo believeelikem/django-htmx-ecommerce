@@ -1,9 +1,9 @@
-.cart-items {
+.page-product-cart .cart-items {
   display: grid;
   gap: var(--space-md);
 }
 
-.cart-item {
+.page-product-cart .cart-item {
   display: grid;
   grid-template-columns: 100px 1fr auto;
   align-items: center;
@@ -15,54 +15,55 @@
   box-shadow: var(--shadow-soft);
 }
 
-.nav-link.remove{
+.page-product-cart .nav-link.remove {
   border: none;
 }
 
-.nav-link.remove:hover{
+.page-product-cart .nav-link.remove:hover {
   background-color: brown;
   cursor: pointer;
 }
-.cart-item__info {
+
+.page-product-cart .cart-item__info {
   display: grid;
   gap: var(--space-xs);
 }
 
-.cart-item__actions {
+.page-product-cart .cart-item__actions {
   display: grid;
   gap: var(--space-sm);
   align-items: center;
   justify-items: end;
 }
 
-.quantity__btn{
+.page-product-cart .quantity__btn {
   border: none;
   border-radius: .5rem;
   padding: .15rem .5rem; 
 }
 
-.quantity__btn:hover{
+.page-product-cart .quantity__btn:hover {
   cursor: pointer;
 }
 
-.quantity__btn--reduce{
+.page-product-cart .quantity__btn--reduce {
   background-color: rgb(232, 30, 30);
   color: white;
 }
 
-.quantity__btn--reduce:hover{
+.page-product-cart .quantity__btn--reduce:hover {
   opacity: .7;
 }
 
-.quantity__btn--add{
+.page-product-cart .quantity__btn--add {
   background-color: rgb(30, 232, 225);
 }
 
-.quantity__btn--add:hover{
+.page-product-cart .quantity__btn--add:hover {
   background-color: rgb(16, 198, 192);
 }
 
-.cart-summary {
+.page-product-cart .cart-summary {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
@@ -72,33 +73,33 @@
   gap: var(--space-md);
 }
 
-.promo {
+.page-product-cart .promo {
   display: grid;
   gap: var(--space-sm);
 }
 
-.totals {
+.page-product-cart .totals {
   display: grid;
   gap: var(--space-sm);
 }
 
-.totals__row {
+.page-product-cart .totals__row {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.totals__grand {
+.page-product-cart .totals__grand {
   font-weight: 700;
   font-size: 1.1rem;
 }
 
 @media (max-width: 720px) {
-  .cart-item {
+  .page-product-cart .cart-item {
     grid-template-columns: 80px 1fr;
   }
 
-  .cart-item__actions {
+  .page-product-cart .cart-item__actions {
     justify-items: start;
   }
 }

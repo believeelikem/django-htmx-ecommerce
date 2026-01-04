@@ -1,25 +1,25 @@
-.filters {
+.page-product-listings .filters {
   display: grid;
   gap: var(--space-lg);
 }
 
-.filter-group {
+.page-product-listings .filter-group {
   display: grid;
   gap: var(--space-sm);
 }
 
-.filter-group__title {
+.page-product-listings .filter-group__title {
   margin: 0;
   font-size: 1rem;
 }
 
-.filter-tags {
+.page-product-listings .filter-tags {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-sm);
 }
 
-.product-toolbar {
+.page-product-listings .product-toolbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -28,40 +28,44 @@
   margin-bottom: var(--space-lg);
 }
 
-.product-grid {
+.page-product-listings .product-grid {
   display: grid;
   gap: var(--space-lg);
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
 
-.product-grid .product-card__image img {
+.page-product-listings .product-grid .product-card__image img {
   aspect-ratio: 4 / 3;
 }
 
-.filter-link {
+.page-product-listings .filter-link {
   display: block;
   padding: 10px 12px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   color: var(--color-text);
-  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.12s ease;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.12s ease;
 }
 
-.filter-link:hover {
+.page-product-listings .filter-link:hover {
   background: var(--color-primary-soft);
   border-color: rgba(13, 59, 102, 0.3);
   color: var(--color-primary);
   transform: translateY(-1px);
 }
 
-.pagination {
+.page-product-listings .pagination {
   display: flex;
   gap: var(--space-sm);
   justify-content: center;
   padding: var(--space-xl) 0;
 }
 
-.pagination__item {
+.page-product-listings .pagination__item {
   width: 38px;
   height: 38px;
   border-radius: var(--radius-md);
@@ -74,7 +78,7 @@
   font-weight: 600;
 }
 
-.pagination__item--active {
+.page-product-listings .pagination__item--active {
   background: var(--color-primary);
   color: #fff;
   border-color: transparent;
