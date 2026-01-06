@@ -62,15 +62,19 @@
             </div>
         </div>
         <div class="cart-item__actions">
-            <strong>${{values.subtotal}}</strong>
-            <span class="section__subtitle">Subtotal ${{values.subtotal}}</span>
+            <strong>${{values.sub_total}}</strong>
+            <span class="section__subtitle">Subtotal ${{values.sub_total}}</span>
             <button 
             class="nav-link remove" 
             hx-post="{% url 'shop:remove-from-cart' %}"
+
             hx-vals='{
                 "product_slug": "{{values.slug}}",
-                "image_id": "{{values.image_id}}"
+                "product_id": "{{values.product_id}}",
+                "image_id": "{{values.image_id}}",
+                "from" : "cart"
             }'
+
             hx-target=".cart-items"
             hx-swap="outerHTML"
             hx-confirm="Are you sure u want to remove {{values.slug}} from cart"
@@ -79,4 +83,8 @@
         </article>
     {% endfor %}
 </div>
+
+{% if request.htmx and "cart" in request.META.HTTP_REFERER %}
+    {% include 'shop/partials/_cart-counter-main.html' %}
+{% endif %}
 {% include 'shop/partials/_toasts.html' %}

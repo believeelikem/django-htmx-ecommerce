@@ -1,4 +1,7 @@
 <span 
 id="cart-count-top" 
 class="cart-count"
+{% if from == "cart" %}
+    hx-swap-oob="true"
+{% endif %}
 >{{total_cart_count}}</span>

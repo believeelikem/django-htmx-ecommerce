@@ -41,7 +41,7 @@ html {
 /* ------ toast --------- */
 #toast-container{
   position: fixed;
-  top: 1rem;
+  top: 2.5rem;
   right: 1rem;
   z-index: 9999;
   pointer-events: none;

@@ -1,7 +1,8 @@
+from email.mime import image
 import re
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
-from .models import Product,ProductImage, Category
+from .models import Order, Product,ProductImage, Category
 from django.db import connection
 from django.db.models import F
 from django.db.models.functions import Concat
@@ -26,31 +27,27 @@ def home(request):
     # request.session["cart"] = {}
     # print(request.session["cart"])
     
-    if not request.user.is_authenticated:
-        cart = get_cart_in_session(request.session)
+    cart = dict_cart(get_cart(request))
             
-        for product in products:
-
-            product.quantity_in_cart = \
-            request.session["cart"][f'{product.slug}-{product.details[0]["image_id"]}']["quantity"] \
-            if cart and f'{product.slug}-{product.details[0]["image_id"]}' in request.session["cart"] else 0
+    for product in products:
+        product.quantity_in_cart = \
+        cart[f'{product.slug}-{product.details[0]["image_id"]}']["quantity"] \
+        if cart and f'{product.slug}-{product.details[0]["image_id"]}' in cart else 0
     
     context = {
     "products":products,
     }
-        
+       
     if request.htmx:
         return render(request, "shop/partials/_index.html", context = context )
     return render(request, "shop/index.html", context = context )
 
 
 def cart(request):
-    context = {
-        "cart":request.session["cart"]
-    }
     
-    for item in request.session["cart"]:
-        print(request.session["cart"][item],"\n")
+    context = {
+        "cart":dict_cart(get_cart(request))
+    }
         
     if request.htmx:
         return render(request, "shop/partials/_cart.html",context)
@@ -58,46 +55,73 @@ def cart(request):
     return render(request, "shop/cart.html", context)
 
 def add_to_cart(request):
-
-    if request.user.is_authenticated:
-        ...
+    cart = dict_cart(get_cart(request)) 
+    order_item = get_order_item(request)    
+    try:
+        order_item["quantity"] = get_new_quantity_or_err(request, cart, order_item)
+    except ValueError as e:
+        messages.error(request, e)
     else:
-        cart = get_cart_in_session(request.session)
-        
-        order_item = get_order_item(request)
-        
-        try:
-            print("new q = ",get_new_quantity_or_err(request, cart, order_item))
-            order_item["quantity"] = get_new_quantity_or_err(request, cart, order_item)
-            order_item["subtotal"] = f"{order_item['quantity'] * order_item['price'] :,.2f}" 
+        order_item["sub_total"] = f"{order_item['quantity'] * order_item['price'] :,.2f}" 
+
+        if request.user.is_authenticated:
+            order = get_order(request.user)
+            order_item_to_db, created = OrderItem.objects.get_or_create(
+                product = get_object_or_404(Product, slug = order_item["slug"]),
+                color = order_item["color"],
+                size = order_item["size"],
+                price = order_item["price"],
+                image_url = order_item["image_url"],
+                image_id = order_item["image_id"],
+            )  
+            
+            order_item_to_db.order = order
+            order_item_to_db.quantity = order_item["quantity"]
+            order_item_to_db.save()
+            
+            cart = dict_cart(get_cart(request))
+            # some fields can be gotten in a cleaner way through chained db search
+            # (fk relationships) but i add them here so we dont have to hit db 
+            # when we want to access values like image_url etc
+            # in cart view 
+        else:  
             cart[f'{order_item["slug"]}-{order_item["image_id"]}'] = order_item
             request.session["cart"] = cart
             request.session.modified = True
-        except ValueError as e:
-            messages.error(request, e)
+            
+        if "subtract" == request.POST.get("action"):
+            messages.warning(request, f" —1({order_item['name']})  in cart")
         else:
-            if "subtract" == request.POST.get("action"):
-                messages.warning(request, f" —1({order_item['name']})  in cart")
-            else:
-                messages.success(request, f"{order_item['name']} added to cart")            
-        
-        context = {
-            "new_count":request.session["cart"][f'{order_item["slug"]}-{order_item["image_id"]}']["quantity"],
-            "product_id":order_item["product_id"],
-            "from":None,
-            "order_item":order_item
-        }
-   
-        context["from"] = request.POST.get("from")    
-        return render(request, "shop/partials/_cart-counter.html", context)
+            messages.success(request, f"{order_item['name']} added to cart")            
+    
+    context = {
+        "new_count":get_new_count(cart,order_item["slug"],order_item["image_id"]),
+        "product_id":order_item["product_id"],
+        "from":None,
+        "order_item":order_item
+    }
+
+    context["from"] = request.POST.get("from")    
+    return render(request, "shop/partials/_cart-counter.html", context)
 
 def remove_from_cart(request):
-    del request.session["cart"][f"{request.POST.get('product_slug')}-{request.POST.get('image_id')}"]
-    request.session.modified = True
+    if request.user.is_authenticated:
+        order_item = get_object_or_404(
+            OrderItem, 
+            product_id = request.POST.get('product_id'),
+            image_id = request.POST.get('image_id')
+        )
+        order_item.delete()
+        
+    else:
+        del dict_cart(get_cart(request))[f"{request.POST.get('product_slug')}-{request.POST.get('image_id')}"]
+        request.session.modified = True
+        
     context = {
-        "cart":request.session["cart"]
+        "cart": dict_cart(get_cart(request))
     }
-    messages.error(request, f"Deleted {request.POST.get('product_slug')} successfully")
+    context["from"] = request.POST.get("from")
+    messages.error(request, f"Removed {request.POST.get('product_slug')} from cart successfully")
     return render(request, "shop/partials/_cart_items.html", context)
 
 def toast_clear(request):

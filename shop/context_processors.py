@@ -1,3 +1,4 @@
+from .utils import get_cart
 
 def get_total_cart_count(request):
-    return {"total_cart_count": len(request.session["cart"]) if "cart" in request.session else 0 }
+    return {"total_cart_count": len(get_cart(request))}

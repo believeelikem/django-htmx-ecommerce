@@ -40,7 +40,7 @@ class Category(models.Model):
     class Meta:
         verbose_name = "Category"
         verbose_name_plural = "Categories"
-             
+            
     
 class Tag(models.Model):
     slug = models.SlugField(null=True, blank=True)
@@ -108,8 +108,8 @@ class Order(models.Model):
     started_at = models.DateTimeField(auto_now_add=True)
     completed_at = models.DateTimeField(blank=True, null=True)
 
-    def __str__(self):
-        return self.name
+    # def __str__(self):
+    #     return f"{self.slug}"
 
     
     # def save(self, *args, **kwargs):
@@ -118,12 +118,24 @@ class Order(models.Model):
     
 class OrderItem(models.Model):
     product = models.ForeignKey(to=Product,blank=True, null=True, on_delete=models.SET_NULL) 
-    order = models.ForeignKey(to=Order,blank=True, null=True, on_delete=models.CASCADE)
+    order = models.ForeignKey(
+        to=Order,blank=True, 
+        null=True, 
+        on_delete=models.CASCADE,
+        related_name="items"
+    )
     quantity = models.PositiveSmallIntegerField(blank=True, null=True)
     color = models.CharField(max_length=150, blank=True, null=True)
     size = models.CharField(max_length=150, blank=True, null=True)
+    image_url = models.CharField(max_length=450, blank=True, null=True)
+    image_id = models.CharField(max_length=150, blank=True, null=True)
+    price = models.PositiveSmallIntegerField(blank=True, null=True)
     total = models.PositiveSmallIntegerField(blank=True, null=True)
     
+    
+    @property
+    def sub_total(self):
+        return f"{int(self.quantity) * float(self.price) :,.2f}"
     
 class ShippingAddress(models.Model):
     order = models.ForeignKey(to=Order, blank=True, null=True, on_delete=models.SET_NULL)
