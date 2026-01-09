@@ -45,3 +45,28 @@
     </aside>
     </div>
 </main>
+
+<script>
+  function openMergeDialog(root=document) {
+    const dlg = root.querySelector("dialog[data-merge-dialog]");
+    if (dlg && !dlg.open) dlg.showModal();
+  }
+  document.addEventListener("DOMContentLoaded", () => openMergeDialog());
+  document.body.addEventListener("htmx:load", (e) => openMergeDialog(e.target));
+
+  cancelBtn = document.querySelector(".dialog__cancel-btn");
+  if(cancelBtn){
+    cancelBtn.addEventListener("click", closeMergeDialog);
+  }
+
+    function closeMergeDialog() {
+        console.log("called")
+    const dlg = document.querySelector("dialog[data-merge-dialog]");
+    if (dlg && dlg.open) {
+        dlg.close();
+    }
+    }
+
+  document.body.addEventListener("click", (e) => openMergeDialog(e.target));
+
+</script>

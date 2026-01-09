@@ -4,6 +4,7 @@
     hx-swap-oob="true"
     >
 {% endif %} -->
+
 <main id="main-container" class="container page-index">
     <section class="hero section">
     <div class="hero__content">
@@ -34,7 +35,7 @@
         <a class="nav-link" href="products.html">Browse all</a>
     </div>
     <div class="categories">
-        <a class="category-button" href="{% url 'shop:products' %}">Work essentials</a>
+        <a class="category-button" href="{% url 'shop:product-listings' %}">Work essentials</a>
         <a class="category-button" href="products.html">Casual layers</a>
         <a class="category-button" href="products.html">Accessories</a>
         <a class="category-button" href="products.html">Home & lifestyle</a>
@@ -42,12 +43,16 @@
     </section>
 
     <section class="section">
-    <div class="section__header">
+    <div class="section__header" hx-boost="true">
         <div>
         <h2 class="section__title">Featured products</h2>
         <p class="section__subtitle">Handpicked pieces with enduring quality.</p>
         </div>
-        <a class="nav-link" href="products.html">View catalog</a>
+        <a 
+        class="nav-link" 
+        href="{% url 'shop:product-listings' %}"
+        hx-swap="outerHTML transition:true"
+        >View catalog</a>
     </div>
     <div 
     class="grid grid--four" 
@@ -75,7 +80,7 @@
             </span>
             </div>
         </a>
-        <button 
+        <button  
         class="btn btn--secondary" 
         type="button"
         hx-post="{% url 'shop:add-to-cart' %}"

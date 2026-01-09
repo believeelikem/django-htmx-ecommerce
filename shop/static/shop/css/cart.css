@@ -93,6 +93,58 @@
   font-weight: 700;
   font-size: 1.1rem;
 }
+.page-product-cart dialog{
+  text-align: center;
+
+}
+
+.page-product-cart .dialog-main-container{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  padding: 1rem;
+  justify-content: center;
+}
+.page-product-cart dialog{
+  width: 45%;
+  border: 1px solid grey;
+  border-radius: 1rem;
+}
+.page-product-cart dialog ul {
+  list-style: disc;
+  text-align: left;
+
+}
+.page-product-cart dialog ul > * {
+  margin-left: 2rem;
+}
+.page-product-cart dialog button{
+  margin-right: .5rem;
+  border-radius: 1rem;
+  padding: 1rem 2rem;
+  border: none;
+  color: white;
+  transition: all .15s ease-in;
+}
+.page-product-cart dialog button:hover{
+  transform: translate(-.5rem);
+  box-shadow: 2px 2px 15px 2px grey;
+}
+
+.page-product-cart .dialog__merge-btn{
+  background-color: rgb(6, 97, 127);
+}
+.page-product-cart .dialog__del-btn{
+  background-color: rgb(185, 24, 24);
+}
+
+.page-product-cart .dialog__cancel-btn{
+  background-color: rgb(255, 77, 0);
+}
+
+.page-product-cart dialog::backdrop{
+  background-color: rgba(0, 0, 0, 0.5)
+}
 
 @media (max-width: 720px) {
   .page-product-cart .cart-item {

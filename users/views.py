@@ -8,6 +8,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth import login,logout, authenticate
 from django.urls import reverse
 from .utils import validate_user_input
+from django_htmx.http import HttpResponseClientRedirect
 
 User = get_user_model()
 
@@ -25,9 +26,9 @@ def sign_in(request):
                   login(request, user)
                   
                   print("reverse for ",reverse("shop:home"))
-                  response = render(request, "shop/index.html") 
+                  response = HttpResponse(status=200)
                   response["Hx-Push"] = reverse("shop:home") 
-                  print("response type is", type(response))
+                  response['HX-Redirect'] = reverse("shop:home")
                   return response
             else:
                 context = {

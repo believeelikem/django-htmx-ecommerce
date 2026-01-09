@@ -33,6 +33,8 @@ def home(request):
         product.quantity_in_cart = \
         cart[f'{product.slug}-{product.details[0]["image_id"]}']["quantity"] \
         if cart and f'{product.slug}-{product.details[0]["image_id"]}' in cart else 0
+        
+
     
     context = {
     "products":products,
@@ -44,10 +46,18 @@ def home(request):
 
 
 def cart(request):
-    
+    cart = dict_cart(get_cart(request))
     context = {
-        "cart":dict_cart(get_cart(request))
+        "cart": cart,
+        "mergeable_products":None
     }
+    
+    if request.user.is_authenticated:
+        if request.session["cart"]:
+            mergeable_products = get_cart_in_session(request.session)
+            print(mergeable_products)
+            
+            context["mergeable_products"] = mergeable_products
         
     if request.htmx:
         return render(request, "shop/partials/_cart.html",context)
@@ -126,9 +136,6 @@ def remove_from_cart(request):
 
 def toast_clear(request):
     return HttpResponse("")
-
-def products(request):
-    return render(request, "shop/product-listings.html")
 
 def product_detail(request,slug):
     
@@ -217,6 +224,32 @@ def increase_quantity(request, slug):
         "shop/partials/_product_quantity_count.html",
         {"new_count":request.session[f"{slug}_quantity"]}
     )
+
+def products(request):
+    image_subquery = ProductImage.objects.filter(
+        product=OuterRef('pk')
+    ).order_by('id').values('photo')[:1]
+
+    products = Product.objects.annotate(
+        first_image_for_cover = Concat(
+        Value('/media/'),
+        Subquery(image_subquery),
+        output_field=CharField()
+    )
+    ) 
+
+    cart = dict_cart(get_cart(request))
+            
+    for product in products:
+        product.quantity_in_cart = \
+        cart[f'{product.slug}-{product.details[0]["image_id"]}']["quantity"] \
+        if cart and f'{product.slug}-{product.details[0]["image_id"]}' in cart else 0
+    
+    context = {
+        "products": products
+    }
+    
+    return render(request, "shop/product-listings.html", context)
 
 def checkout(request):
     return render(request, "shop/checkout.html")

@@ -105,7 +105,7 @@ body {
   margin: 0;
   line-height: 1.6;
   background: var(--color-bg);
-  min-height: 100vh;
+  min-height: 100dvh;
 }
 
 img {
@@ -139,7 +139,7 @@ textarea {
 
 .page {
   display: flex;
-  min-height: 100vh;
+  min-height: 100dvh;
   flex-direction: column;
 }
 

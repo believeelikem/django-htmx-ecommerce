@@ -1,3 +1,4 @@
+{% if cart %}
 <div class="cart-items">
     {% for item,values in cart.items %}
         <article class="cart-item">
@@ -83,8 +84,78 @@
         </article>
     {% endfor %}
 </div>
+{% else %}
+<div 
+style="color: red;  background-color:lightblue; padding: 1.5rem 0.5rem; border-radius:.3rem"
+hx-boost="true"
+>
+    No items added to cart , 
+    <a 
+    class="nav-link" 
+    href="{% url 'shop:home' %}"
+    > Go home </a>
+</div>
+
+{% endif %}
 
 {% if request.htmx and "cart" in request.META.HTTP_REFERER %}
     {% include 'shop/partials/_cart-counter-main.html' %}
 {% endif %}
 {% include 'shop/partials/_toasts.html' %}
+
+{% if mergeable_products %}
+    <dialog
+    data-merge-dialog
+    >
+        <ul>
+            Some Items were found when you were logged out. You can: 
+
+            <li>click accept to merge with your own cart or</li>
+            <li> Delete to delete cart  </li>
+        </ul>
+        <div class="cart dialog-main-container">
+        {% for product,values in mergeable_products.items %}
+            <article class="card product-card">         
+            <a 
+            class="product-card__link" 
+            >   
+                <div class="product-card__image">
+                <img src="{{values.image_url}}" alt="Structured blazer">
+                </div>
+                <h3 class="product-card__title">{{values.name}}, {{values.size}}{{values.color}}</h3>
+                <div class="product-card__meta">
+                <span>${{values.price}}</span>
+                <span class="rating">
+                    <svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.1 8.4 22 9.2 17 14.1 18.3 21 12 17.5 5.7 21 7 14.1 2 9.2 8.9 8.4 12 2"/></svg>
+                    4.8
+                </span>
+                </div>
+            </a>
+            <!-- <button  
+            class="btn btn--secondary" 
+            type="button"
+            hx-post="{% url 'shop:add-to-cart' %}"
+            hx-vals = '{
+                "id": "{{ values.values_id }}",
+                "name": "{{ values.name}}",
+                "image_url": "{{ values.image_url }}",
+                "image_id": "{{ values.image_id}}",
+                "price": "{{ values.price }}",
+                "color": "{{ values.color }}",
+                "curr_total_quantity": "{{ values.curr_total_quantity }}",
+                "quantity_requested":"",
+                "size": "{{ values.size }}",
+                "slug": "{{ values.slug }}",
+                "from": "index"
+            }'
+            hx-target="#cart-count-top"
+            hx-swap="outerHTML"
+            >Add to cart <span id="cart-counter-on-product-{{product.id}}" class="btn__counter">{{product.quantity_in_cart}}</span></button> -->
+            </article>
+        {% endfor %}
+        </div>
+        <button class="dialog__merge-btn"> Merge </button>
+        <button class="dialog__del-btn"> Delete unlogged Cart</button>
+        <button class="dialog__cancel-btn"> Cancel </button>
+    </dialog>
+{% endif %}

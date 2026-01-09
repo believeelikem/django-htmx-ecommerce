@@ -115,7 +115,7 @@ def get_cart(request):
    
 def get_order(user):
     order, _ = Order.objects.get_or_create(
-        owner = user, status = False
+        owner = user, is_completed = False
     )
     return order
 
