@@ -20,6 +20,7 @@ htmx_patterns = [
     path("add-to-cart/", views.add_to_cart, name="add-to-cart"),
     path("toast-clear/", views.toast_clear, name="toast-clear"),
     path("remove-from-cart", views.remove_from_cart, name="remove-from-cart"),
+    path("remove-unlogged-cart", views.remove_unlogged_cart, name="remove-unlogged-cart"),
 ]
 
 urlpatterns += htmx_patterns

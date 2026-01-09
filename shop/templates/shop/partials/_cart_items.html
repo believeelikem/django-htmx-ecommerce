@@ -122,7 +122,9 @@ hx-boost="true"
                 <div class="product-card__image">
                 <img src="{{values.image_url}}" alt="Structured blazer">
                 </div>
-                <h3 class="product-card__title">{{values.name}}, {{values.size}}{{values.color}}</h3>
+                <h3 class="product-card__title">{{values.name}}</h3>
+                <small>size:{{values.size}}</small>
+                <small>color:{{values.color}}</small>
                 <div class="product-card__meta">
                 <span>${{values.price}}</span>
                 <span class="rating">
@@ -155,7 +157,9 @@ hx-boost="true"
         {% endfor %}
         </div>
         <button class="dialog__merge-btn"> Merge </button>
-        <button class="dialog__del-btn"> Delete unlogged Cart</button>
+        <button class="dialog__del-btn"
+        hx-delete="{% url 'shop:remove-unlogged-cart' %}"
+        > Delete unlogged Cart</button>
         <button class="dialog__cancel-btn"> Cancel </button>
     </dialog>
 {% endif %}

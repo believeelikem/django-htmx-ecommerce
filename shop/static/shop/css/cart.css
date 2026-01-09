@@ -145,6 +145,10 @@
 .page-product-cart dialog::backdrop{
   background-color: rgba(0, 0, 0, 0.5)
 }
+/* 
+.page-product-cart small{
+  font-size: .5rem;
+} */
 
 @media (max-width: 720px) {
   .page-product-cart .cart-item {

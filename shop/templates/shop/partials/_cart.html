@@ -1,9 +1,4 @@
-<!-- {% load static %}
-{%if request.htmx %}
-    <link rel="stylesheet"  id="swappable-stylesheet" href="{% static 'shop/css/cart.css' %}"
-    hx-swap-oob="true"
-    >
-{% endif %} -->
+
 <main id="main-container" class="container section page-product-cart">
     <div class="section__header">
     <div>
@@ -55,17 +50,21 @@
   document.body.addEventListener("htmx:load", (e) => openMergeDialog(e.target));
 
   cancelBtn = document.querySelector(".dialog__cancel-btn");
+  delBtn = document.querySelector(".dialog__del-btn");
   if(cancelBtn){
     cancelBtn.addEventListener("click", closeMergeDialog);
   }
+  if(delBtn){
+    delBtn.addEventListener("click", closeMergeDialog);
+  }
 
-    function closeMergeDialog() {
-        console.log("called")
+
+  function closeMergeDialog() {
     const dlg = document.querySelector("dialog[data-merge-dialog]");
     if (dlg && dlg.open) {
         dlg.close();
     }
-    }
+}
 
   document.body.addEventListener("click", (e) => openMergeDialog(e.target));
 

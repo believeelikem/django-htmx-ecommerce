@@ -1,7 +1,9 @@
 from email.mime import image
 import re
+from urllib import response
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
+from django.urls import reverse
 from .models import Order, Product,ProductImage, Category
 from django.db import connection
 from django.db.models import F
@@ -133,6 +135,15 @@ def remove_from_cart(request):
     context["from"] = request.POST.get("from")
     messages.error(request, f"Removed {request.POST.get('product_slug')} from cart successfully")
     return render(request, "shop/partials/_cart_items.html", context)
+
+def remove_unlogged_cart(request):
+    cart_size = len(request.session['cart'])
+    request.session['cart'] = {}
+    request.session.modified = True
+    
+    messages.error(request,f"Succesfully removed {cart_size} item(s) from unlogged cart ")
+
+    return render(request, "shop/partials/_toasts.html")
 
 def toast_clear(request):
     return HttpResponse("")
