@@ -52,7 +52,7 @@ def get_new_quantity_or_err(request, cart, order_item):
     if new_val <= int(request.POST.get("curr_total_quantity")):
         return new_val if new_val else "Unexpected err from add_to_cart"
     else:
-        raise ValueError(" Cart exceed available items")
+        raise ValueError("Quantity exceed available item Quantity")
 
         
    
@@ -73,6 +73,7 @@ def get_increment_val(request,slug):
 
 def get_cart_in_session(session):
     return session.setdefault("cart", {}) 
+
 def get_cart_in_db(user):
     order = get_order(user)
     cart  = order.items.all()

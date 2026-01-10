@@ -124,32 +124,52 @@ def merge_auth_unauth_cart(request):
         session_cart = get_cart_in_session(request.session)
         db_cart = dict_cart(get_cart_in_db(request.user))
         merged_item_count = 0
+        unmergeable_items = ""
         
         for item in db_cart:
             if item in session_cart \
                 and db_cart[item]["color"] == session_cart[item]["color"] \
                 and db_cart[item]["size"] == session_cart[item]["size"]:
-                    merged_item_count += 1
+                    
                     
                     merged_item = merge_item(db_cart[item], session_cart[item])
+                    product = get_object_or_404(Product, slug = merged_item["slug"])
+                    
+                    if merged_item["quantity"] <= int(get_current_val(
+                        product.details,"quantity", 
+                        merged_item["color"], merged_item["size"]
+                    )):
+                        
+                        
+                        order_item = OrderItem.objects.get(
+                            product = product,
+                            color = merged_item["color"],
+                            size = merged_item["size"],
+                            price = merged_item["price"],
+                            image_url = merged_item["image_url"],
+                            image_id = merged_item["image_id"],
+                        ) 
+                        order_item.quantity = merged_item["quantity"]
+                        # order_item.sub_total = merged_item["sub_total"]
+                        order_item.save()  
+                        merged_item_count += 1
+                    else:
+                        merged_item["quantity"] = db_cart[item]["quantity"]
+                        unmergeable_items += f"{merged_item['slug']}, "
+                        
                     updated_cart[item] = merged_item
-                    
-                    order_item = OrderItem.objects.get(
-                        product = get_object_or_404(Product, slug = merged_item["slug"]),
-                        color = merged_item["color"],
-                        size = merged_item["size"],
-                        price = merged_item["price"],
-                        image_url = merged_item["image_url"],
-                        image_id = merged_item["image_id"],
-                    ) 
-                    
-                    order_item.quantity = merged_item["quantity"]
-                    # order_item.sub_total = merged_item["sub_total"]
-                    order_item.save()       
+
                     
             else:
                 updated_cart[item] = db_cart[item]
-        messages.info(request, f"Succesfully merged {merged_item_count} item(s) into cart")    
+        if merged_item_count:   
+            messages.info(request, f"Succesfully merged {merged_item_count} item(s) into cart")   
+             
+        if unmergeable_items:
+            messages.error(request,
+                f'{unmergeable_items.rsplit(",",1)[0]} couldnt be merged because quantity exceeds available item quantity'
+            )
+            
     context = {
         "cart":updated_cart
     }
