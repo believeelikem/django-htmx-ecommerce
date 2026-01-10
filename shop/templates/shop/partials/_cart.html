@@ -51,11 +51,15 @@
 
   cancelBtn = document.querySelector(".dialog__cancel-btn");
   delBtn = document.querySelector(".dialog__del-btn");
+  mergeBtn = document.querySelector(".dialog__merge-btn");
   if(cancelBtn){
     cancelBtn.addEventListener("click", closeMergeDialog);
   }
   if(delBtn){
     delBtn.addEventListener("click", closeMergeDialog);
+  }
+  if(mergeBtn){
+    mergeBtn.addEventListener("click", closeMergeDialog);
   }
 
 

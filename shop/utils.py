@@ -45,7 +45,6 @@ def get_new_quantity_or_err(request, cart, order_item):
         int(cart[f'{order_item["slug"]}-{order_item["image_id"]}']["quantity"]) \
         + new_val
     
-    print("new val is = ", new_val, "and type is = ", type(new_val))
     
     if new_val == 0:
         raise ValueError("Cannot go less than 0 quantity, kindly click on 'Remove' to clear") 
@@ -74,9 +73,12 @@ def get_increment_val(request,slug):
 
 def get_cart_in_session(session):
     return session.setdefault("cart", {}) 
-  
+def get_cart_in_db(user):
+    order = get_order(user)
+    cart  = order.items.all()
+    return cart
+
 def get_order_item(request):
-    # print("post is ", request.POST)
     
     order_item = {
         "product_id":int(request.POST.get("id")),
@@ -106,8 +108,7 @@ def is_already_in_cart(cart,order_item):
 def get_cart(request):
     cart = None
     if request.user.is_authenticated:
-        order = get_order(request.user)
-        cart  = order.items.all()
+        cart = get_cart_in_db(request.user)
     else:
         cart = get_cart_in_session(request.session)
 
@@ -129,7 +130,7 @@ def dict_cart(cart):
                   {
                     "product_id": order_item.product.id,
                     "name": order_item.product.name,
-                    "order":None,
+                    "order":order_item.order,
                     "quantity": order_item.quantity,
                     "price":get_current_val(
                         order_item.product.details, 

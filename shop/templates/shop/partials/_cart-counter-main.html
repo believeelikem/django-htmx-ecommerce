@@ -1,7 +1,7 @@
 <span 
 id="cart-count-top" 
 class="cart-count"
-{% if from == "cart" %}
+{% if from == "cart" or "cart" in request.META.HTTP_REFERER %}
     hx-swap-oob="true"
 {% endif %}
 >{{total_cart_count}}</span>

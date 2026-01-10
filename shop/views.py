@@ -1,6 +1,8 @@
 from email.mime import image
 import re
 from urllib import response
+from webbrowser import get
+from django import db
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
@@ -57,7 +59,7 @@ def cart(request):
     if request.user.is_authenticated:
         if request.session["cart"]:
             mergeable_products = get_cart_in_session(request.session)
-            print(mergeable_products)
+            # print(mergeable_products)
             
             context["mergeable_products"] = mergeable_products
         
@@ -102,7 +104,7 @@ def add_to_cart(request):
             request.session.modified = True
             
         if "subtract" == request.POST.get("action"):
-            messages.warning(request, f" —1({order_item['name']})  in cart")
+            messages.warning(request, f" -1({order_item['name']})  in cart")
         else:
             messages.success(request, f"{order_item['name']} added to cart")            
     
@@ -115,6 +117,67 @@ def add_to_cart(request):
 
     context["from"] = request.POST.get("from")    
     return render(request, "shop/partials/_cart-counter.html", context)
+
+def merge_auth_unauth_cart(request):
+    updated_cart = {}
+    if request.user.is_authenticated:
+        session_cart = get_cart_in_session(request.session)
+        db_cart = dict_cart(get_cart_in_db(request.user))
+        merged_item_count = 0
+        
+        for item in db_cart:
+            if item in session_cart \
+                and db_cart[item]["color"] == session_cart[item]["color"] \
+                and db_cart[item]["size"] == session_cart[item]["size"]:
+                    merged_item_count += 1
+                    
+                    merged_item = merge_item(db_cart[item], session_cart[item])
+                    updated_cart[item] = merged_item
+                    
+                    order_item = OrderItem.objects.get(
+                        product = get_object_or_404(Product, slug = merged_item["slug"]),
+                        color = merged_item["color"],
+                        size = merged_item["size"],
+                        price = merged_item["price"],
+                        image_url = merged_item["image_url"],
+                        image_id = merged_item["image_id"],
+                    ) 
+                    
+                    order_item.quantity = merged_item["quantity"]
+                    # order_item.sub_total = merged_item["sub_total"]
+                    order_item.save()       
+                    
+            else:
+                updated_cart[item] = db_cart[item]
+        messages.info(request, f"Succesfully merged {merged_item_count} item(s) into cart")    
+    context = {
+        "cart":updated_cart
+    }
+    request.session["cart"] = {}
+    request.session.modified = True
+    return render(request, "shop/partials/_cart_items.html",context )
+    
+
+def merge_item(db_cart_item,session_cart_item):
+
+    updated_item = {}
+    
+    from collections import ChainMap
+
+    updated_item  = dict(ChainMap(db_cart_item, session_cart_item))
+
+    # updated_item =  db_cart_item | session_cart_item
+    
+    updated_item["quantity"] = sum([int(db_cart_item["quantity"]), int(session_cart_item["quantity"])])
+    updated_item["sub_total"] = sum(
+        [
+            float(db_cart_item["sub_total"].replace(",","")), 
+            float(session_cart_item["sub_total"].replace(",",""))
+        ]
+    )
+    
+    
+    return updated_item
 
 def remove_from_cart(request):
     if request.user.is_authenticated:
@@ -136,7 +199,7 @@ def remove_from_cart(request):
     messages.error(request, f"Removed {request.POST.get('product_slug')} from cart successfully")
     return render(request, "shop/partials/_cart_items.html", context)
 
-def remove_unlogged_cart(request):
+def remove_unauthenticated_cart(request):
     cart_size = len(request.session['cart'])
     request.session['cart'] = {}
     request.session.modified = True

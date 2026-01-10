@@ -156,10 +156,15 @@ hx-boost="true"
             </article>
         {% endfor %}
         </div>
-        <button class="dialog__merge-btn"> Merge </button>
+        <button class="dialog__merge-btn"
+        hx-post="{% url 'shop:merge-auth-unauth-cart' %}"
+        hx-target=".cart-items"
+        hx-swap="outerHTML transition:true"
+        > Merge </button>
         <button class="dialog__del-btn"
         hx-delete="{% url 'shop:remove-unlogged-cart' %}"
         > Delete unlogged Cart</button>
-        <button class="dialog__cancel-btn"> Cancel </button>
+        <button class="dialog__cancel-btn"
+        > Cancel </button>
     </dialog>
 {% endif %}
