@@ -104,14 +104,20 @@
         {% endfor %}
     </div>
 
-    <div class="pagination">
+    <div class="pagination" hx-boost="true">
         {% for page_num in products.paginator.page_range %}
           {% if page_num >= products.number|add:'-2' and page_num <= products.number|add:'2'  %}
 
-            <span class="pagination__item
+            <a 
+            
+            class="pagination__item
             {% if page_num == products.number %}
             pagination__item--active {% endif %}"
-            >{{page_num}}</span>
+
+            href="{% url 'shop:home' %}?page={{page_num}}" 
+            hx-push-url = "true"
+            hx-swap = "innerHTML transition:true"
+            >{{page_num}}</a>
         <!-- <span class="pagination__item">2</span>
         <span class="pagination__item">›</span> -->
           {% endif %}

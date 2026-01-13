@@ -40,8 +40,10 @@ def home(request):
         if cart and f'{product.slug}-{product.details[0]["image_id"]}' in cart else 0
     
     page = request.GET.get("page")
+    if not page:
+        page = 1
         
-    p = Paginator(products, 3)
+    p = Paginator(products, 6)
     
     products = p.get_page(page)
     print(type(products)) # page obj
@@ -51,8 +53,8 @@ def home(request):
     "products":products,
     }
        
-    if request.htmx:
-        return render(request, "shop/partials/_index.html", context = context )
+    # if request.htmx:
+    #     return render(request, "shop/partials/_index.html", context = context )
     return render(request, "shop/index.html", context = context )
 
 def cart(request):
