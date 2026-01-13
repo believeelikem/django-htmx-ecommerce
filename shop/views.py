@@ -13,6 +13,7 @@ from django.db.models.functions import Concat
 from django.db.models import OuterRef, Subquery,Value, CharField
 from .utils import *
 from django.contrib import messages
+from django.core.paginator import Paginator
 
 def home(request):
 
@@ -37,8 +38,14 @@ def home(request):
         product.quantity_in_cart = \
         cart[f'{product.slug}-{product.details[0]["image_id"]}']["quantity"] \
         if cart and f'{product.slug}-{product.details[0]["image_id"]}' in cart else 0
+    
+    page = request.GET.get("page")
         
-
+    p = Paginator(products, 3)
+    
+    products = p.get_page(page)
+    print(type(products)) # page obj
+    
     
     context = {
     "products":products,
@@ -47,7 +54,6 @@ def home(request):
     if request.htmx:
         return render(request, "shop/partials/_index.html", context = context )
     return render(request, "shop/index.html", context = context )
-
 
 def cart(request):
     cart = dict_cart(get_cart(request))
@@ -178,23 +184,7 @@ def merge_auth_unauth_cart(request):
     return render(request, "shop/partials/_cart_items.html",context )
     
 
-def merge_item(db_cart_item,session_cart_item):
 
-    updated_item = {}
-    
-    from collections import ChainMap
-
-    updated_item  = dict(ChainMap(db_cart_item, session_cart_item))
-
-    # updated_item =  db_cart_item | session_cart_item
-    
-    updated_item["quantity"] = sum([int(db_cart_item["quantity"]), int(session_cart_item["quantity"])])
-    updated_item["sub_total"] = sum(
-        [
-            float(db_cart_item["sub_total"].replace(",","")), 
-            float(session_cart_item["sub_total"].replace(",",""))
-        ]
-    )
     
     
     return updated_item
@@ -344,6 +334,13 @@ def products(request):
     }
     
     return render(request, "shop/product-listings.html", context)
+
+def category_detail(request, slug):
+    category = get_object_or_404(
+        Category, slug = slug
+    )
+    
+    # return render()
 
 def checkout(request):
     return render(request, "shop/checkout.html")

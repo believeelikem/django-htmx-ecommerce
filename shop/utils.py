@@ -165,3 +165,21 @@ def get_current_val(product_details,val,color,size):
     
 def get_new_count(cart,slug,image_id):
     return cart[f"{slug}-{image_id}"]["quantity"]
+
+def merge_item(db_cart_item,session_cart_item):
+
+    updated_item = {}
+    
+    from collections import ChainMap
+
+    updated_item  = dict(ChainMap(db_cart_item, session_cart_item))
+
+    # updated_item =  db_cart_item | session_cart_item
+    
+    updated_item["quantity"] = sum([int(db_cart_item["quantity"]), int(session_cart_item["quantity"])])
+    updated_item["sub_total"] = sum(
+        [
+            float(db_cart_item["sub_total"].replace(",","")), 
+            float(session_cart_item["sub_total"].replace(",",""))
+        ]
+    )

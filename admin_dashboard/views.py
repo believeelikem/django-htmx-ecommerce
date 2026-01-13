@@ -99,7 +99,7 @@ def admin_product_add(request, context = None):
     if "product_details" in request.session:    
         refix_editing_status(request)
     categories = Category.objects.values("slug","name")
-    
+    # request.session.flush()
     context.update( 
         {
         "active_page": "product-edit",
@@ -142,7 +142,6 @@ def delete_product_from_list(request, id, context = None):
 # EDIT PRODUCT 
 def get_product_edit_form(request, id):
     product = get_product(request,id)
-    
     a_product_already_being_edited = get_product_already_being_edited(
         request, new_product=product
     )

@@ -13,7 +13,6 @@ urlpatterns = [
     path("forgot-password/", views.admin_forgot_password, name="admin-forgot-password"),
 ]
 
-
 htmx_patterns = [
     path("validate/", views.validate_product_add_error, name="validate-product-error"),
     path("add-product-to-list/", views.add_product_to_list, name = "add-product-to-list"),

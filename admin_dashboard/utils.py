@@ -6,6 +6,7 @@ from shop.models import  Product, ProductImage, Category
 from django.core.files.base import ContentFile
 import os
 import re
+from django.http import Http404
 
 
 def validate():
@@ -236,14 +237,14 @@ def add_product_to_list_session_handler(images_wrapper_func):
     def product_details_wrapper(request):
         temp_image = TempImage(temp_image = request.FILES["product_image"])
         temp_image.save()
+        print("temp  image id in product details wrapper is = ", temp_image.id)
         product_details = []
-        if "product_details" not in request.session:
+        if "product_details" in request.session:
             print("Product details in session")
-            product_details = request.session["product_details"] = product_details
+            product_details = request.session["product_details"]
             
         else:
-            product_details = request.session["product_details"]
-                    
+            product_details = request.session["product_details"] = product_details                    
             
         product_details.append(
             {
@@ -277,15 +278,17 @@ def attach_product_images(view_func):
             for product in context["product_details"]:
                 product["total_price"] = f"{float(product['price']) * float(product['quantity']):,.2f}"
                 
+                print("product in images wrapper is = ", product)
                 try:
                     
-                    product["image_url"] = get_object_or_404(TempImage, id = \
+                    product["image_url"] = TempImage.objects.get(id = \
                     product["product_image_id"]).temp_image.url
-                    
-                    
-                    
+                          
                 except TempImage.DoesNotExist as e:
                     print("Didnt find image")
+                    print(e)
+                except Http404:
+                    print("404 error ")
                     print(e)
             
             context["total_price"] = f"{get_table_total_price(context['product_details']):,.2f} "
@@ -391,12 +394,12 @@ def save_to_db(view_func):
     def save_to_db_wrapper(request):
         
         grouped_products = group_products(request.session["product_details"])
-        
+        print("gp is, ", grouped_products)
         # loop through grouped items 
         for _product_name in grouped_products:
+            # _product_name = _product_name.strip()
             product = Product.objects.create(name = _product_name)
-            quantity = 1
-            
+            quantity = 1            
             
             # loop through details of an item to save to db
             for _product_detail in grouped_products[_product_name]:
@@ -406,6 +409,8 @@ def save_to_db(view_func):
                 _product_detail_temp_image = get_object_or_404(
                     TempImage, id = _product_detail["product_image_id"]
                 )
+                
+                print()
                 
                 # create actual product obj and assign temp image 
                 _product_detail_product_image = ProductImage()
@@ -446,7 +451,13 @@ def save_to_db(view_func):
                 _product_detail_temp_image.temp_image.delete(save=False)
                 _product_detail_temp_image.delete()
             
-                
+            # print("products is ",product)
+            # categories  = Category.objects.all()
+            # for category in categories:
+            #     print(category.name.lower() == grouped_products[_product_name][0]["category_name"] )
+            #     print(category.name, grouped_products[_product_name][0]["category_name"] )
+            # # print("gp_name = ",grouped_products[_product_name][0]["category_name"] )
+            # # print(categories[0].name == grouped_products[_product_name][0]["category_name"])
             product.categories.add(
                 get_object_or_404(Category,
                                   name = grouped_products[_product_name][0]["category_name"]

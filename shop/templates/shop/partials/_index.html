@@ -105,9 +105,17 @@
     </div>
 
     <div class="pagination">
-        <span class="pagination__item pagination__item--active">1</span>
-        <span class="pagination__item">2</span>
-        <span class="pagination__item">›</span>
+        {% for page_num in products.paginator.page_range %}
+          {% if page_num >= products.number|add:'-2' and page_num <= products.number|add:'2'  %}
+
+            <span class="pagination__item
+            {% if page_num == products.number %}
+            pagination__item--active {% endif %}"
+            >{{page_num}}</span>
+        <!-- <span class="pagination__item">2</span>
+        <span class="pagination__item">›</span> -->
+          {% endif %}
+        {% endfor %}
     </div>
     </section>
 
