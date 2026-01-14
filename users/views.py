@@ -50,6 +50,8 @@ def sign_in(request):
 def validate_user_inputs(request, context):        
     return render(request, "users/partials/_email-error.html",context)
 
+def user_dashboard(request):
+    return render(request, "users/user-dashboard.html")
 
 def sign_up(request):
     return render(request, "users/sign-up.html")

@@ -44,7 +44,7 @@
         <a 
         class="nav-link" 
         {% if request.user.is_authenticated %}
-            href="{% url 'users:sign-in' %}"
+            href="{% url 'users:user-dashboard' %}"
             >Account</a>
         {% else %}
             href="{% url 'users:sign-in' %}"

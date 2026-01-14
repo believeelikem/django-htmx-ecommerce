@@ -43,19 +43,29 @@ def home(request):
     if not page:
         page = 1
         
-    p = Paginator(products, 6)
+    p = Paginator(products, 3)
     
-    products = p.get_page(page)
-    print(type(products)) # page obj
-    
+    products = p.get_page(page)    
     
     context = {
     "products":products,
     }
-       
-    # if request.htmx:
-    #     return render(request, "shop/partials/_index.html", context = context )
+    
+    if request.htmx :
+        if request.GET.get("from_paginated"):
+            response = render(request, "shop/partials/_pagination.html", context)
+            response["HX-Push-Url"] = f"?page={page}"
+            return response
+        
+        return render(request, "shop/partials/_index.html", context = context )
     return render(request, "shop/index.html", context = context )
+
+# def get_paginated_list(request, page_num):
+#     p = Paginator(products, 3)
+#     products = p.get_page(page_num)  
+    
+    
+    
 
 def cart(request):
     cart = dict_cart(get_cart(request))
@@ -347,5 +357,3 @@ def category_detail(request, slug):
 def checkout(request):
     return render(request, "shop/checkout.html")
 
-def user_dashboard(request):
-    return render(request, "shop/user-dashboard.html")
