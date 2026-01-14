@@ -1,0 +1,111 @@
+    <main id="main-container"  class="container section .page-checkout">
+      <div class="section__header">
+        <div>
+          <h1 class="section__title">Checkout</h1>
+          <p class="section__subtitle">Enter shipping and payment details to finalize your order.</p>
+        </div>
+      </div>
+
+      <div class="stepper steps">
+        <span class="steps__item steps__item--active"><span class="pill-number">1</span> Shipping</span>
+        <span class="steps__item"><span class="pill-number">2</span> Payment</span>
+        <span class="steps__item"><span class="pill-number">3</span> Review</span>
+      </div>
+
+      <div class="checkout-layout">
+        <section class="card form">
+          <h3 style="margin:0;">Shipping details</h3>
+          <div class="form__group">
+            <label class="form__label" for="full-name">Full name</label>
+            <input id="full-name" class="form__control" type="text" placeholder="Alex Taylor">
+          </div>
+          <div class="form__group">
+            <label class="form__label" for="address">Address</label>
+            <input id="address" class="form__control" type="text" placeholder="42 Market Street">
+          </div>
+          <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: var(--space-md);">
+            <div class="form__group">
+              <label class="form__label" for="city">City</label>
+              <input id="city" class="form__control" type="text" placeholder="Seattle">
+            </div>
+            <div class="form__group">
+              <label class="form__label" for="country">Country</label>
+              <input id="country" class="form__control" type="text" placeholder="United States">
+            </div>
+            <div class="form__group">
+              <label class="form__label" for="postal">Postal code</label>
+              <input id="postal" class="form__control" type="text" placeholder="98101">
+            </div>
+            <div class="form__group">
+              <label class="form__label" for="phone">Phone</label>
+              <input id="phone" class="form__control" type="tel" placeholder="+1 (555) 230-8890">
+            </div>
+          </div>
+
+          <h3 style="margin: var(--space-lg) 0 var(--space-sm);">Payment</h3>
+          <div class="form__group">
+            <label class="form__label" for="name-card">Name on card</label>
+            <input id="name-card" class="form__control" type="text" placeholder="Alex Taylor">
+          </div>
+          <div class="form__group">
+            <label class="form__label" for="card-number">Card number</label>
+            <input id="card-number" class="form__control" type="text" placeholder="0000 0000 0000 0000">
+          </div>
+          <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: var(--space-md);">
+            <div class="form__group">
+              <label class="form__label" for="expiry">Expiry</label>
+              <input id="expiry" class="form__control" type="text" placeholder="MM/YY">
+            </div>
+            <div class="form__group">
+              <label class="form__label" for="cvv">CVV</label>
+              <input id="cvv" class="form__control" type="password" placeholder="•••">
+            </div>
+          </div>
+
+          <div class="cta-row" style="margin-top: var(--space-lg);">
+            <a class="btn btn--primary" href="#">Review order</a>
+            <a class="btn btn--ghost" href="cart.html">Back to cart</a>
+          </div>
+        </section>
+
+        <aside class="order-summary">
+          <h3 style="margin:0;">Order summary</h3>
+          <div class="order-items">
+            <div class="order-item">
+              <img src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=300&q=80" alt="Coat">
+              <div>
+                <strong>Commuter Mac Coat</strong>
+                <p class="section__subtitle">Storm — M</p>
+              </div>
+              <span>$280</span>
+            </div>
+            <div class="order-item">
+              <img src="https://images.unsplash.com/photo-1475180098004-ca77a66827be?auto=format&fit=crop&w=300&q=80" alt="Bag">
+              <div>
+                <strong>Weekender Duffel</strong>
+                <p class="section__subtitle">Navy</p>
+              </div>
+              <span>$210</span>
+            </div>
+          </div>
+          <div class="totals">
+            <div class="totals__row">
+              <span>Subtotal</span>
+              <span>$490</span>
+            </div>
+            <div class="totals__row">
+              <span>Shipping</span>
+              <span>$20</span>
+            </div>
+            <div class="totals__row">
+              <span>Tax</span>
+              <span>$45</span>
+            </div>
+            <div class="totals__row totals__grand">
+              <span>Total</span>
+              <span>$555</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </main>

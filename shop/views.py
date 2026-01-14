@@ -49,6 +49,7 @@ def home(request):
     
     context = {
     "products":products,
+    "categories": Category.objects.only("name","slug")
     }
     
     if request.htmx :
@@ -351,8 +352,21 @@ def category_detail(request, slug):
     category = get_object_or_404(
         Category, slug = slug
     )
+    image_subquery = ProductImage.objects.filter(
+        product=OuterRef('pk')
+    ).order_by('id').values('photo')[:1]
     
-    # return render()
+    category_products = Product.objects.filter(
+        categories = category).annotate(
+            first_image_for_cover = Subquery(image_subquery)
+        )
+    
+    context = {
+        "category":category,
+        "category_products":category_products
+    }
+    
+    return render(request, "shop/category_detail.html",context)
 
 def checkout(request):
     return render(request, "shop/checkout.html")
