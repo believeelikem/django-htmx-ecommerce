@@ -352,12 +352,14 @@ def category_detail(request, slug):
     category = get_object_or_404(
         Category, slug = slug
     )
+    
     image_subquery = ProductImage.objects.filter(
         product=OuterRef('pk')
-    ).order_by('id').values('photo')[:1]
+    ).order_by('id').values("photo")[:1]
+    
     
     category_products = Product.objects.filter(
-        categories = category).annotate(
+        categories = category ).annotate(
             first_image_for_cover = Subquery(image_subquery)
         )
     

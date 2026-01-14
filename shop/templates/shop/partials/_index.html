@@ -34,7 +34,7 @@
         </div>
         <a class="nav-link" href="products.html">Browse all</a>
     </div>
-    <div class="categories">
+    <div class="categories" hx-boost="true">
         {% for category in categories %}
         <a class="category-button" href="{% url 'shop:category-detail' category.slug  %}">{{category.name}}</a>
         {% endfor %}
