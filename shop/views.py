@@ -61,13 +61,6 @@ def home(request):
         return render(request, "shop/partials/_index.html", context = context )
     return render(request, "shop/index.html", context = context )
 
-# def get_paginated_list(request, page_num):
-#     p = Paginator(products, 3)
-#     products = p.get_page(page_num)  
-    
-    
-    
-
 def cart(request):
     cart = dict_cart(get_cart(request))
     context = {
@@ -89,7 +82,8 @@ def cart(request):
 
 def add_to_cart(request):
     cart = dict_cart(get_cart(request)) 
-    order_item = get_order_item(request)    
+    order_item = get_order_item(request)   
+     
     try:
         order_item["quantity"] = get_new_quantity_or_err(request, cart, order_item)
     except ValueError as e:
@@ -99,19 +93,23 @@ def add_to_cart(request):
 
         if request.user.is_authenticated:
             order = get_order(request.user)
+            print("item size before adding = ", len(order.items.all()))
+            print("order item is ",  order_item )
             order_item_to_db, created = OrderItem.objects.get_or_create(
                 product = get_object_or_404(Product, slug = order_item["slug"]),
                 color = order_item["color"],
                 size = order_item["size"],
-                price = order_item["price"],
+                # price = order_item["price"],
                 image_url = order_item["image_url"],
                 image_id = order_item["image_id"],
             )  
-            
+            print("new created = ", created)
             order_item_to_db.order = order
             order_item_to_db.quantity = order_item["quantity"]
+            order_item_to_db.price = order_item["price"]
             order_item_to_db.save()
-            
+            print("item size after adding = ", len(order.items.all()))
+
             cart = dict_cart(get_cart(request))
             # some fields can be gotten in a cleaner way through chained db search
             # (fk relationships) but i add them here so we dont have to hit db 
@@ -195,12 +193,7 @@ def merge_auth_unauth_cart(request):
     request.session["cart"] = {}
     request.session.modified = True
     return render(request, "shop/partials/_cart_items.html",context )
-    
 
-
-    
-    
-    return updated_item
 
 def remove_from_cart(request):
     if request.user.is_authenticated:
@@ -332,7 +325,7 @@ def products(request):
         Value('/media/'),
         Subquery(image_subquery),
         output_field=CharField()
-    )
+        )
     ) 
 
     cart = dict_cart(get_cart(request))
@@ -357,12 +350,22 @@ def category_detail(request, slug):
         product=OuterRef('pk')
     ).order_by('id').values("photo")[:1]
     
+    cart = dict_cart(get_cart(request))
     
     category_products = Product.objects.filter(
         categories = category ).annotate(
-            first_image_for_cover = Subquery(image_subquery)
+            first_image_for_cover = Concat( 
+                Value("/media/"), 
+                Subquery(image_subquery),
+                output_field=CharField()
         )
-    
+    )
+        
+    for product in category_products:
+        product.quantity_in_cart = \
+        cart[f'{product.slug}-{product.details[0]["image_id"]}']["quantity"] \
+        if cart and f'{product.slug}-{product.details[0]["image_id"]}' in cart else 0
+        
     context = {
         "category":category,
         "category_products":category_products

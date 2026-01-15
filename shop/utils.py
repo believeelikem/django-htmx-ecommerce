@@ -37,14 +37,20 @@ def get_product_quantity(max_quantity,product_quantity_in_session):
 def get_new_quantity_or_err(request, cart, order_item):
     new_val = get_increment_val(request,order_item["slug"])
     
+    print("is already in cart = ",is_already_in_cart(cart, order_item))
     if not cart or not is_already_in_cart(cart, order_item):
         new_val = new_val
     else:
         # works with authenticated since db data is made into dict
+        print("This run")
+        print("alread in cart val = ", int(cart[f'{order_item["slug"]}-{order_item["image_id"]}']["quantity"]))
+        print("new val to be added is = ", new_val)
         new_val = \
         int(cart[f'{order_item["slug"]}-{order_item["image_id"]}']["quantity"]) \
         + new_val
-    
+        
+        print("new val after adding is = ", new_val)
+
     
     if new_val == 0:
         raise ValueError("Cannot go less than 0 quantity, kindly click on 'Remove' to clear") 
@@ -54,8 +60,13 @@ def get_new_quantity_or_err(request, cart, order_item):
     else:
         raise ValueError("Quantity exceed available item Quantity")
 
-        
-   
+def is_already_in_cart(cart,order_item):   
+    for item in cart:
+        if cart[item]["product_id"] == order_item["product_id"] \
+        and cart[item]["color"] == order_item["color"] and \
+        cart[item]["size"] == order_item["size"]:
+            return True
+    return False
 
 def get_increment_val(request,slug):
     increment_val = 1
@@ -70,6 +81,7 @@ def get_increment_val(request,slug):
     if "subtract" == request.POST.get("action"):
         increment_val = -increment_val
     return increment_val
+
 
 def get_cart_in_session(session):
     return session.setdefault("cart", {}) 
@@ -98,14 +110,6 @@ def get_order_item(request):
     
     return order_item
        
-def is_already_in_cart(cart,order_item):   
-    for item in cart:
-        if cart[item]["product_id"] == order_item["product_id"] \
-        and cart[item]["color"] == order_item["color"] and \
-        cart[item]["size"] == order_item["size"]:
-            return True
-    return False
-
 def get_cart(request):
     cart = None
     if request.user.is_authenticated:
