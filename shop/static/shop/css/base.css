@@ -605,8 +605,9 @@ textarea {
 }
 
 .pagination__item {
-  width: 38px;
+  width: fit-content;
   height: 38px;
+  padding: .5rem 1rem;
   border-radius: var(--radius-md);
   border: 1px solid var(--color-border);
   display: inline-flex;
@@ -616,6 +617,12 @@ textarea {
   cursor: pointer;
   font-weight: 600;
   transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.12s ease;
+}
+
+.pagination__item.disabled{
+    pointer-events: none; 
+    cursor: default; 
+    color: #ccc; 
 }
 
 .pagination__item--active,

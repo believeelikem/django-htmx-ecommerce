@@ -40,12 +40,14 @@ def home(request):
         if cart and f'{product.slug}-{product.details[0]["image_id"]}' in cart else 0
     
     page = request.GET.get("page")
+    print("pages received is ,", page)
     if not page:
         page = 1
         
     p = Paginator(products, 3)
     
-    products = p.get_page(page)    
+    products = p.get_page(page)  
+    print(products.object_list)  
     
     context = {
     "products":products,

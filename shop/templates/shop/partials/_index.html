@@ -104,27 +104,105 @@
         {% endfor %}
     </div>
 
-    <div id="pagination_nums" class="pagination" hx-boost="true">
-        {% for page_num in products.paginator.page_range %}
-          {% if page_num >= products.number|add:'-2' and page_num <= products.number|add:'2'  %}
+    {% with p=products %}
+        <div id="pagination_nums" class="pagination" hx-boost="true">
+            {% if p.has_previous %}
+                <a 
+                    class="pagination__item"
 
-            <a 
+                    href="{% url 'shop:home' %}?page=1" 
+                    hx-push-url = "true"
+                    hx-vals='{
+                        "from_paginated":"true"
+                    }'
+                    hx-target = "#pagination_nums"
+                    hx-swap = "outerHTML transition:true"
+                    >First
+                </a>
+            {% endif %}
+
             
-            class="pagination__item
-            {% if page_num == products.number %}
-            pagination__item--active {% endif %}"
+            <a  
+                
+                class="
+                pagination__item
+                {% if not p.has_previous %}
+                    disabled
+                {% endif %}
+                "
 
-            href="{% url 'shop:home' %}?page={{page_num}}" 
-            hx-push-url = "true"
-            hx-vals='{
-                "from_paginated":"true"
-            }'
-            hx-target = "#pagination_nums"
-            hx-swap = "outerHTML transition:true"
-            >{{page_num}}</a>
-          {% endif %}
-        {% endfor %}
-    </div>
+href="{% url 'shop:home' %}?page={% if p.has_previous %}{{p.previous_page_number}}{% else %}1{% endif %}" 
+                
+                hx-push-url = "true"
+                hx-vals='{
+                    "from_paginated":"true"
+                }'
+                hx-target = "#pagination_nums"
+                hx-swap = "outerHTML transition:true"
+                > <<
+            </a>
+            
+            {% for page_num in p.paginator.page_range %}
+                {% if page_num >= p.number|add:'-2' and page_num <= p.number|add:'2'  %}
+
+                        <a 
+                        
+                        class="pagination__item
+                        {% if page_num == p.number %}
+                        pagination__item--active {% endif %}"
+
+                        href="{% url 'shop:home' %}?page={{page_num}}" 
+                        hx-push-url = "true"
+                        hx-vals='{
+                            "from_paginated":"true"
+                        }'
+                        hx-target = "#pagination_nums"
+                        hx-swap = "outerHTML transition:true"
+                        >{{page_num}}
+                        </a>
+
+                {% endif %}
+            {% endfor %}
+
+            
+                <a 
+                    
+                    class="
+                    pagination__item
+                    {% if not p.has_next %}
+                    disabled
+                    {% endif %}
+                    "
+
+href="{% url 'shop:home' %}?page={% if p.has_next %}{{p.next_page_number}}{% else %}1{% endif %}" 
+                    
+                    hx-push-url = "true"
+                    hx-vals='{
+                        "from_paginated":"true"
+                    }'
+                    hx-target = "#pagination_nums"
+                    hx-swap = "outerHTML transition:true"
+                    > >>
+                </a>
+
+                {% if p.has_next %}
+                    <a 
+                    
+                        class="pagination__item"
+
+                        href="{% url 'shop:home' %}?page={{p.paginator.num_pages}}" 
+                        hx-push-url = "true"
+                        hx-vals='{
+                            "from_paginated":"true"
+                        }'
+                        hx-target = "#pagination_nums"
+                        hx-swap = "outerHTML transition:true"
+                        >Last
+                    </a>
+                {% endif %}
+
+        </div>
+    {% endwith %}
     </section>
 
     <section class="section">
