@@ -47,6 +47,26 @@
         <h2 class="section__title">Featured products</h2>
         <p class="section__subtitle">Handpicked pieces with enduring quality.</p>
         </div>
+        <label id="search_form" class="search" for="search">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="8" cy="8" r="6" />
+            <line x1="13" y1="13" x2="17" y2="17" />
+            </svg>
+            <input 
+            id="search" 
+            class="search__input" 
+            type="search" 
+            placeholder="Search products, brands, categories"
+            hx-get="{% url 'shop:home' %}"
+            name="q"
+            hx-trigger="keyup changed delay:150ms"
+            hx-target="#pagination_nums"
+            hx-vals='{
+                "from_search": "true"
+            }'
+            hx-swap="outerHTML transition:true"
+            >
+        </label>
         <a 
         class="nav-link" 
         href="{% url 'shop:product-listings' %}"

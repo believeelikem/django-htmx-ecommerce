@@ -621,8 +621,8 @@ textarea {
 
 .pagination__item.disabled{
     pointer-events: none; 
-    cursor: default; 
-    color: #ccc; 
+    cursor: not-allowed; 
+    color: #aba8a8; 
 }
 
 .pagination__item--active,

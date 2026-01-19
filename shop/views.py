@@ -1,4 +1,5 @@
 from email.mime import image
+from math import prod
 import re
 from urllib import response
 from webbrowser import get
@@ -14,6 +15,9 @@ from django.db.models import OuterRef, Subquery,Value, CharField
 from .utils import *
 from django.contrib import messages
 from django.core.paginator import Paginator
+import re
+from decimal import Decimal
+from django.db.models import Q
 
 def home(request):
 
@@ -26,28 +30,34 @@ def home(request):
         Value('/media/'),
         Subquery(image_subquery),
         output_field=CharField()
-    )
+        )
     ) 
     
     # request.session["cart"] = {}
     # print(request.session["cart"])
     
     cart = dict_cart(get_cart(request))
-            
+      
+    page = request.GET.get("page")
+
+    q = request.GET.get("q", "")
+
+    products = products.filter(name__icontains = q)
+
     for product in products:
         product.quantity_in_cart = \
         cart[f'{product.slug}-{product.details[0]["image_id"]}']["quantity"] \
         if cart and f'{product.slug}-{product.details[0]["image_id"]}' in cart else 0
+        
+        print(vars(product), "\n")
     
-    page = request.GET.get("page")
-    print("pages received is ,", page)
     if not page:
         page = 1
         
     p = Paginator(products, 3)
     
     products = p.get_page(page)  
-    print(products.object_list)  
+    
     
     context = {
     "products":products,
@@ -55,13 +65,33 @@ def home(request):
     }
     
     if request.htmx :
-        if request.GET.get("from_paginated"):
+        # if request.GET.get("from_search"):
+        #     return render(request, 'shop/partials/_products_list.html', context)
+        if request.GET.get("from_paginated") or request.GET.get("from_search"):
             response = render(request, "shop/partials/_pagination.html", context)
             response["HX-Push-Url"] = f"?page={page}"
             return response
         
-        return render(request, "shop/partials/_index.html", context = context )
-    return render(request, "shop/index.html", context = context )
+        return render(request, "shop/partials/_index.html", context )
+    return render(request, "shop/index.html", context )
+
+# def search_products(request):
+def parse_tokens(q: str):
+    # normalize whitespace, keep words/numbers
+    q = (q or "").strip()
+    if not q:
+        return []
+    # split on whitespace, but keep things like "38mm" or "38-mm"
+    return [t for t in re.split(r"\s+", q) if t]
+
+def is_number(s: str):
+    try:
+        Decimal(s)
+        return True
+    except Exception:
+        return False  
+
+
 
 def cart(request):
     cart = dict_cart(get_cart(request))
