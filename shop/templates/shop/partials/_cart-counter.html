@@ -33,7 +33,17 @@
 {% endif %}
 
 {% if from == "cart" %}
-{% include "shop/partials/_cart_page_counter.html" %}
+
+    {% include "shop/partials/_cart_page_counter.html" %}
+
+        <strong id="cart__sub-total-primary-{{order_item.image_id}}"
+        hx-swap-oob="true"
+        >${{order_item.sub_total}}</strong>
+
+        <span 
+        hx-swap-oob="true"
+        id="cart__sub-total-secondary-{{order_item.image_id}}" class="section__subtitle">Subtotal ${{order_item.sub_total}}</span>
+
 {% endif %}
 
 {% include 'shop/partials/_toasts.html' %}

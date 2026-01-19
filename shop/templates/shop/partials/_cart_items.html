@@ -1,6 +1,6 @@
 {% if cart %}
 <div class="cart-items">
-    {% for item,values in cart.items %}
+    {% for item, values in cart.items %}
         <article class="cart-item">
         <img class="cart__image" src="{{values.image_url}}" alt="Coat">
         <div class="cart-item__info">
@@ -16,6 +16,7 @@
                 quantity: {{values.quantity}}
             </span>
             <div class="quantity">
+
             <button 
             class="quantity__btn quantity__btn--reduce"
             type="button"
@@ -37,6 +38,7 @@
             hx-target="#cart-counter-on-product-{{values.product_id}}-{{values.image_id}}"
             hx-swap="outerHTML"                 
             >-</button>
+
             <span
             id="cart-counter-on-product-{{values.product_id}}-{{values.image_id}}"
             > {{values.quantity}} </span>
@@ -63,8 +65,8 @@
             </div>
         </div>
         <div class="cart-item__actions">
-            <strong>${{values.sub_total}}</strong>
-            <span class="section__subtitle">Subtotal ${{values.sub_total}}</span>
+            <strong id="cart__sub-total-primary-{{values.image_id}}">${{values.sub_total}}</strong>
+            <span id="cart__sub-total-secondary-{{values.image_id}}" class="section__subtitle">Subtotal ${{values.sub_total}}</span>
             <button 
             class="nav-link remove" 
             hx-post="{% url 'shop:remove-from-cart' %}"

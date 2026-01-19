@@ -91,8 +91,6 @@ def is_number(s: str):
     except Exception:
         return False  
 
-
-
 def cart(request):
     cart = dict_cart(get_cart(request))
     context = {
@@ -118,8 +116,8 @@ def add_to_cart(request):
      
     try:
         order_item["quantity"] = get_new_quantity_or_err(request, cart, order_item)
-    except ValueError as e:
-        messages.error(request, e)
+    except ValueError as message:
+        messages.error(request, message)
     else:
         order_item["sub_total"] = f"{order_item['quantity'] * order_item['price'] :,.2f}" 
 
@@ -135,6 +133,7 @@ def add_to_cart(request):
                 image_url = order_item["image_url"],
                 image_id = order_item["image_id"],
             )  
+            
             print("new created = ", created)
             order_item_to_db.order = order
             order_item_to_db.quantity = order_item["quantity"]
@@ -147,6 +146,7 @@ def add_to_cart(request):
             # (fk relationships) but i add them here so we dont have to hit db 
             # when we want to access values like image_url etc
             # in cart view 
+            
         else:  
             cart[f'{order_item["slug"]}-{order_item["image_id"]}'] = order_item
             request.session["cart"] = cart
@@ -163,8 +163,8 @@ def add_to_cart(request):
         "from":None,
         "order_item":order_item
     }
-
-    context["from"] = request.POST.get("from")    
+    
+    context["from"] = request.POST.get("from") 
     return render(request, "shop/partials/_cart-counter.html", context)
 
 def merge_auth_unauth_cart(request):
