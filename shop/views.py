@@ -112,8 +112,18 @@ def cart(request):
 
 def add_to_cart(request):
     cart = dict_cart(get_cart(request)) 
-    order_item = get_order_item(request)   
-     
+    order_item = get_order_item(request)
+    
+    # incase of errors when handling less than 1 order item 
+    # makes sure even if value err is raised, old quantity and subtotal is still known in cart page
+    
+    if request.POST.get("from")  == "cart":
+        order_item["quantity"] =  (
+            cart[f'{order_item["slug"]}-{order_item["image_id"]}']["quantity"]        
+        )
+    
+    order_item["sub_total"] = f"{order_item['quantity'] * order_item['price'] :,.2f}" 
+    
     try:
         order_item["quantity"] = get_new_quantity_or_err(request, cart, order_item)
     except ValueError as message:
@@ -155,14 +165,16 @@ def add_to_cart(request):
         if "subtract" == request.POST.get("action"):
             messages.warning(request, f" -1({order_item['name']})  in cart")
         else:
-            messages.success(request, f"{order_item['name']} added to cart")            
-    
-    context = {
-        "new_count":get_new_count(cart,order_item["slug"],order_item["image_id"]),
-        "product_id":order_item["product_id"],
-        "from":None,
-        "order_item":order_item
-    }
+            messages.success(request, f"{order_item['name']} added to cart")     
+                   
+    finally:
+
+        context = {
+            "new_count":get_new_count(cart,order_item["slug"],order_item["image_id"]),
+            "product_id":order_item["product_id"],
+            "from":None,
+            "order_item":order_item
+        }
     
     context["from"] = request.POST.get("from") 
     return render(request, "shop/partials/_cart-counter.html", context)

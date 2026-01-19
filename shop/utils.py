@@ -45,9 +45,10 @@ def get_new_quantity_or_err(request, cart, order_item):
         print("This run")
         print("alread in cart val = ", int(cart[f'{order_item["slug"]}-{order_item["image_id"]}']["quantity"]))
         print("new val to be added is = ", new_val)
-        new_val = \
-        int(cart[f'{order_item["slug"]}-{order_item["image_id"]}']["quantity"]) \
-        + new_val
+        
+        new_val = (
+            int(cart[f'{order_item["slug"]}-{order_item["image_id"]}']["quantity"]) + new_val 
+        )
         
         print("new val after adding is = ", new_val)
 
@@ -62,13 +63,15 @@ def get_new_quantity_or_err(request, cart, order_item):
 
 def is_already_in_cart(cart,order_item):   
     for item in cart:
-        if cart[item]["product_id"] == order_item["product_id"] \
-        and cart[item]["color"] == order_item["color"] and \
-        cart[item]["size"] == order_item["size"]:
+        if (
+            cart[item]["product_id"] == order_item["product_id"] 
+            and cart[item]["color"] == order_item["color"] and 
+            cart[item]["size"] == order_item["size"]
+        ):
             return True
     return False
 
-def get_increment_val(request,slug):
+def get_increment_val(request, slug):
     increment_val = 1
     if request.POST.get("from") == "detail" :
         increment_val = request.session[f"{slug}_quantity"]
@@ -80,8 +83,8 @@ def get_increment_val(request,slug):
         pass
     if "subtract" == request.POST.get("action"):
         increment_val = -increment_val
-    return increment_val
 
+    return increment_val
 
 def get_cart_in_session(session):
     return session.setdefault("cart", {}) 
