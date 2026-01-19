@@ -174,12 +174,15 @@ def get_new_count(cart,slug,image_id):
     return cart[f"{slug}-{image_id}"]["quantity"]
 
 def merge_item(db_cart_item,session_cart_item):
+    print("db cart item is = ", db_cart_item, "\n")
+    print("session cart item is = ", session_cart_item, "\n")
 
     updated_item = {}
     
     from collections import ChainMap
 
     updated_item  = dict(ChainMap(db_cart_item, session_cart_item))
+    print("after updated is ", updated_item)
 
     # updated_item =  db_cart_item | session_cart_item
     
@@ -190,3 +193,5 @@ def merge_item(db_cart_item,session_cart_item):
             float(session_cart_item["sub_total"].replace(",",""))
         ]
     )
+    
+    return updated_item

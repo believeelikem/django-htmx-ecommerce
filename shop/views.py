@@ -194,6 +194,7 @@ def merge_auth_unauth_cart(request):
                     
                     
                     merged_item = merge_item(db_cart[item], session_cart[item])
+                    print("merged item is = ", merged_item)
                     product = get_object_or_404(Product, slug = merged_item["slug"])
                     
                     if merged_item["quantity"] <= int(get_current_val(
