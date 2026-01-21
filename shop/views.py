@@ -93,6 +93,7 @@ def is_number(s: str):
 
 def cart(request):
     cart = dict_cart(get_cart(request))
+
     context = {
         "cart": cart,
         "mergeable_products":None
@@ -121,8 +122,7 @@ def add_to_cart(request):
         order_item["quantity"] =  (
             cart[f'{order_item["slug"]}-{order_item["image_id"]}']["quantity"]        
         )
-    
-    order_item["sub_total"] = f"{order_item['quantity'] * order_item['price'] :,.2f}" 
+        order_item["sub_total"] = f"{order_item['quantity'] * order_item['price'] :,.2f}" 
     
     try:
         order_item["quantity"] = get_new_quantity_or_err(request, cart, order_item)
@@ -256,6 +256,7 @@ def remove_from_cart(request):
     context = {
         "cart": dict_cart(get_cart(request))
     }
+    
     context["from"] = request.POST.get("from")
     messages.error(request, f"Removed {request.POST.get('product_slug')} from cart successfully")
     return render(request, "shop/partials/_cart_items.html", context)

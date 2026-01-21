@@ -195,3 +195,6 @@ def merge_item(db_cart_item,session_cart_item):
     )
     
     return updated_item
+
+
+#  resistors used to do operations 

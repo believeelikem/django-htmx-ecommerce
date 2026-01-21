@@ -44,6 +44,11 @@
         hx-swap-oob="true"
         id="cart__sub-total-secondary-{{order_item.image_id}}" class="section__subtitle">Subtotal ${{order_item.sub_total}}</span>
 
+        <span
+        id="order-total"
+        hx-swap-oob="true"
+        > GHS {{cart_total}}</span>
+
 {% endif %}
 
 {% include 'shop/partials/_toasts.html' %}

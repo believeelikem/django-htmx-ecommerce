@@ -14,26 +14,26 @@
         <div>
         <h3 style="margin:0;">Summary</h3>
         </div>
-        <div class="promo">
+        <!-- <div class="promo">
         <label class="form__label" for="promo">Promo code</label>
         <input id="promo" class="form__control" type="text" placeholder="Enter code">
-        </div>
+        </div> -->
         <div class="totals">
-        <div class="totals__row">
+        <!-- <div class="totals__row">
             <span>Subtotal</span>
             <span>$700</span>
-        </div>
-        <div class="totals__row">
+        </div> -->
+        <!-- <div class="totals__row">
             <span>Shipping estimate</span>
             <span>$20</span>
         </div>
         <div class="totals__row">
             <span>Tax estimate</span>
             <span>$65</span>
-        </div>
+        </div> -->
         <div class="totals__row totals__grand">
             <span>Order total</span>
-            <span>$785</span>
+            <span id="order-total">GHS {{cart_total}}</span>
         </div>
         </div>
         <a class="btn btn--primary" href="{% url 'shop:checkout' %}">Proceed to checkout</a>
