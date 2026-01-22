@@ -420,5 +420,11 @@ def category_detail(request, slug):
     return render(request, "shop/category_detail.html",context)
 
 def checkout(request):
-    return render(request, "shop/checkout.html")
+    cart = dict_cart(get_cart(request))
+    
+    context = {
+        "cart": cart
+    }
+    
+    return render(request, "shop/checkout.html", context)
 

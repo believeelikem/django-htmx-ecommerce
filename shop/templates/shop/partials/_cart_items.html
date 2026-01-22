@@ -100,10 +100,13 @@ hx-boost="true"
  
 {% endif %}
 
-<span
-id="order-total"
-hx-swap-oob="true"
-> GHS {{cart_total}}</span>
+{% if request.htmx %}
+    <span
+    id="order-total"
+    hx-swap-oob="true"
+    > GHS {{cart_total}}</span>
+{% endif %}
+
 
 {% if request.htmx and "cart" in request.META.HTTP_REFERER %}
     {% include 'shop/partials/_cart-counter-main.html' %}
