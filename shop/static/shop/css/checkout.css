@@ -88,6 +88,11 @@
 }
 
 .page-checkout .payBtn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+  opacity: 0.5;
+  cursor: not-allowed;
+  display: inline;
+}
+
+.page-checkout .card.form{
+  height: fit-content;
 }

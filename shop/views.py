@@ -428,3 +428,7 @@ def checkout(request):
     
     return render(request, "shop/checkout.html", context)
 
+
+def initialize_payment(request):
+    ...
+
