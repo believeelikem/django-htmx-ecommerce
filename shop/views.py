@@ -457,6 +457,8 @@ def initialize_payment(request):
     number = request.POST.get("phone")
     total_amount = get_normal_val(cart_total_amount(request)["cart_total"]) * 100
     
+    print("reference from ini is = ", order.reference)
+    
     if all([email, number, total_amount]):
     
         data = {
@@ -474,22 +476,18 @@ def initialize_payment(request):
         
         response = requests.post(initiate_payment_url, data= json.dumps(data), headers = headers).json()
         response_auth_url = response["data"]["authorization_url"]
-        
-        print(response)
-        
-        res = HttpResponse("", status=200)
+                
+        res = HttpResponse()
         res["HX-Redirect"] = response_auth_url
-        
-        print("auth_url is = ", response_auth_url)
-        
-        # return JsonResponse({
-        #     "redirect_url": response_auth_url, status=20
-        # })
-        return redirect(response["data"]["authorization_url"])
+ 
+        return res
     
     
 def paystack_callback(request):
-    reference = request.GET.get("reference"),
+    reference = request.GET.get("reference")
+    
+    print("reference from callback is = ", reference)
+
     message = ""
     
     order = get_object_or_404(
@@ -507,7 +505,7 @@ def paystack_callback(request):
     
     print("message is = ", message)
     
-    return render(request, "payment_success.html", context)
+    return render(request, "shop/payment_success.html", context)
 
         
         
