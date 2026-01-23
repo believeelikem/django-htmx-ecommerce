@@ -151,12 +151,20 @@
               class="btn btn--primary payBtn"
               hx-post="{% url 'shop:initiate-payment' %}"
               hx-include="#order-form"
-              > Pay 
+              hx-on="htmx:afterRequest: 
+              if(event.detail.xhr.responseURL){
+                  const data = JSON.parse(event.detail.xhr.responseText);
+                  window.location.href = data.redirect_url;
+              }"
+              >
+              <span class="paybtn-text"> Pay </span> 
+
                 <img 
                   src="{% static 'images/oval.svg' %}" 
                   class="htmx-indicator"
                   width="20px"
                   alt="">
+
             </button>
 
             <!-- <button class="btn btn--primary" href="#">Pay</a> -->

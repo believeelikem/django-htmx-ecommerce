@@ -87,12 +87,25 @@
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: var(--space-md);
 }
 
+.page-checkout .payBtn{
+  display: flex;
+}
+
+.page-checkout .htmx-request .paybtn-text{
+  display: none;
+}
+
 .page-checkout .payBtn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-  display: inline;
+  /* display: inline; */
 }
 
 .page-checkout .card.form{
   height: fit-content;
+}
+
+
+.page-checkout .htmx-indicator{
+  width: 20px;
 }

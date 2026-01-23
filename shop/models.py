@@ -110,15 +110,14 @@ class Order(models.Model):
     completed_at = models.DateTimeField(blank=True, null=True)
     reference = models.CharField(blank=True, null= True)
     
-    def save(self, *args, **kwargs):
-        if not self.reference:
-            self.reference = self.generate_reference()
-            while type(self).objects.filter(reference = self.reference).exists():
-                self.reference = self.generate_reference()
-        super().save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+
+    #     super().save(*args, **kwargs)
             
     def generate_reference(self):
         reference = str(uuid.uuid4())
+        while type(self).objects.filter(reference = reference).exists():
+            reference = str(uuid.uuid4())
         return reference
             
 

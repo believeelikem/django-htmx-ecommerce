@@ -5,7 +5,7 @@ from urllib import response
 from webbrowser import get
 from django import db
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse
 from .models import Order, Product,ProductImage, Category
 from django.db import connection
@@ -22,6 +22,7 @@ from django.conf import settings
 import requests
 from .context_processors import cart_total_amount
 import json
+from django.http import JsonResponse
 
 PAYSTACK_TEST_SECRET_KEY = settings.PAYSTACK_TEST_SECRET_KEY
 
@@ -438,8 +439,10 @@ def initialize_payment(request):
     
     order = get_object_or_404(
         Order, owner = request.user, is_completed =False
-    )
-    
+    ) 
+    order.reference = order.generate_reference()
+    order.save()
+ 
     initiate_payment_url = "https://api.paystack.co/transaction/initialize"
     
     
@@ -453,7 +456,6 @@ def initialize_payment(request):
     email = request.POST.get("email")
     number = request.POST.get("phone")
     total_amount = get_normal_val(cart_total_amount(request)["cart_total"]) * 100
-    
     
     if all([email, number, total_amount]):
     
@@ -470,13 +472,20 @@ def initialize_payment(request):
             "callback_url": request.build_absolute_uri(reverse("shop:paystack-callback"))
         }
         
-        response = requests.post(initiate_payment_url, data= json.dumps(data), headers = headers)
+        response = requests.post(initiate_payment_url, data= json.dumps(data), headers = headers).json()
+        response_auth_url = response["data"]["authorization_url"]
         
-        print("response obj is = ", response.json(), "and type is = ", type(response))
-    else:
-        print(
-            f"something went wrong, could be email = {email}, number = {number}, total_amount = {total_amount}"
-        )
+        print(response)
+        
+        res = HttpResponse("", status=200)
+        res["HX-Redirect"] = response_auth_url
+        
+        print("auth_url is = ", response_auth_url)
+        
+        # return JsonResponse({
+        #     "redirect_url": response_auth_url, status=20
+        # })
+        return redirect(response["data"]["authorization_url"])
     
     
 def paystack_callback(request):
@@ -484,7 +493,7 @@ def paystack_callback(request):
     message = ""
     
     order = get_object_or_404(
-        reference = reference
+        Order, reference = reference
     )
     
     if order:
@@ -495,6 +504,8 @@ def paystack_callback(request):
     context = {
         "message":message
     }  
+    
+    print("message is = ", message)
     
     return render(request, "payment_success.html", context)
 
