@@ -8,7 +8,7 @@ from django.core.exceptions import ValidationError
 import re
 from users.models import is_valid_phonenum
 from django.utils.text import slugify
-
+import uuid
 
 def sluggy(model, obj, slug_field = "name"):
     if not obj.slug:
@@ -94,6 +94,7 @@ class ProductImage(models.Model):
        
     
 class Order(models.Model):
+
     STATUS = {
         "PENDING":"Pending",
         "COMPLETED":"Completed",
@@ -107,15 +108,20 @@ class Order(models.Model):
     status = models.CharField(choices=STATUS,blank=True, null=True)
     started_at = models.DateTimeField(auto_now_add=True)
     completed_at = models.DateTimeField(blank=True, null=True)
-
-    # def __str__(self):
-    #     return f"{self.slug}"
-
+    reference = models.CharField(blank=True, null= True)
     
-    # def save(self, *args, **kwargs):
-    #     sluggy(Product, self, slug_field="name")
-    #     return super().save(*args, **kwargs)
-    
+    def save(self, *args, **kwargs):
+        if not self.reference:
+            self.reference = self.generate_reference()
+            while type(self).objects.filter(reference = self.reference).exists():
+                self.reference = self.generate_reference()
+        super().save(*args, **kwargs)
+            
+    def generate_reference(self):
+        reference = str(uuid.uuid4())
+        return reference
+            
+
 class OrderItem(models.Model):
     product = models.ForeignKey(to=Product,blank=True, null=True, on_delete=models.SET_NULL) 
     order = models.ForeignKey(

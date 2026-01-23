@@ -126,6 +126,7 @@ def get_order(user):
     order, _ = Order.objects.get_or_create(
         owner = user, is_completed = False
     )
+    order.save()
     return order
 
 def dict_cart(cart):

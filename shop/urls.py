@@ -22,6 +22,8 @@ htmx_patterns = [
     path("remove-from-cart", views.remove_from_cart, name="remove-from-cart"),
     path("remove-unlogged-cart", views.remove_unauthenticated_cart, name="remove-unlogged-cart"),
     path("merge-auth-unauth-cart", views.merge_auth_unauth_cart, name="merge-auth-unauth-cart"),
+    path("paystack/initiate_payment", views.initialize_payment, name="initiate-payment"),
+    path("paystack/callback/", views.paystack_callback, name = "paystack-callback"),
 ]
 
 urlpatterns += htmx_patterns

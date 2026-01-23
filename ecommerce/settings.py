@@ -135,3 +135,9 @@ MEDIA_ROOT = BASE_DIR/"media"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+PAYSTACK_TEST_SECRET_KEY = os.getenv("PAYSTACK_TEST_SECRET_KEY")

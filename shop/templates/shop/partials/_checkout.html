@@ -19,33 +19,33 @@
 
       <div class="checkout-layout">
         
-        <section class="card form">
+        <form class="card form" id="order-form">
           <h3 style="margin:0;">Shipping details</h3>
           <div class="form__group first-last">
             <div class="first-name">
               <label class="form__label" for="full-name">First name</label>
-              <input id="first-name" class="form__control" type="text" placeholder="Alex">
+              <input name="first_name" id="first-name" class="form__control" type="text" placeholder="Alex">
             </div>
             <div class="last-name">
               <label class="form__label" for="full-name">Last name</label>
-              <input id="last-name" class="form__control" type="text" placeholder="Taylor">
+              <input name="last_name" id="last-name" class="form__control" type="text" placeholder="Taylor">
             </div>
 
           </div>
           <div class="form__group">
             <label class="form__label" for="address">Email</label>
-            <input id="address" class="form__control" type="text" placeholder="john_doe@gmail.com">
+            <input name="email" id="address" class="form__control" type="text" placeholder="john_doe@gmail.com">
           </div>
 
 
           <div class="form__group other-details-grid ">
             <div class="form__group">
               <label class="form__label" for="city">City</label>
-              <input id="city" class="form__control" type="text" placeholder="Seattle">
+              <input name="city" id="city" class="form__control" type="text" placeholder="Seattle">
             </div>
             <div class="form__group">
               <label class="form__label" for="country">Country</label>
-              <input id="country" class="form__control" type="text" placeholder="United States">
+              <input name="country" id="country" class="form__control" type="text" placeholder="United States">
             </div>
             <!-- <div class="form__group">
               <label class="form__label" for="postal">Postal code</label>
@@ -53,7 +53,7 @@
             </div> -->
             <div class="form__group">
               <label class="form__label" for="phone">Phone</label>
-              <input id="phone" class="form__control" type="tel" placeholder="+1 (555) 230-8890">
+              <input name="phone" id="phone" class="form__control" type="tel" placeholder="+1 (555) 230-8890">
             </div>
           </div>
 
@@ -82,7 +82,7 @@
             <a class="btn btn--primary" href="#">Review order</a>
             <a class="btn btn--ghost" href="cart.html">Back to cart</a>
           </div> -->
-        </section>
+        </form>
 
         <aside class="order-summary">
           <h3 style="margin:0;">Order summary</h3>
@@ -149,12 +149,14 @@
 
             <button  
               class="btn btn--primary payBtn"
+              hx-post="{% url 'shop:initiate-payment' %}"
+              hx-include="#order-form"
               > Pay 
-                <!-- <img 
+                <img 
                   src="{% static 'images/oval.svg' %}" 
                   class="htmx-indicator"
-                  width="20"
-                  alt=""> -->
+                  width="20px"
+                  alt="">
             </button>
 
             <!-- <button class="btn btn--primary" href="#">Pay</a> -->

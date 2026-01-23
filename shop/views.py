@@ -18,6 +18,12 @@ from django.core.paginator import Paginator
 import re
 from decimal import Decimal
 from django.db.models import Q
+from django.conf import settings
+import requests
+from .context_processors import cart_total_amount
+import json
+
+PAYSTACK_TEST_SECRET_KEY = settings.PAYSTACK_TEST_SECRET_KEY
 
 def home(request):
 
@@ -428,7 +434,73 @@ def checkout(request):
     
     return render(request, "shop/checkout.html", context)
 
-
 def initialize_payment(request):
-    ...
+    
+    order = get_object_or_404(
+        Order, owner = request.user, is_completed =False
+    )
+    
+    initiate_payment_url = "https://api.paystack.co/transaction/initialize"
+    
+    
+    headers = {
+        "Authorization": f"Bearer {PAYSTACK_TEST_SECRET_KEY}",
+        "Content-Type": "application/json",
+    }
+    
+    print("headers is = ", headers)
+    
+    email = request.POST.get("email")
+    number = request.POST.get("phone")
+    total_amount = get_normal_val(cart_total_amount(request)["cart_total"]) * 100
+    
+    
+    if all([email, number, total_amount]):
+    
+        data = {
+            "email":email,
+            "amount":total_amount,
+            "reference": order.reference,
+            "currency": "GHS",
+            "channels":["mobile_money"],
+            "mobile_money": {
+                "phone": number,
+                "provider": "mtn"
+            },
+            "callback_url": request.build_absolute_uri(reverse("shop:paystack-callback"))
+        }
+        
+        response = requests.post(initiate_payment_url, data= json.dumps(data), headers = headers)
+        
+        print("response obj is = ", response.json(), "and type is = ", type(response))
+    else:
+        print(
+            f"something went wrong, could be email = {email}, number = {number}, total_amount = {total_amount}"
+        )
+    
+    
+def paystack_callback(request):
+    reference = request.GET.get("reference"),
+    message = ""
+    
+    order = get_object_or_404(
+        reference = reference
+    )
+    
+    if order:
+        message += "Success"
+    else:
+        message += "Failed"
+        
+    context = {
+        "message":message
+    }  
+    
+    return render(request, "payment_success.html", context)
+
+        
+        
+def get_normal_val(str_amount:str):
+    normal = str_amount.split(".")[0].replace(",","")
+    return float(normal)
 

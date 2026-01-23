@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="{% static 'users/css/auth.css' %}">
   <link rel="stylesheet" href="{% static 'shop/css/checkout.css' %}">
   <link rel="stylesheet" href="{% static 'shop/css/index.css' %}">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <meta name="htmx-config" content='{"scrollIntoViewOnBoost": false}'>
   {% block extra_styles %}<link rel="stylesheet" href="{% static 'shop/css/index.css' %}">
   {% endblock extra_styles %}
@@ -110,5 +111,16 @@
 </div>
 
 <script src="{% static 'shop/js/toasts.js' %}"></script>
+
+<script>
+    document.body.addEventListener("showAlert", (evt) => {
+    Swal.fire({
+        title: evt.detail.title,
+        text: evt.detail.text,
+        icon: evt.detail.icon,
+        timer: 3000
+    });
+});
+</script>
 </body>
 </html>
