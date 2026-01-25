@@ -142,6 +142,7 @@ class OrderItem(models.Model):
     def sub_total(self):
         return f"{int(self.quantity) * float(self.price) :,.2f}"
     
+    
 class ShippingAddress(models.Model):
     order = models.ForeignKey(to=Order, blank=True, null=True, on_delete=models.SET_NULL)
     address = models.CharField(max_length=150, blank=True, null=True)

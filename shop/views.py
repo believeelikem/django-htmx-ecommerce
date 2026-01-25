@@ -1,6 +1,7 @@
 from email.mime import image
 from math import prod
 import re
+from turtle import color
 from urllib import response
 from webbrowser import get
 from django import db
@@ -23,6 +24,7 @@ import requests
 from .context_processors import cart_total_amount
 import json
 from django.http import JsonResponse
+import sweetify
 
 PAYSTACK_TEST_SECRET_KEY = settings.PAYSTACK_TEST_SECRET_KEY
 
@@ -487,7 +489,8 @@ def paystack_callback(request):
     reference = request.GET.get("reference")
     
     print("reference from callback is = ", reference)
-
+    
+    print("request.GET is = ", request.GET)
     message = ""
     
     order = get_object_or_404(
@@ -496,16 +499,29 @@ def paystack_callback(request):
     
     if order:
         message += "Success"
+        color = "green"
+        icon_type = "success"
+        
     else:
         message += "Failed"
+        color = "red"
+        color = "error"
         
     context = {
-        "message":message
+        "message":message,
+        "color": color
     }  
     
-    print("message is = ", message)
+    sweetify.toast(
+        request, 'Payment Sucessful', 
+        icon=icon_type, 
+        position='top-end',
+        timer=3000,
+        timerProgressBar=True
+    )
     
-    return render(request, "shop/payment_success.html", context)
+    response =  render(request, "shop/payment_success.html", context)
+    return response
 
         
         

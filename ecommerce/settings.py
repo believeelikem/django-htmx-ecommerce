@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "admin_dashboard",
     "django_json_widget",
     "django_htmx",
+    "sweetify"
 ]
 
 MIDDLEWARE = [
@@ -141,3 +142,5 @@ import os
 load_dotenv()
 
 PAYSTACK_TEST_SECRET_KEY = os.getenv("PAYSTACK_TEST_SECRET_KEY")
+
+SWEETIFY_SWEETALERT_LIBRARY = 'sweetalert2'
