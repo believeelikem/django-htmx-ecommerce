@@ -4,6 +4,14 @@
 {% block content %}
 
 <h1 style="text-align: center;"> Payment info </h1>
-<h1 style="text-align: center; color:{{color}}"> Payment {{message}} </h1>
+<h1 style="text-align: center;"
+class="payment-msg"
+> Payment {{message}} </h1>
+
+<a
+hx-boost="true"
+href="{% url 'shop:home' %}"
+class="continue-shopping-btn"
+> Continue Shopping </a>
 
 {% endblock content %}
