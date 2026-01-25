@@ -517,7 +517,7 @@ def paystack_callback(request):
         icon=icon_type, 
         position='top-end',
         timer=3000,
-        timerProgressBar=True
+        timerProgressBar=True,
     )
     
     response =  render(request, "shop/payment_success.html", context)
