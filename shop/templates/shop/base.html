@@ -31,10 +31,12 @@
    hx-swap="outerHTML transition:true"
    >
     <div class="container topbar__inner">
+        
     <a 
     class="brand" 
     href="{% url 'shop:home' %}"
     >Northwind Commerce</a>
+
     <a href="#search_form">
         <label class="search" style="width: 8rem;" for="search">
         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
@@ -47,8 +49,6 @@
 
     
     <div class="topbar__actions">
-
-        
         <a 
         class="nav-link" 
         {% if request.user.is_authenticated %}
