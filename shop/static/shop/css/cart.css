@@ -156,6 +156,7 @@
 
 .page-product-cart .btn--primary.no-items{
   opacity: .5;
+  pointer-events: none;
 }
 
 @media (max-width: 720px) {

@@ -97,6 +97,14 @@ hx-boost="true"
     href="{% url 'shop:home' %}"
     > Go home </a>
 </div>
+{% if request.htmx %}
+<a 
+id="proceed-to-cart-btn"
+class="btn btn--primary{% if not cart %} no-items {%endif%}" href="{% url 'shop:checkout' %}"
+hx-swap-oob="true"
+>Proceed to checkout</a>
+
+{% endif %}
  
 {% endif %}
 

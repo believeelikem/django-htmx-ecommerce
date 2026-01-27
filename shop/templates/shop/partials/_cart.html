@@ -36,7 +36,11 @@
             <span id="order-total">GHS {{cart_total}}</span>
         </div>
         </div>
-        <a class="btn btn--primary{% if cart %} no-items {%endif%}" href="{% url 'shop:checkout' %}">Proceed to checkout</a>
+        <a 
+        id="proceed-to-cart-btn"
+        class="btn btn--primary{% if not cart %} no-items {%endif%}" 
+        href="{% url 'shop:checkout' %}"
+        >Proceed to checkout</a>
     </aside>
     </div>
 </main>
