@@ -148,14 +148,9 @@
             </div>
 
             <button  
-              class="btn btn--primary payBtn"
+              class="btn btn--primary payBtn {% if not cart %} no-items {% endif %}"
               hx-post="{% url 'shop:initiate-payment' %}"
               hx-include="#order-form"
-              hx-on="htmx:afterRequest: 
-              if(event.detail.xhr.responseURL){
-                  const data = JSON.parse(event.detail.xhr.responseText);
-                  window.location.href = data.redirect_url;
-              }"
               >
               <span class="paybtn-text"> Pay </span> 
 
