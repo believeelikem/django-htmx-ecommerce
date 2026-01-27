@@ -507,6 +507,11 @@ def paystack_callback(request):
     status = r["data"]["status"]   
     
     if order and status == "success":
+        order.is_completed = True
+        order.save()
+        
+        request.session["cart"] = {}
+        request.session.modified = True
         message += "Success"
         color = "green"
         icon_type = "success"
@@ -530,9 +535,7 @@ def paystack_callback(request):
     
     response =  render(request, "shop/payment_success.html", context)
     return response
-
-        
-        
+  
 def get_normal_val(str_amount:str):
     normal = str_amount.split(".")[0].replace(",","")
     return float(normal)

@@ -154,6 +154,10 @@
   font-size: .5rem;
 } */
 
+.page-product-cart .btn--primary.no-items{
+  opacity: .5;
+}
+
 @media (max-width: 720px) {
   .page-product-cart .cart-item {
     grid-template-columns: 80px 1fr;
