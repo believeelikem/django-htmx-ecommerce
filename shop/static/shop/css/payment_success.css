@@ -14,3 +14,6 @@
 .payment-msg{
     color: green;
 }
+.payment-msg.failed{
+    color: red;
+}

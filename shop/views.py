@@ -25,6 +25,7 @@ from .context_processors import cart_total_amount
 import json
 from django.http import JsonResponse
 import sweetify
+from django.http import Http404
 
 PAYSTACK_TEST_SECRET_KEY = settings.PAYSTACK_TEST_SECRET_KEY
 
@@ -487,33 +488,40 @@ def initialize_payment(request):
     
 def paystack_callback(request):
     reference = request.GET.get("reference")
-    
-    print("reference from callback is = ", reference)
-    
-    print("request.GET is = ", request.GET)
     message = ""
     
-    order = get_object_or_404(
-        Order, reference = reference
-    )
+    try:
+        order = get_object_or_404(
+            Order, reference = reference
+        )
+        
+    except Http404:
+        order = None
+        
+    r = requests.get(
+    f"https://api.paystack.co/transaction/verify/{reference}",
+    headers={"Authorization": f"Bearer {PAYSTACK_TEST_SECRET_KEY}"}
+    ).json()
     
-    if order:
+    
+    status = r["data"]["status"]   
+    
+    if order and status == "success":
         message += "Success"
         color = "green"
         icon_type = "success"
-        
     else:
         message += "Failed"
         color = "red"
-        color = "error"
-        
+        icon_type = "error"
+             
     context = {
         "message":message,
         "color": color
     }  
     
     sweetify.toast(
-        request, 'Payment Sucessful', 
+        request, f'Payment {message}', 
         icon=icon_type, 
         position='top-end',
         timer=3000,

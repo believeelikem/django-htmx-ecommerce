@@ -5,7 +5,7 @@
 
 <h1 style="text-align: center;"> Payment info </h1>
 <h1 style="text-align: center;"
-class="payment-msg"
+class="payment-msg {% if message == 'Failed' %}failed{% endif %}"
 > Payment {{message}} </h1>
 
 <a
